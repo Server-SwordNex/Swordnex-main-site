@@ -1,0 +1,118 @@
+.benefits {
+ background: #0f1419;
+ color: #fff;
+ padding: 96px 54px 0px;
+ font-family: "DM Sans";
+}
+
+.inner {
+ max-width: 1200px;
+ margin: 0 50px;
+}
+
+.statsRow {
+ display: grid;
+ grid-template-columns: repeat(4, 1fr);
+ gap: 24px;
+ padding-bottom: 64px;
+ border-bottom: 1px solid #25303d;
+ margin-top: 64px;
+}
+
+.stat {
+ text-align: center;
+}
+
+.statValue {
+ font-size: 40px;
+ font-weight: 700;
+ letter-spacing: -0.02em;
+ color: #ff5a66;
+ margin-bottom: 6px;
+}
+
+.statLabel {
+ color: #9aa6b2;
+ font-size: 14px;
+}
+
+.split {
+ display: grid;
+ grid-template-columns: 1fr 1fr;
+ gap: 64px;
+ align-items: start;
+}
+
+.eyebrow {
+ display: inline-block;
+ background: rgba(230, 57, 70, 0.15);
+ color: #ff8a92;
+ font-size: 13px;
+ font-weight: 600;
+ padding: 6px 12px;
+ border-radius: 999px;
+ margin-bottom: 18px;
+}
+
+.title {
+ font-size: 40px;
+ letter-spacing: -0.02em;
+ margin: 0 0 20px;
+ font-weight: 700;
+}
+
+.lead {
+ font-size: 17px;
+ line-height: 1.7;
+ color: #c2cad2;
+ margin: 0;
+}
+
+.list {
+ list-style: none;
+ padding: 0;
+ margin: 0;
+ height: 100%;
+ display: grid;
+ gap: 16px;
+ align-items: center;
+ /* Aligns items along the block (vertical) axis */
+}
+
+
+.listItem {
+ display: flex;
+ gap: 14px;
+ align-items: flex-start;
+ font-size: 16px;
+ color: #e6e9ed;
+}
+
+.check {
+ width: 26px;
+ height: 26px;
+ flex-shrink: 0;
+ background: #e63946;
+ color: #fff;
+ border-radius: 999px;
+ display: grid;
+ place-items: center;
+ font-weight: 700;
+ font-size: 14px;
+}
+
+@media (max-width: 900px) {
+ .statsRow {
+ grid-template-columns: repeat(2, 1fr);
+ gap: 32px;
+ }
+
+ .split {
+ grid-template-columns: 1fr;
+ gap: 40px;
+ }
+
+ .title {
+ font-size: 32px;
+ }
+}

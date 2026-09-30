@@ -1,0 +1,30 @@
+# Dependencies (any depth)
+node_modules/
+jspm_packages/
+
+# Build output
+dist/
+.vite/
+*.tsbuildinfo
+coverage/
+
+# Environment files (any depth)
+.env
+.env.*
+!.env.example
+
+# Logs / debug output
+*.log
+recovery_log.txt
+
+# Firebase CLI cache
+.firebase/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# Local Claude settings (contains API keys)
+.claude/settings.local.json

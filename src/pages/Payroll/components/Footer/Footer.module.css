@@ -1,0 +1,149 @@
+.footer {
+ width: 100%;
+ background: #0f172a;
+ position: relative;
+ overflow: hidden;
+ padding-top: 90px;
+ font-family: "DM Sans";
+ text-align: left;
+}
+
+.topGlow {
+ position: absolute;
+ width: 500px;
+ height: 500px;
+ background: radial-gradient(
+ circle,
+ rgba(37,99,235,0.18),
+ transparent 70%
+ );
+ top: -220px;
+ right: -120px;
+}
+
+.container {
+ position: relative;
+ z-index: 2;
+ width: 100%;
+ padding: 0 7% 70px;
+ display: flex;
+ justify-content: space-between;
+ gap: 80px;
+}
+
+.brandSection {
+ flex: 1.2;
+ max-width: 420px;
+}
+
+.logo {
+ width: 170px;
+ object-fit: contain;
+}
+
+.brandSection p {
+ margin-top: 26px;
+ color: rgba(255,255,255,0.72);
+ font-size: 16px;
+ line-height: 1.9;
+}
+
+.socials {
+ margin-top: 30px;
+ display: flex;
+ gap: 14px;
+}
+
+.socialIcon {
+ width: 48px;
+ height: 48px;
+ border-radius: 14px;
+ background: rgba(255,255,255,0.06);
+ border: 1px solid rgba(255,255,255,0.08);
+ display: flex;
+ align-items: center;
+ justify-content: center;
+ color: white;
+ font-size: 20px;
+ text-decoration: none;
+ transition: 0.3s ease;
+}
+
+.socialIcon:hover {
+ transform: translateY(-5px);
+ background: #2563eb;
+}
+
+.linksWrapper {
+ flex: 2;
+ display: grid;
+ grid-template-columns: repeat(4,1fr);
+ gap: 40px;
+}
+
+.linkColumn h3 {
+ color: white;
+ font-size: 20px;
+ margin-bottom: 24px;
+ font-weight: 700;
+}
+
+.linkColumn a {
+ display: block;
+ margin-bottom: 16px;
+ color: rgba(255,255,255,0.7);
+ text-decoration: none;
+ font-size: 15px;
+ transition: 0.3s ease;
+}
+
+.linkColumn a:hover {
+ color: #60a5fa;
+ transform: translateX(4px);
+}
+
+.bottomBar {
+ width: 100%;
+ padding: 24px 7%;
+ border-top: 1px solid rgba(255,255,255,0.08);
+ text-align: center;
+}
+
+.bottomBar p {
+ color: rgba(255,255,255,0.6);
+ font-size: 14px;
+}
+
+@media (max-width: 1100px) {
+
+ .container {
+ flex-direction: column;
+ }
+
+ .linksWrapper {
+ grid-template-columns: repeat(2,1fr);
+ width: 100%;
+ }
+
+}
+
+@media (max-width: 768px) {
+
+ .footer {
+ padding-top: 70px;
+ }
+
+ .container {
+ padding: 0 5% 50px;
+ }
+
+ .linksWrapper {
+ grid-template-columns: 1fr;
+ gap: 30px;
+ }
+
+ .logo {
+ width: 140px;
+ }
+
+}

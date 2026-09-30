@@ -1,0 +1,275 @@
+/* Help.module.css */
+
+.helpContainer {
+ font-family: var(--sans);
+ color: var(--dark);
+ background-color: var(--light);
+ min-height: 100vh;
+ display: flex;
+ flex-direction: column;
+}
+
+.helpContent {
+ max-width: 1100px;
+ width: 100%;
+ margin: 0 auto;
+ padding: 80px 24px;
+ box-sizing: border-box;
+ flex-grow: 1;
+}
+
+@media (max-width: 768px) {
+ .helpContent {
+ padding: 40px 16px;
+ }
+}
+
+/* Header */
+.headerSection {
+ text-align: center;
+ margin-bottom: 50px;
+}
+
+.badge {
+ display: inline-flex;
+ padding: 6px 16px;
+ background: var(--accent-soft);
+ color: var(--accent);
+ border: 1px solid var(--accent-border);
+ border-radius: 99px;
+ font-size: 13px;
+ font-weight: 700;
+ text-transform: uppercase;
+ letter-spacing: 0.5px;
+ margin-bottom: 20px;
+}
+
+.title {
+ font-size: 42px;
+ font-weight: 850;
+ line-height: 1.15;
+ color: var(--dark);
+ margin-bottom: 16px;
+ letter-spacing: -1.2px;
+}
+
+@media (max-width: 768px) {
+ .title {
+ font-size: 30px;
+ }
+}
+
+.desc {
+ font-size: 16.5px;
+ line-height: 1.5;
+ color: rgba(30, 27, 75, 0.65);
+ max-width: 650px;
+ margin: 0 auto;
+}
+
+/* Search Area */
+.searchWrapper {
+ max-width: 550px;
+ margin: 0 auto 50px auto;
+ position: relative;
+}
+
+.searchInput {
+ width: 100%;
+ padding: 14px 18px 14px 44px;
+ border: 1px solid rgba(30, 27, 75, 0.1);
+ border-radius: 10px;
+ font-size: 15px;
+ background: #fbfbfc;
+ color: var(--dark);
+ font-family: var(--sans);
+ transition: all 0.2s ease;
+ box-sizing: border-box;
+}
+
+.searchInput:focus {
+ outline: none;
+ border-color: var(--accent-light);
+ background: var(--light);
+ box-shadow: 0 0 0 3px rgba(242, 5, 25, 0.08);
+}
+
+.searchIcon {
+ position: absolute;
+ left: 14px;
+ top: 50%;
+ transform: translateY(-50%);
+ color: rgba(30, 27, 75, 0.4);
+ pointer-events: none;
+}
+
+/* Layout */
+.layout {
+ display: grid;
+ grid-template-columns: 280px 1fr;
+ gap: 40px;
+ align-items: start;
+}
+
+@media (max-width: 850px) {
+ .layout {
+ grid-template-columns: 1fr;
+ gap: 30px;
+ }
+}
+
+/* Sidebar Tabs */
+.sidebar {
+ display: flex;
+ flex-direction: column;
+ gap: 6px;
+}
+
+.tabBtn {
+ width: 100%;
+ padding: 12px 16px;
+ background: transparent;
+ border: 1px solid transparent;
+ border-radius: 8px;
+ text-align: left;
+ font-size: 14px;
+ font-weight: 700;
+ color: rgba(30, 27, 75, 0.65);
+ cursor: pointer;
+ display: flex;
+ align-items: center;
+ gap: 10px;
+ transition: all 0.2s ease;
+}
+
+.tabBtn:hover {
+ background: rgba(30, 27, 75, 0.03);
+ color: var(--dark);
+}
+
+.tabBtnActive {
+ background: var(--accent-soft);
+ border-color: var(--accent-border);
+ color: var(--accent);
+}
+
+/* Article Area */
+.articleWrapper {
+ background: white;
+ border: 1px solid rgba(30, 27, 75, 0.06);
+ border-radius: 16px;
+ padding: 36px;
+ box-shadow: var(--shadow);
+}
+
+@media (max-width: 600px) {
+ .articleWrapper {
+ padding: 24px;
+ }
+}
+
+.articleTitle {
+ font-size: 26px;
+ font-weight: 800;
+ margin-top: 0;
+ margin-bottom: 16px;
+ color: var(--dark);
+ border-bottom: 2px solid var(--accent-soft);
+ padding-bottom: 12px;
+}
+
+.articleIntro {
+ font-size: 15px;
+ line-height: 1.5;
+ color: rgba(30, 27, 75, 0.7);
+ margin-bottom: 28px;
+}
+
+/* Guides list */
+.guideSection {
+ margin-bottom: 28px;
+}
+
+.guideSection h3 {
+ font-size: 16px;
+ font-weight: 750;
+ margin-top: 0;
+ margin-bottom: 10px;
+ color: var(--dark);
+ text-transform: uppercase;
+ letter-spacing: 0.5px;
+}
+
+.guideStepList {
+ display: flex;
+ flex-direction: column;
+ gap: 12px;
+}
+
+.guideStepItem {
+ display: flex;
+ gap: 12px;
+ align-items: flex-start;
+ font-size: 14.5px;
+ line-height: 1.5;
+ color: rgba(30, 27, 75, 0.75);
+}
+
+.stepNum {
+ width: 22px;
+ height: 22px;
+ border-radius: 50%;
+ background: var(--accent-soft);
+ color: var(--accent);
+ display: flex;
+ align-items: center;
+ justify-content: center;
+ font-size: 11px;
+ font-weight: 700;
+ flex-shrink: 0;
+ margin-top: 2px;
+ border: 1px solid var(--accent-border);
+}
+
+.alertBox {
+ background: rgba(245, 158, 11, 0.08);
+ border: 1px solid rgba(245, 158, 11, 0.25);
+ border-radius: 8px;
+ padding: 16px;
+ margin-top: 24px;
+ display: flex;
+ gap: 12px;
+ font-size: 13.5px;
+ line-height: 1.45;
+ color: rgba(30, 27, 75, 0.85);
+}
+
+.alertIcon {
+ color: var(--accent-warm);
+ flex-shrink: 0;
+ margin-top: 2px;
+}
+
+/* Support Section */
+.supportSection {
+ background: var(--accent-soft);
+ border: 1px solid var(--accent-border);
+ border-radius: 12px;
+ padding: 24px;
+ text-align: center;
+ margin-top: 50px;
+}
+
+.supportSection h3 {
+ font-size: 18px;
+ font-weight: 800;
+ margin-top: 0;
+ margin-bottom: 8px;
+ color: var(--dark);
+}
+
+.supportSection p {
+ font-size: 14px;
+ color: rgba(30, 27, 75, 0.65);
+ margin-bottom: 18px;
+}

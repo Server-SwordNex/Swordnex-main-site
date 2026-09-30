@@ -1,0 +1,346 @@
+/* ── Section ── */
+
+.section {
+ width: 100%;
+ padding: 100px 80px 120px;
+ background: #faf8f5;
+ box-sizing: border-box;
+ scroll-margin-top: 90px;
+}
+
+/* ── Header ── */
+
+.header {
+ text-align: center;
+ margin-bottom: 36px;
+}
+
+.header h2 {
+ font-size: 38px;
+ font-weight: 800;
+ color: #111827;
+ margin-bottom: 14px;
+ letter-spacing: -0.02em;
+}
+
+.header p {
+ font-size: 16px;
+ color: #6b7280;
+ max-width: 480px;
+ margin: 0 auto;
+ line-height: 1.7;
+}
+
+/* ── Toggle ── */
+
+.toggleWrap {
+ display: flex;
+ justify-content: center;
+ margin-bottom: 56px;
+}
+
+.toggle {
+ display: inline-flex;
+ background: #fef3c7;
+ padding: 4px;
+ border-radius: 10px;
+ gap: 4px;
+}
+
+.toggle button {
+ border: none;
+ background: transparent;
+ padding: 12px 32px;
+ border-radius: 8px;
+ cursor: pointer;
+ font-size: 15px;
+ font-weight: 600;
+ color: #92400e;
+ transition: all 0.2s ease;
+ text-transform: capitalize;
+}
+
+.togActive {
+ background: #f59e0b !important;
+ color: white !important;
+ box-shadow: 0 2px 8px rgba(245, 158, 11, 0.35);
+}
+
+/* ── Loading ── */
+
+.loadingWrapper {
+ width: 100%;
+ min-height: 40vh;
+ display: flex;
+ align-items: center;
+ justify-content: center;
+ flex-direction: column;
+}
+
+.spinner {
+ width: 36px;
+ height: 36px;
+ border-radius: 50%;
+ border: 3px solid #e5e7eb;
+ border-top: 3px solid #111827;
+ animation: spin 0.7s linear infinite;
+ margin-bottom: 14px;
+}
+
+.loadingWrapper p {
+ font-size: 14px;
+ color: #6b7280;
+}
+
+@keyframes spin {
+ 100% {
+ transform: rotate(360deg);
+ }
+}
+
+/* ── Grid ── */
+
+.grid {
+ display: grid;
+ grid-template-columns: repeat(auto-fit, minmax(310px, 1fr));
+ gap: 40px;
+ max-width: 1060px;
+ margin: 0 auto;
+ align-items: start;
+}
+
+/* ── Card ── */
+
+.plan {
+ border-radius: 20px;
+ box-shadow: 0 8px 30px rgba(245, 158, 11, 0.2);
+ padding: 8px;
+ color: #697e91;
+ max-width: 330px;
+ margin: 0 auto;
+ transition: all 0.3s ease;
+}
+
+.plan:hover {
+ transform: translateY(-4px);
+}
+
+.popular {
+ box-shadow: 0 8px 30px rgba(245, 158, 11, 0.35), 0 0 0 3px #d97706;
+}
+
+.plan strong {
+ font-weight: 600;
+ color: #92400e;
+}
+
+/* ── Inner card ── */
+
+.inner {
+ display: flex;
+ flex-direction: column;
+ align-items: center;
+ padding: 36px 28px 32px;
+ padding-top: 68px;
+ background-color: #fff;
+ border-radius: 14px;
+ position: relative;
+}
+
+/* ── Pricing badge ── */
+
+.pricing {
+ position: absolute;
+ top: 0;
+ right: 0;
+ background-color: #fde68a;
+ border-radius: 99em 0 0 99em;
+ display: flex;
+ align-items: center;
+ padding: 0.8em 1.1em;
+ font-size: 1.4rem;
+ font-weight: 700;
+ color: #92400e;
+}
+
+.pricing small {
+ color: #707a91;
+ font-size: 0.75em;
+ margin-left: 0.35em;
+}
+
+/* ── Badge ── */
+
+.badge {
+ position: absolute;
+ top: 14px;
+ left: 14px;
+ background: #78350f;
+ color: white;
+ padding: 4px 10px;
+ border-radius: 6px;
+ font-size: 10px;
+ font-weight: 700;
+ text-transform: uppercase;
+ letter-spacing: 0.05em;
+}
+
+/* ── Title ── */
+
+.title {
+ font-weight: 800;
+ font-size: 1.5rem;
+ color: #425675;
+ margin: 0;
+ margin-top: 4px;
+}
+
+.title + * {
+ margin-top: 1.25rem;
+}
+
+/* ── Info ── */
+
+.info {
+ text-align: center;
+ margin: 0;
+ font-size: 15px;
+ line-height: 1.7;
+ color: #6b7280;
+ max-width: 280px;
+}
+
+.info + * {
+ margin-top: 1.5rem;
+}
+
+/* ── Limits row ── */
+
+.limits {
+ display: flex;
+ gap: 24px;
+ width: 100%;
+ justify-content: center;
+ margin-top: 1.5rem;
+}
+
+.limitItem {
+ display: flex;
+ flex-direction: column;
+ align-items: center;
+ background: rgba(255,255,255,0.7);
+ border-radius: 10px;
+ padding: 12px 20px;
+ flex: 1;
+ max-width: 120px;
+}
+
+.limitItem strong {
+ font-size: 1.3rem;
+ color: #425675;
+}
+
+.limitItem span {
+ font-size: 12px;
+ color: #6b7280;
+ font-weight: 600;
+ text-transform: uppercase;
+ letter-spacing: 0.05em;
+ margin-top: 6px;
+}
+
+.limits + * {
+ margin-top: 1.5rem;
+}
+
+/* ── Features ── */
+
+.features {
+ display: flex;
+ flex-direction: column;
+ list-style: none;
+ padding: 0;
+ margin: 0;
+ width: 100%;
+}
+
+.features li {
+ display: flex;
+ align-items: center;
+ gap: 0.85rem;
+ font-size: 14px;
+ color: #374151;
+ padding: 3px 0;
+}
+
+.features li + li {
+ margin-top: 1.25rem;
+}
+
+.icon {
+ background-color: #f59e0b;
+ display: inline-flex;
+ align-items: center;
+ justify-content: center;
+ color: #fff;
+ border-radius: 50%;
+ width: 26px;
+ height: 26px;
+ flex-shrink: 0;
+}
+
+.icon svg {
+ width: 16px;
+ height: 16px;
+}
+
+.features + * {
+ margin-top: 1.75rem;
+}
+
+/* ── Action ── */
+
+.action {
+ width: 100%;
+ display: flex;
+ align-items: center;
+ justify-content: end;
+}
+
+/* ── Button ── */
+
+.button {
+ border-radius: 10px;
+ background: #78350f;
+ color: #fff;
+ font-weight: 700;
+ font-size: 1.125rem;
+ text-align: center;
+ border: 0;
+ outline: 0;
+ width: 100%;
+ padding: 0.85em 1.2em;
+ text-decoration: none;
+ cursor: pointer;
+ transition: all 0.2s ease;
+}
+
+.button:hover {
+ background: #92400e;
+}
+
+/* ── Responsive ── */
+
+@media (max-width: 900px) {
+ .section {
+ padding: 60px 18px 80px;
+ }
+
+ .grid {
+ grid-template-columns: 1fr;
+ }
+
+ .header h2 {
+ font-size: 28px;
+ }
+}

@@ -1,0 +1,12 @@
+{
+  "indexes": [
+    {
+      "collectionGroup": "Swordnex-blogs",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "published", "order": "ASCENDING" },
+        { "fieldPath": "createdAt", "order": "DESCENDING" }
+      ]
+    }
+  ]
+}

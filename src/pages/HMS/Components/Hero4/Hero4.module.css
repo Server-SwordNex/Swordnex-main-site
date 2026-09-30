@@ -1,0 +1,162 @@
+.hero {
+ padding: 80px 0;
+}
+
+.container {
+ width: min(1200px, 92%);
+ margin: auto;
+
+ display: grid;
+ grid-template-columns: 1fr 1fr;
+ gap: 60px;
+ align-items: center;
+}
+
+.left h1 {
+ /* font-size: clamp(3rem, 5vw, 5rem); */
+ font-size: 70px;
+ font-weight: 500;
+ line-height: 1.1;
+ margin: 20px 0;
+}
+
+.left h1 span {
+ color: #2563eb;
+}
+
+.left p {
+ color: #64748b;
+ line-height: 1.8;
+ margin-bottom: 30px;
+}
+
+.badge {
+ display: inline-block;
+
+ color: #2563eb;
+
+ padding: 8px 16px;
+
+ border-radius: 999px;
+
+ font-size: 14px;
+ font-weight: 600;
+}
+
+.button {
+ display: inline-block;
+
+ padding: 14px 28px;
+
+ background: #2563eb;
+
+ color: white;
+
+ border-radius: 12px;
+
+ text-decoration: none;
+
+ font-weight: 600;
+}
+
+.right {
+ background: white;
+
+ border-radius: 24px;
+
+ overflow: hidden;
+ min-height: 520px;
+
+ box-shadow: 0 20px 60px rgba(0, 0, 0, .08);
+}
+
+.tabs {
+ display: flex;
+ border-bottom: 1px solid #e5e7eb;
+}
+
+.tabs button {
+ flex: 1;
+
+ padding: 18px;
+
+ border: none;
+
+ background: white;
+
+ cursor: pointer;
+
+ font-weight: 600;
+}
+
+.tabs button:hover {
+ box-shadow: none;
+ transform: none;
+}
+
+.activeTab {
+ color: #2563eb;
+}
+
+.showcase {
+ padding: 30px 40px;
+ min-height: 490px;
+}
+
+.icon {
+ font-size: 60px;
+ margin-bottom: 20px;
+}
+
+.showcase h2 {
+ font-size: 20px;
+ margin-bottom: 12px;
+}
+
+.showcase p {
+ color: #64748b;
+ line-height: 1.8;
+}
+
+@media (max-width: 900px) {
+ .container {
+ grid-template-columns: 1fr;
+ }
+
+ .tabs {
+ flex-wrap: wrap;
+ }
+
+ .tabs button {
+ min-width: 50%;
+ }
+}
+
+.imageWrapper {
+ width: 100%;
+ /* 1. Expand the max-width so your wide image has room to spread out */
+ max-width: 800px;
+ /* 2. Cap the height strictly to keep it short */
+ height: 300px;
+
+ /* 3. Center the wide block horizontally in its parent row */
+ margin: 0 auto;
+
+ /* 4. Center the internal image perfectly inside the box boundaries */
+ display: flex;
+ justify-content: center;
+ align-items: center;
+ overflow: hidden;
+ /* Prevents overflow bugs */
+}
+
+.imageWrapper img {
+ width: 100%;
+ height: 100%;
+ object-fit: contain;
+ display: block;
+
+ /* border-radius: 16px; */
+ /* border: 1px solid #e5e7eb; */
+ /* box-shadow: 0 12px 40px rgba(0, 0, 0, 0.08); */
+}

@@ -1,0 +1,20 @@
+User-agent: *
+Allow: /
+Disallow: /private/
+Disallow: /admin/
+Disallow: /assets/*.js$
+Disallow: /assets/*.css$
+
+# Allow major search engines
+User-agent: Googlebot
+Allow: /
+User-agent: Bingbot
+Allow: /
+User-agent: Slurp
+Allow: /
+
+# Crawl-delay for all bots
+Crawl-delay: 5
+
+# Sitemaps
+Sitemap: https://swordnex.com/sitemap.xml 

@@ -1,0 +1,629 @@
+.featuresPageContainer {
+ width: 100%;
+ overflow-x: hidden;
+}
+
+.featuresPage {
+ max-width: 1280px;
+ margin: 0 auto;
+ padding: 80px 24px;
+ font-family: var(--sans);
+ color: var(--dark);
+}
+
+/* Hero Header styles */
+.heroHeader {
+ text-align: center;
+ max-width: 800px;
+ margin: 0 auto 80px;
+}
+
+.badge {
+ display: inline-block;
+ padding: 6px 16px;
+ background: var(--accent-soft);
+ color: var(--accent);
+ border: 1px solid var(--accent-border);
+ border-radius: 99px;
+ font-size: 13px;
+ font-weight: 600;
+ text-transform: uppercase;
+ letter-spacing: 1px;
+ margin-bottom: 20px;
+ box-shadow: 0 2px 10px rgba(242, 5, 25, 0.05);
+}
+
+.heroTitle {
+ font-size: 48px;
+ font-weight: 800;
+ line-height: 1.15;
+ color: var(--dark);
+ margin-bottom: 24px;
+ letter-spacing: -1px;
+}
+
+.heroTitle span {
+ background: linear-gradient(135deg, var(--accent), var(--dark));
+ -webkit-background-clip: text;
+ -webkit-text-fill-color: transparent;
+}
+
+.heroDesc {
+ font-size: 18px;
+ line-height: 1.6;
+ color: rgba(var(--dark-rgb), 0.7);
+ margin: 0;
+}
+
+/* Pillars Overview Grid */
+.overviewGrid {
+ display: grid;
+ grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+ gap: 24px;
+ margin-bottom: 120px;
+}
+
+.pillarCard {
+ background: var(--glass-bg);
+ backdrop-filter: blur(var(--glass-blur));
+ border: 1px solid var(--glass-border);
+ border-radius: 20px;
+ padding: 32px;
+ box-shadow: var(--glass-shadow);
+ transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+ display: flex;
+ flex-direction: column;
+}
+
+.pillarCard:hover {
+ transform: translateY(-8px);
+ box-shadow: 0 16px 40px rgba(30, 27, 75, 0.12);
+ border-color: rgba(242, 5, 25, 0.2);
+}
+
+.pillarIcon {
+ width: 48px;
+ height: 48px;
+ border-radius: 12px;
+ background: var(--accent-soft);
+ color: var(--accent);
+ display: flex;
+ align-items: center;
+ justify-content: center;
+ font-size: 20px;
+ margin-bottom: 20px;
+ transition: all 0.3s ease;
+}
+
+.pillarCard:hover .pillarIcon {
+ background: var(--accent);
+ color: var(--light);
+ transform: scale(1.05) rotate(5deg);
+}
+
+.pillarCard h3 {
+ font-size: 20px;
+ font-weight: 700;
+ margin: 0 0 10px 0;
+ color: var(--dark);
+}
+
+.pillarCard p {
+ font-size: 15px;
+ line-height: 1.5;
+ color: rgba(var(--dark-rgb), 0.65);
+ margin: 0;
+}
+
+/* Detailed Showcases */
+.showcasesContainer {
+ display: flex;
+ flex-direction: column;
+ gap: 120px;
+}
+
+.showcaseRow {
+ display: grid;
+ grid-template-columns: 1fr 1fr;
+ gap: 60px;
+ align-items: center;
+}
+
+.showcaseRow:nth-child(even) {
+ direction: rtl;
+}
+
+.showcaseRow:nth-child(even) .showcaseText,
+.showcaseRow:nth-child(even) .showcaseVisual {
+ direction: ltr;
+}
+
+.showcaseText {
+ display: flex;
+ flex-direction: column;
+ justify-content: center;
+}
+
+.showcaseCat {
+ font-size: 12px;
+ font-weight: 700;
+ color: var(--accent);
+ text-transform: uppercase;
+ letter-spacing: 1.5px;
+ margin-bottom: 12px;
+}
+
+.showcaseText h2 {
+ font-size: 36px;
+ font-weight: 800;
+ line-height: 1.2;
+ margin: 0 0 20px;
+ color: var(--dark);
+}
+
+.showcaseText p {
+ font-size: 16px;
+ line-height: 1.6;
+ color: rgba(var(--dark-rgb), 0.7);
+ margin: 0 0 24px;
+}
+
+.featureList {
+ display: flex;
+ flex-direction: column;
+ gap: 16px;
+ margin-bottom: 30px;
+}
+
+.featureItem {
+ display: flex;
+ gap: 12px;
+ align-items: flex-start;
+}
+
+.checkIcon {
+ color: var(--success);
+ margin-top: 2px;
+ flex-shrink: 0;
+}
+
+.featureItemText h4 {
+ font-size: 15px;
+ font-weight: 700;
+ margin: 0 0 4px;
+ color: var(--dark);
+}
+
+.featureItemText p {
+ font-size: 14px;
+ line-height: 1.4;
+ color: rgba(var(--dark-rgb), 0.6);
+ margin: 0;
+}
+
+.ctaLink {
+ display: inline-flex;
+ align-items: center;
+ gap: 8px;
+ font-size: 15px;
+ font-weight: 600;
+ color: var(--accent);
+ text-decoration: none;
+ transition: all 0.2s ease;
+}
+
+.ctaLink:hover {
+ color: var(--accent-hover);
+ gap: 12px;
+}
+
+/* Interactive Visual Mockups */
+.showcaseVisual {
+ display: flex;
+ justify-content: center;
+ align-items: center;
+}
+
+.mockWidget {
+ width: 100%;
+ max-width: 500px;
+ background: var(--light);
+ border: 1px solid rgba(30, 27, 75, 0.08);
+ border-radius: 20px;
+ box-shadow: 0 20px 40px rgba(30, 27, 75, 0.08), 
+ 0 1px 3px rgba(30, 27, 75, 0.02);
+ overflow: hidden;
+ position: relative;
+ transition: all 0.3s ease;
+}
+
+.mockWidget:hover {
+ box-shadow: 0 25px 50px rgba(30, 27, 75, 0.12),
+ 0 0 30px rgba(242, 5, 25, 0.02);
+}
+
+.mockHeader {
+ background: var(--accent-soft);
+ padding: 16px 24px;
+ border-bottom: 1px solid rgba(242, 5, 25, 0.1);
+ display: flex;
+ align-items: center;
+ justify-content: space-between;
+}
+
+.mockTitle {
+ font-size: 15px;
+ font-weight: 700;
+ color: var(--dark);
+ display: flex;
+ align-items: center;
+ gap: 8px;
+}
+
+.mockBody {
+ padding: 24px;
+}
+
+/* Widget 1: Cost Calculator Simulator */
+.calcForm {
+ display: flex;
+ flex-direction: column;
+ gap: 16px;
+}
+
+.formGroup {
+ display: flex;
+ flex-direction: column;
+ gap: 6px;
+}
+
+.formGroup label {
+ font-size: 12px;
+ font-weight: 600;
+ color: rgba(var(--dark-rgb), 0.6);
+}
+
+.inputWrap {
+ position: relative;
+ display: flex;
+ align-items: center;
+}
+
+.inputPrefix {
+ position: absolute;
+ left: 12px;
+ font-size: 14px;
+ color: rgba(var(--dark-rgb), 0.5);
+ font-weight: 500;
+}
+
+.inputWrap input {
+ width: 100%;
+ padding: 10px 12px 10px 24px;
+ border: 1px solid rgba(30, 27, 75, 0.1);
+ border-radius: 8px;
+ font-size: 14px;
+ color: var(--dark);
+ font-family: var(--sans);
+ background: #fbfbfc;
+ transition: all 0.2s ease;
+ box-sizing: border-box;
+}
+
+.inputWrap input:focus {
+ outline: none;
+ border-color: var(--accent-light);
+ background: var(--light);
+ box-shadow: 0 0 0 3px rgba(242, 5, 25, 0.08);
+}
+
+.calcTotalBox {
+ margin-top: 8px;
+ padding: 16px;
+ background: var(--dark);
+ border-radius: 12px;
+ display: flex;
+ justify-content: space-between;
+ align-items: center;
+ color: var(--light);
+}
+
+.calcTotalLabel {
+ font-size: 13px;
+ font-weight: 500;
+ color: rgba(255, 255, 255, 0.7);
+}
+
+.calcTotalVal {
+ font-size: 20px;
+ font-weight: 800;
+ color: var(--accent-light);
+}
+
+/* Widget 2: Status Lifecycle Simulator */
+.timelineHeader {
+ display: flex;
+ gap: 6px;
+ margin-bottom: 20px;
+ overflow-x: auto;
+ padding-bottom: 6px;
+}
+
+.statusPillBtn {
+ border: 1px solid rgba(30, 27, 75, 0.08);
+ background: #fbfbfc;
+ padding: 6px 12px;
+ border-radius: 20px;
+ font-size: 12px;
+ font-weight: 600;
+ cursor: pointer;
+ white-space: nowrap;
+ display: flex;
+ align-items: center;
+ gap: 6px;
+ transition: all 0.2s ease;
+ text-transform: capitalize;
+}
+
+.statusPillBtn:hover {
+ background: #f3f4f6;
+ border-color: rgba(30, 27, 75, 0.15);
+}
+
+.statusPillBtnActive {
+ color: var(--light) !important;
+ border-color: transparent !important;
+}
+
+.logArea {
+ background: #111029;
+ border-radius: 12px;
+ padding: 16px;
+ font-family: var(--mono);
+ font-size: 12px;
+ color: #a5b4fc;
+ min-height: 150px;
+ display: flex;
+ flex-direction: column;
+ gap: 10px;
+}
+
+.logRow {
+ display: flex;
+ gap: 10px;
+ line-height: 1.4;
+}
+
+.logTime {
+ color: rgba(255, 255, 255, 0.4);
+}
+
+.logText {
+ color: #e0e7ff;
+}
+
+.logAction {
+ color: var(--accent-light);
+}
+
+/* Widget 3: BI Dashboard Analytics */
+.chartWrap {
+ display: flex;
+ flex-direction: column;
+ gap: 20px;
+ align-items: center;
+}
+
+.chartGrid {
+ display: flex;
+ gap: 16px;
+ width: 100%;
+}
+
+.mockChartCard {
+ flex: 1;
+ background: #fbfbfc;
+ border: 1px solid rgba(30, 27, 75, 0.06);
+ border-radius: 12px;
+ padding: 16px;
+ display: flex;
+ flex-direction: column;
+ align-items: center;
+}
+
+.chartCardTitle {
+ font-size: 12px;
+ font-weight: 700;
+ color: rgba(var(--dark-rgb), 0.5);
+ margin-bottom: 12px;
+ display: flex;
+ align-items: center;
+ gap: 4px;
+}
+
+.statRow {
+ display: flex;
+ align-items: baseline;
+ gap: 6px;
+ margin-top: 10px;
+}
+
+.statVal {
+ font-size: 24px;
+ font-weight: 800;
+ color: var(--dark);
+}
+
+.statLabel {
+ font-size: 11px;
+ color: var(--success);
+ font-weight: 600;
+}
+
+/* Widget 4: Scheduler */
+.calendarWidget {
+ display: flex;
+ flex-direction: column;
+ gap: 14px;
+}
+
+.techRow {
+ display: flex;
+ align-items: center;
+ justify-content: space-between;
+ padding: 12px;
+ background: #fbfbfc;
+ border: 1px solid rgba(30, 27, 75, 0.05);
+ border-radius: 10px;
+ transition: all 0.2s ease;
+}
+
+.techRow:hover {
+ background: #f3f4f6;
+ border-color: rgba(242, 5, 25, 0.1);
+}
+
+.techInfo {
+ display: flex;
+ align-items: center;
+ gap: 10px;
+}
+
+.techAvatar {
+ width: 32px;
+ height: 32px;
+ border-radius: 50%;
+ background: linear-gradient(135deg, var(--accent-light), var(--accent));
+ color: var(--light);
+ display: flex;
+ align-items: center;
+ justify-content: center;
+ font-size: 12px;
+ font-weight: 700;
+}
+
+.techName {
+ font-size: 13px;
+ font-weight: 600;
+ color: var(--dark);
+}
+
+.techRole {
+ font-size: 11px;
+ color: rgba(var(--dark-rgb), 0.5);
+ display: block;
+}
+
+.techStatus {
+ display: flex;
+ align-items: center;
+ gap: 8px;
+}
+
+.techBadge {
+ padding: 4px 8px;
+ border-radius: 6px;
+ font-size: 10px;
+ font-weight: 700;
+ text-transform: uppercase;
+}
+
+.techJobsCount {
+ font-size: 12px;
+ font-weight: 600;
+ color: rgba(var(--dark-rgb), 0.6);
+}
+
+/* CTA Footer Box */
+.ctaBox {
+ background: linear-gradient(135deg, var(--dark) 0%, #0f0b3b 100%);
+ border-radius: 24px;
+ padding: 60px 40px;
+ text-align: center;
+ color: var(--light);
+ margin-top: 120px;
+ position: relative;
+ overflow: hidden;
+ box-shadow: 0 30px 60px rgba(30, 27, 75, 0.25);
+ border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.ctaBox::before {
+ content: '';
+ position: absolute;
+ top: -50%;
+ left: -50%;
+ width: 200%;
+ height: 200%;
+ background: radial-gradient(circle, rgba(242, 5, 25, 0.08) 0%, transparent 60%);
+ pointer-events: none;
+}
+
+.ctaBox h2 {
+ font-size: 36px;
+ font-weight: 800;
+ color: var(--light);
+ margin: 0 0 16px;
+ letter-spacing: -0.5px;
+}
+
+.ctaBox p {
+ font-size: 16px;
+ color: rgba(255, 255, 255, 0.7);
+ max-width: 600px;
+ margin: 0 auto 32px;
+ line-height: 1.6;
+}
+
+.ctaBtn {
+ display: inline-flex;
+ align-items: center;
+ gap: 8px;
+ background: var(--accent);
+ color: var(--light);
+ padding: 14px 28px;
+ border-radius: 12px;
+ font-size: 16px;
+ font-weight: 700;
+ text-decoration: none;
+ transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+ box-shadow: 0 4px 15px rgba(242, 5, 25, 0.4);
+}
+
+.ctaBtn:hover {
+ background: var(--accent-hover);
+ transform: translateY(-2px);
+ box-shadow: 0 8px 25px rgba(242, 5, 25, 0.5);
+}
+
+/* Animations and Responsive Styles */
+@keyframes pulse {
+ 0% { transform: scale(1); opacity: 0.5; }
+ 50% { transform: scale(1.05); opacity: 0.8; }
+ 100% { transform: scale(1); opacity: 0.5; }
+}
+
+@media (max-width: 992px) {
+ .showcaseRow {
+ grid-template-columns: 1fr;
+ gap: 40px;
+ }
+ .showcaseRow:nth-child(even) {
+ direction: ltr;
+ }
+ .heroTitle {
+ font-size: 36px;
+ }
+ .featuresPage {
+ padding: 60px 16px;
+ }
+}
+
+@media (max-width: 576px) {
+ .ctaBox {
+ padding: 40px 20px;
+ }
+ .ctaBox h2 {
+ font-size: 28px;
+ }
+}

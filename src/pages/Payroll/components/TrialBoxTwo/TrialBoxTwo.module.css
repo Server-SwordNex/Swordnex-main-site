@@ -1,0 +1,87 @@
+.section {
+ width: 100%;
+ padding: 120px 7%;
+ font-family: "DM Sans";
+ background-color: #111827;
+}
+
+.container {
+ max-width: 850px;
+ margin: auto;
+ display: flex;
+ flex-direction: column;
+ align-items: center;
+ text-align: center;
+}
+
+.container h2 {
+ font-size: 64px;
+ line-height: 1.15;
+ color: white;
+ font-weight: 800;
+}
+
+.container p {
+ margin-top: 28px;
+ font-size: 20px;
+ line-height: 1.9;
+ color: rgba(255,255,255,0.75);
+ max-width: 720px;
+}
+
+.buttons {
+ margin-top: 42px;
+ display: flex;
+ flex-direction: column;
+ gap: 22px;
+ width: 100%;
+ max-width: 340px;
+}
+
+.primaryBtn {
+ width: 100%;
+ height: 62px;
+ border: none;
+ border-radius: 12px;
+ background: #f44336;
+ color: white;
+ font-size: 16px;
+ font-weight: 700;
+ cursor: pointer;
+ transition: 0.3s ease;
+}
+
+.secondaryBtn {
+ width: 100%;
+ height: 62px;
+ border-radius: 12px;
+ border: 1px solid rgba(255,255,255,0.2);
+ background: transparent;
+ color: white;
+ font-size: 16px;
+ font-weight: 700;
+ cursor: pointer;
+ transition: 0.3s ease;
+}
+
+.primaryBtn:hover,
+.secondaryBtn:hover {
+ transform: translateY(-4px);
+ box-shadow: 0 0 18px #b3afaf;
+}
+
+@media (max-width: 768px) {
+
+ .section {
+ padding: 90px 5%;
+ }
+
+ .container h2 {
+ font-size: 42px;
+ }
+
+ .container p {
+ font-size: 17px;
+ }
+
+}

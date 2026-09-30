@@ -1,0 +1,131 @@
+@import url("https://fonts.googleapis.com/css?family=Alata:400|Cinzel+Decorative:400");
+
+.faqSection {
+ width: 100%;
+ background: white;
+}
+
+/* Hero */
+
+.hero {
+ text-align: center;
+ padding: 5rem 1rem 3rem;
+}
+
+.welcome {
+ font-family: "Cinzel Decorative",
+ serif;
+ color: #777777;
+ font-size: 2rem;
+ margin-bottom: 0.5rem;
+}
+
+.title {
+ font-family: "Alata", sans-serif;
+ color: #ca8a04;
+ font-size: 3rem;
+ margin-bottom: 1.5rem;
+}
+
+.subtitle {
+ max-width: 900px;
+ margin: 0 auto;
+ font-family: "Alata", sans-serif;
+ font-size: 1.125rem;
+ line-height: 1.8;
+ color: #000;
+}
+
+/* Search */
+
+.searchWrapper {
+ position: sticky;
+ top: 7vh;
+ z-index: 50;
+ background: white;
+ padding: 1rem;
+}
+
+.searchBox {
+ position: relative;
+ max-width: 500px;
+ margin: 0 auto;
+}
+
+.searchIcon {
+ position: absolute;
+ left: 14px;
+ top: 50%;
+ transform: translateY(-50%);
+ color: #888;
+}
+
+.searchInput {
+ width: 100%;
+ border: none;
+ border-bottom: 2px solid #d1d5db;
+ padding: 12px 12px 12px 40px;
+ text-align: center;
+ font-size: 0.95rem;
+ outline: none;
+ transition: 0.3s ease;
+}
+
+.searchInput:focus {
+ border-color: #ca8a04;
+}
+
+/* FAQ */
+
+.faqContainer {
+ max-width: 900px;
+ margin: 0 auto;
+ padding: 4rem 1rem;
+}
+
+.faqItem {
+ border-bottom: 1px solid #e5e7eb;
+}
+
+.questionButton {
+ width: 100%;
+ border: none;
+ background: transparent;
+ padding: 1.5rem 0;
+ display: flex;
+ justify-content: space-between;
+ align-items: center;
+ cursor: pointer;
+ text-align: left;
+}
+
+.questionButton:hover {
+ box-shadow: none;
+}
+
+.question {
+ flex: 1;
+ padding-right: 1rem;
+ font-size: 1.1rem;
+ font-weight: 600;
+ color: #111827;
+}
+
+.iconOpen {
+ color: #ca8a04;
+}
+
+.iconClose {
+ color: #9ca3af;
+}
+
+.answerWrapper {
+ overflow: hidden;
+}
+
+.answer {
+ padding-bottom: 1.5rem;
+ color: #ca8a04;
+ line-height: 1.8;
+ padding-right: 2rem;
+}

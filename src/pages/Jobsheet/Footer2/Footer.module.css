@@ -1,0 +1,161 @@
+.footer {
+ background: #FF3737;
+ color: white;
+ padding: 60px;
+ font-family: "DM Sans";
+}
+
+.container {
+ max-width: 1300px;
+ margin: 0 auto;
+}
+
+.grid {
+ display: grid;
+ grid-template-columns: repeat(4, 1fr);
+ gap: 3rem;
+}
+
+.grid h3 {
+ font-size: 1.1rem;
+ margin-bottom: 1.2rem;
+ font-weight: 700;
+}
+
+.grid ul {
+ list-style: none;
+ padding: 0;
+ margin: 0;
+}
+
+.grid li {
+ margin-bottom: 0.85rem;
+}
+
+.grid a {
+ color: white;
+ text-decoration: none;
+ transition: 0.3s;
+}
+
+.grid a:hover {
+ opacity: 0.8;
+}
+
+.contactList li {
+ line-height: 1.2;
+}
+
+.socialIcons {
+ display: flex;
+ gap: 0.8rem;
+ margin-top: 1.5rem;
+}
+
+.socialIcons a {
+ width: 42px;
+ height: 42px;
+
+ border: 1px solid rgba(255, 255, 255, 0.3);
+
+ border-radius: 50%;
+
+ display: flex;
+ align-items: center;
+ justify-content: center;
+
+ font-size: 1rem;
+
+ transition: 0.3s ease;
+}
+
+.socialIcons a:hover {
+ background: white;
+ color: #d51c39;
+}
+
+.quickActions {
+ display: flex;
+ gap: 0.8rem;
+ margin-top: 1rem;
+}
+
+.quickActions a {
+ width: 42px;
+ height: 42px;
+
+ border-radius: 50%;
+
+ background: rgba(255, 255, 255, 0.12);
+
+ display: flex;
+ align-items: center;
+ justify-content: center;
+
+ font-size: 1rem;
+
+ transition: 0.3s ease;
+}
+
+.quickActions a:hover {
+ background: white;
+ color: #d51c39;
+}
+
+.divider {
+ height: 1px;
+ background: rgba(255, 255, 255, 0.2);
+ margin: 3rem 0 2rem;
+}
+
+.bottomLinks {
+ display: flex;
+ flex-wrap: wrap;
+ gap: 1.2rem;
+ justify-content: center;
+ margin-bottom: 1.5rem;
+}
+
+.bottomLinks a {
+ color: white;
+ text-decoration: none;
+ font-size: 0.95rem;
+}
+
+.bottomLinks a:hover {
+ text-decoration: underline;
+}
+
+.copyright {
+ text-align: center;
+ opacity: 0.85;
+ font-size: 0.95rem;
+}
+
+/* Tablet */
+@media (max-width: 992px) {
+ .grid {
+ grid-template-columns: repeat(2, 1fr);
+ }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+ .footer {
+ padding: 4rem 1.2rem 2rem;
+ }
+
+ .grid {
+ grid-template-columns: 1fr;
+ gap: 2rem;
+ }
+
+ .socialIcons,
+ .quickActions {
+ justify-content: flex-start;
+ }
+
+ .bottomLinks {
+ gap: 0.8rem;
+ }
+}

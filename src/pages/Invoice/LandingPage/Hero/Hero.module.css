@@ -1,0 +1,71 @@
+
+.hero {
+ padding: 40px 110px 80px;
+}
+
+.grid {
+ display: grid;
+ grid-template-columns: repeat(auto-fit,minmax(300px,1fr));
+ gap: 60px;
+ align-items: center;
+}
+
+.title {
+ font-size: 64px;
+ font-weight: 800;
+ line-height: 1.1;
+}
+
+.highlight {
+ color: #ff5f00;
+}
+
+.text {
+ font-size: 18px;
+ color: #555;
+ margin-top: 16px;
+}
+
+.buttons {
+ margin-top: 24px;
+ display: flex;
+ gap: 16px;
+}
+
+.primary {
+ background: #ff5f00;
+ color: white;
+ padding: 14px 26px;
+ border: none;
+ border-radius: 12px;
+ cursor: pointer;
+}
+
+.secondary {
+ border: 2px solid #ff5f00;
+ background: transparent;
+ color: #ff5f00;
+ padding: 14px 26px;
+ border-radius: 12px;
+}
+
+.image {
+ width: 100%;
+ border-radius: 16px;
+}
+
+.imgs {
+ width: 100%;
+ height: auto;
+ max-height: 500px;
+ object-fit: contain;
+ display: block;
+}
+
+button {
+ transition: all 0.3s ease;
+}
+
+button:hover {
+ box-shadow: 0 0 10px #303031;
+}

@@ -1,0 +1,150 @@
+.featureCard {
+ border-radius: 24px;
+ padding: 3rem;
+ margin-bottom: 4rem;
+ border: 1px solid #e5e7eb;
+}
+
+/* ====================
+ HEADER
+==================== */
+
+.featureHeading {
+ display: flex;
+ justify-content: space-between;
+ gap: 3rem;
+ margin-bottom: 2.5rem;
+}
+
+.featureTitle {
+ flex: 1;
+}
+
+.tagline {
+ display: inline-block;
+ margin-bottom: 0.75rem;
+
+ color: #e53617;
+ font-size: 0.95rem;
+ font-weight: 600;
+ text-transform: uppercase;
+ letter-spacing: 1px;
+}
+
+.featureTitle h2 {
+ font-size: 2.5rem;
+ color: #20284d;
+ line-height: 1.2;
+ font-weight: 700;
+}
+
+.featureContent {
+ flex: 1;
+}
+
+.featureDesc {
+ color: #555;
+ line-height: 1.8;
+ margin-bottom: 1rem;
+}
+
+.mainLink {
+ display: inline-flex;
+ align-items: center;
+ gap: 0.5rem;
+
+ color: #2563eb;
+ font-weight: 600;
+ text-decoration: none;
+}
+
+.mainLink:hover {
+ text-decoration: underline;
+}
+
+/* ====================
+ IMAGE
+==================== */
+
+.featureImage {
+ margin-bottom: 3rem;
+}
+
+.featureImage img {
+ width:100%;
+ border-radius: 18px;
+ display: block;
+}
+
+/* ====================
+ GRID
+==================== */
+
+.featuresGrid {
+ display: grid;
+ grid-template-columns: repeat(2, 1fr);
+ gap: 1.75rem;
+}
+
+.featureItem {
+ padding: 1.5rem;
+ border-radius: 16px;
+ /* background: #FFF9D2; */
+}
+
+.featureItem h3 {
+ color: #20284d;
+ margin-bottom: 0.75rem;
+ font-size: 1.15rem;
+ font-weight: 600;
+}
+
+.featureItem p {
+ color: #666;
+ line-height: 1.7;
+ margin-bottom: 1rem;
+ text-align: justify;
+}
+
+.featureItem a {
+ color: #2563eb;
+ font-weight: 600;
+ text-decoration: none;
+
+ display: inline-flex;
+ align-items: center;
+ gap: 0.4rem;
+}
+
+.featureItem a:hover {
+ text-decoration: underline;
+}
+
+/* ====================
+ RESPONSIVE
+==================== */
+
+@media (max-width: 992px) {
+ .featureHeading {
+ flex-direction: column;
+ gap: 1.5rem;
+ }
+
+ .featureTitle h2 {
+ font-size: 2rem;
+ }
+
+ .featuresGrid {
+ grid-template-columns: 1fr;
+ }
+}
+
+@media (max-width: 768px) {
+ .featureCard {
+ padding: 1.5rem;
+ }
+
+ .featureTitle h2 {
+ font-size: 1.75rem;
+ }
+}

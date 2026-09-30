@@ -1,0 +1,207 @@
+.contact {
+ min-height: 100vh;
+ padding: 100px 8%;
+
+ display: flex;
+ align-items: center;
+ font-family: "DM Sans";
+}
+
+.container {
+ width: 100%;
+ display: grid;
+ grid-template-columns: 1fr 1fr;
+ gap: 4rem;
+}
+
+.left {
+ display: flex;
+ flex-direction: column;
+ justify-content: center;
+}
+
+.badge {
+ width: fit-content;
+
+ padding: 8px 16px;
+
+ background-color: #D1FAE5;
+ color: #F6850C;
+
+ border-radius: 999px;
+
+ font-size: 0.9rem;
+ font-weight: 600;
+}
+
+.left h1 {
+ margin-top: 20px;
+
+ font-size: clamp(2.5rem, 5vw, 4rem);
+ line-height: 1.1;
+ color: #0f172a;
+ font-weight: 500;
+}
+
+.left h1 span {
+ color: #FF5F00;
+}
+
+.left p {
+ margin-top: 20px;
+
+ color: #475569;
+ font-size: 1.05rem;
+ line-height: 1.8;
+}
+
+.infoContainer {
+ margin-top: 40px;
+
+ display: flex;
+ flex-direction: column;
+ gap: 20px;
+}
+
+.info {
+ display: flex;
+ align-items: center;
+ gap: 16px;
+}
+
+.info i {
+ width: 55px;
+ height: 55px;
+
+ display: flex;
+ align-items: center;
+ justify-content: center;
+
+ border-radius: 14px;
+
+ background: #ff7b2e;
+ color: #111;
+
+ font-size: 1.2rem;
+}
+
+.info h4 {
+ text-align: left;
+ margin-bottom: 4px;
+ color: #0f172a;
+}
+
+.info p {
+ margin: 0;
+ color: #64748b;
+}
+
+.features {
+ margin-top: 40px;
+
+ display: flex;
+ flex-wrap: wrap;
+ gap: 16px;
+}
+
+.features div {
+ display: flex;
+ align-items: center;
+ gap: 8px;
+
+ font-weight: 500;
+ color: #334155;
+}
+
+.features i {
+ color: #FF5F00;
+}
+
+.right {
+ display: flex;
+ align-items: center;
+}
+
+.form {
+ width: 100%;
+
+ padding: 40px;
+
+ background: white;
+
+ border-radius: 30px;
+
+ box-shadow:
+ 0 20px 60px rgba(0, 0, 0, 0.08);
+}
+
+.form h2 {
+ margin-bottom: 25px;
+
+ color: #0f172a;
+}
+
+.form input,
+.form textarea {
+ width: 100%;
+
+ padding: 15px 18px;
+ margin-bottom: 15px;
+
+ border: 1px solid #e2e8f0;
+ border-radius: 12px;
+
+ font-size: 1rem;
+
+ outline: none;
+ transition: 0.3s;
+}
+
+.form input:focus,
+.form textarea:focus {
+ border-color: #F6C544;
+}
+
+.form button {
+ width: 100%;
+
+ padding: 15px;
+
+ border: none;
+ border-radius: 12px;
+
+ background: #FF5F00;
+ color: #fff;
+
+ font-size: 1rem;
+ font-weight: 700;
+
+ cursor: pointer;
+
+ transition: 0.3s;
+}
+
+.form button:hover {
+ transform: translateY(-2px);
+}
+
+@media (max-width: 992px) {
+ .container {
+ grid-template-columns: 1fr;
+ }
+
+ .contact {
+ padding: 80px 6%;
+ }
+}
+
+@media (max-width: 576px) {
+
+ .form {
+ padding: 25px;
+ }
+
+ .left h1 {
+ font-size: 2.3rem;
+ }
+}

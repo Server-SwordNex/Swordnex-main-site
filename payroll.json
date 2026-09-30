@@ -1,0 +1,268 @@
+{
+  "designSystem": {
+    "name": "Modern SaaS Landing Page System",
+    "category": "B2B Software/Payroll Platform",
+    "designPhilosophy": "Clean, professional, conversion-focused with strong visual hierarchy and trust signals",
+
+    "colorPalette": {
+      "primary": {
+        "brand": "#FF5722",
+        "brandDescription": "Vibrant orange-red for CTAs and key actions",
+        "variants": ["#FF6B40", "#E64A19", "#D84315"]
+      },
+      "neutral": {
+        "background": "#FFFFFF",
+        "backgroundSecondary": "#F8F9FA",
+        "backgroundTertiary": "#FFF8F6",
+        "text": {
+          "primary": "#1A1A1A",
+          "secondary": "#666666",
+          "tertiary": "#999999"
+        }
+      },
+      "accent": {
+        "success": "#4CAF50",
+        "warning": "#FF9800",
+        "info": "#2196F3"
+      }
+    },
+
+    "typography": {
+      "fontFamily": {
+        "primary": "Inter, -apple-system, BlinkMacSystemFont, sans-serif",
+        "fallback": "system-ui, sans-serif"
+      },
+      "hierarchy": {
+        "hero": {
+          "fontSize": "3.5rem",
+          "fontWeight": 700,
+          "lineHeight": 1.1,
+          "letterSpacing": "-0.02em"
+        },
+        "h2": {
+          "fontSize": "2.5rem",
+          "fontWeight": 600,
+          "lineHeight": 1.2
+        },
+        "h3": {
+          "fontSize": "1.5rem",
+          "fontWeight": 600,
+          "lineHeight": 1.3
+        },
+        "body": {
+          "fontSize": "1rem",
+          "fontWeight": 400,
+          "lineHeight": 1.6
+        },
+        "caption": {
+          "fontSize": "0.875rem",
+          "fontWeight": 400,
+          "lineHeight": 1.5
+        }
+      }
+    },
+
+    "spacing": {
+      "scale": "8px base unit",
+      "sections": {
+        "small": "4rem",
+        "medium": "6rem",
+        "large": "8rem",
+        "xlarge": "12rem"
+      },
+      "components": {
+        "tight": "1rem",
+        "normal": "1.5rem",
+        "loose": "2rem",
+        "spacious": "3rem"
+      }
+    },
+
+    "layout": {
+      "maxWidth": "1200px",
+      "containerPadding": "1rem",
+      "gridSystem": "12-column responsive grid",
+      "breakpoints": {
+        "mobile": "320px",
+        "tablet": "768px",
+        "desktop": "1024px",
+        "wide": "1200px"
+      }
+    },
+
+    "components": {
+      "buttons": {
+        "primary": {
+          "background": "var(--brand-primary)",
+          "color": "#FFFFFF",
+          "padding": "12px 24px",
+          "borderRadius": "6px",
+          "fontWeight": 600,
+          "fontSize": "1rem",
+          "transition": "all 0.2s ease",
+          "hoverEffect": "darken by 10%"
+        },
+        "secondary": {
+          "background": "transparent",
+          "color": "var(--text-primary)",
+          "border": "2px solid #E0E0E0",
+          "padding": "10px 22px",
+          "borderRadius": "6px"
+        }
+      },
+
+      "cards": {
+        "default": {
+          "background": "#FFFFFF",
+          "borderRadius": "12px",
+          "boxShadow": "0 4px 20px rgba(0,0,0,0.08)",
+          "padding": "2rem",
+          "border": "1px solid #F0F0F0"
+        },
+        "elevated": {
+          "background": "#FFFFFF",
+          "borderRadius": "16px",
+          "boxShadow": "0 8px 32px rgba(0,0,0,0.12)",
+          "padding": "2.5rem"
+        }
+      },
+
+      "navigation": {
+        "style": "minimal horizontal",
+        "height": "72px",
+        "background": "#FFFFFF",
+        "boxShadow": "0 2px 8px rgba(0,0,0,0.04)",
+        "logoSize": "120px width",
+        "linkSpacing": "2rem",
+        "ctaButton": "primary button style"
+      }
+    },
+
+    "sections": {
+      "hero": {
+        "structure": "centered text + CTA + product preview",
+        "background": "light neutral with subtle gradient",
+        "contentWidth": "max 600px",
+        "ctaPattern": "primary + secondary button pair",
+        "visualElements": "product screenshot/mockup below fold"
+      },
+
+      "productShowcase": {
+        "layout": "large centered screenshot with overlay elements",
+        "background": "clean white or light neutral",
+        "annotations": "floating UI elements showing features",
+        "presentation": "realistic device mockups or browser frames"
+      },
+
+      "socialProof": {
+        "structure": "centered logo grid",
+        "title": "testimonial-style heading",
+        "logoTreatment": "grayscale with hover color",
+        "spacing": "generous whitespace",
+        "alignment": "center-aligned"
+      },
+
+      "features": {
+        "layout": "alternating text-image sections",
+        "imageStyle": "realistic mockups with context",
+        "textStructure": "headline + description + benefits list",
+        "visualHierarchy": "clear separation between sections",
+        "callouts": "highlighted statistics or key metrics"
+      },
+
+      "compliance": {
+        "background": "dark (black/dark gray)",
+        "content": "white text with accent highlights",
+        "icons": "simple line icons",
+        "layout": "grid of compliance features",
+        "trustSignals": "certifications and security badges"
+      }
+    },
+
+    "visualElements": {
+      "illustrations": {
+        "style": "minimal, geometric, professional",
+        "colorUsage": "brand colors with neutral base",
+        "context": "business/workplace scenarios"
+      },
+
+      "iconography": {
+        "style": "outline/line icons",
+        "strokeWidth": "1.5px",
+        "size": "24px standard",
+        "treatment": "consistent visual weight"
+      },
+
+      "imagery": {
+        "photography": "realistic workplace/office scenarios",
+        "mockups": "clean device frames with realistic shadows",
+        "treatment": "high contrast, professional lighting"
+      },
+
+      "dataVisualization": {
+        "charts": "clean bar/line charts with brand colors",
+        "style": "minimal gridlines, clear labeling",
+        "colorScheme": "primary brand color with neutral variants"
+      }
+    },
+
+    "interactions": {
+      "hover": {
+        "buttons": "subtle scale + color change",
+        "cards": "gentle lift shadow increase",
+        "links": "color transition"
+      },
+
+      "transitions": {
+        "duration": "0.2s - 0.3s",
+        "easing": "ease-out",
+        "properties": "transform, opacity, color, box-shadow"
+      },
+
+      "microAnimations": {
+        "fadeIn": "staggered content reveals",
+        "parallax": "subtle background movement",
+        "counters": "animated number increments for stats"
+      }
+    },
+
+    "contentStrategy": {
+      "headlines": {
+        "structure": "benefit-focused, clear value proposition",
+        "tone": "professional but approachable",
+        "length": "concise, scannable"
+      },
+
+      "copyPattern": {
+        "hierarchy": "headline → subheadline → supporting points → CTA",
+        "style": "direct, benefit-driven, trust-building",
+        "proofPoints": "statistics, testimonials, compliance badges"
+      }
+    },
+
+    "responsiveStrategy": {
+      "mobile": {
+        "navigation": "hamburger menu",
+        "hero": "stacked layout with reduced font sizes",
+        "sections": "single column with increased spacing"
+      },
+
+      "tablet": {
+        "layout": "2-column where appropriate",
+        "images": "maintained aspect ratios with padding"
+      },
+
+      "desktop": {
+        "layout": "full multi-column layouts",
+        "spacing": "generous whitespace utilization"
+      }
+    },
+
+    "accessibilityConsiderations": {
+      "contrast": "WCAG AA compliant color combinations",
+      "focus": "visible focus indicators",
+      "navigation": "keyboard accessible",
+      "images": "meaningful alt text required"
+    }
+  }
+}
