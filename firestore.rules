@@ -1,0 +1,18 @@
+rules_version = '2';
+
+// The website talks to Firestore only through the backend API (Admin SDK,
+// which bypasses these rules). The browser reads just its own user profile to
+// learn its role, so everything else is closed to client SDK access.
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /users/{uid} {
+      allow read: if request.auth != null && request.auth.uid == uid;
+      // Roles are assigned by the backend or backend/scripts/set-role.js only.
+      allow write: if false;
+    }
+
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

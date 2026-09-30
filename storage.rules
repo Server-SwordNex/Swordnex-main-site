@@ -1,0 +1,57 @@
+rules_version = '2';
+
+// Public application forms upload files straight from the browser, so those
+// folders accept new files only (no listing, overwriting or deleting). The uploader
+// can read a file back for 10 minutes to get its download URL.
+// Staff open the files through download URLs, which carry their own token.
+// Partner logos are uploaded by the backend (Admin SDK bypasses these rules).
+service firebase.storage {
+  match /b/{bucket}/o {
+    function isDocument() {
+      return request.resource.contentType.matches('image/(png|jpeg)')
+        || request.resource.contentType == 'application/pdf'
+        || request.resource.contentType == 'application/msword'
+        || request.resource.contentType == 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
+    }
+
+    // getDownloadURL() right after uploadBytes() needs read access, so allow
+    // reading a file only in the first minutes after it was created.
+    function isFreshUpload() {
+      return resource.timeCreated > request.time - duration.value(10, 'm');
+    }
+
+    function isNewUpload() {
+      return resource == null
+        && request.resource.size < 10 * 1024 * 1024
+        && isDocument();
+    }
+
+    // Career page resumes
+    match /resumes/{file} {
+      allow create: if isNewUpload();
+      allow get: if isFreshUpload();
+    }
+    match /careers/resumes/{file} {
+      allow create: if isNewUpload();
+      allow get: if isFreshUpload();
+    }
+
+    // Job fair and event registration documents
+    match /jobfair/{code}/{file} {
+      allow create: if isNewUpload();
+      allow get: if isFreshUpload();
+    }
+    match /event-registrations/{eventId}/{code}/{file} {
+      allow create: if isNewUpload();
+      allow get: if isFreshUpload();
+    }
+
+    match /partners/{file} {
+      allow read: if true;
+    }
+
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+  }
+}

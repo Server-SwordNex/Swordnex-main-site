@@ -136,6 +136,7 @@ const {
 } = require('./affiliateData');
 
 const { db, admin } = require('./firebaseConfig');
+const { authorize, STAFF_ROLES } = require('./middleware/auth');
 
 // --- Multer (memory storage for Firebase Storage uploads) ---
 const multer = require('multer');
@@ -157,22 +158,36 @@ const app = express();
 // ============================================
 // CORS Configuration - IMPORTANT FOR FILE DOWNLOADS
 // ============================================
+const ALLOWED_ORIGINS = [
+    'https://swordnex.com',
+    'https://www.swordnex.com',
+    'https://swordnex-sites.web.app',
+    'https://swordnex-sites.firebaseapp.com',
+];
+
 app.use(cors({
-    origin: '*', // Allow all origins (or specify your frontend URL like 'http://localhost:3000')
+    origin(origin, callback) {
+        // Same-origin requests and server-to-server calls send no Origin header.
+        if (!origin || ALLOWED_ORIGINS.includes(origin) || /^http:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin)) {
+            return callback(null, true);
+        }
+        return callback(null, false);
+    },
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization', 'Accept'],
-    credentials: true
+    allowedHeaders: ['Content-Type', 'Authorization', 'Accept', 'x-affiliate-secret'],
 }));
 
-// Body parsers with increased limit
-app.use(express.json({ limit: '50mb' }));
-app.use(express.urlencoded({ extended: true, limit: '50mb' }));
+// Partner logo uploads arrive as base64 JSON, so allow more than the default.
+app.use(express.json({ limit: '15mb' }));
+app.use(express.urlencoded({ extended: true, limit: '15mb' }));
 
-// Logging Middleware
+// Log method and path only; query strings can carry personal data.
 app.use((req, res, next) => {
-    console.log(`[${new Date().toISOString()}] ${req.method} ${req.url}`);
+    console.log(`[${new Date().toISOString()}] ${req.method} ${req.path}`);
     next();
 });
+
+app.use(authorize);
 
 // ==================== WORKSHOPS API ENDPOINTS ==================== //
 
@@ -330,6 +345,18 @@ app.delete('/api/blogs/:id', async (req, res) => {
     }
 });
 
+// Candidate file URLs come from public form submissions, so only fetch from
+// Firebase Storage hosts; anything else could point the server at internal addresses.
+const STORAGE_HOSTS = ['firebasestorage.googleapis.com', 'storage.googleapis.com'];
+function isStorageUrl(value) {
+    try {
+        const url = new URL(value);
+        return url.protocol === 'https:' && STORAGE_HOSTS.includes(url.hostname);
+    } catch (error) {
+        return false;
+    }
+}
+
 // Endpoint 1: Get file by candidate ID and file type
 app.get('/api/jobfair/:id/file/:fileType', async (req, res) => {
     try {
@@ -396,6 +423,9 @@ app.get('/api/jobfair/:id/file/:fileType', async (req, res) => {
 
         // Check if it's an external URL (like Firebase Storage, Cloudinary, etc.)
         if (fileData.startsWith('http://') || fileData.startsWith('https://')) {
+            if (!isStorageUrl(fileData)) {
+                return res.status(400).json({ error: 'File is not stored in Firebase Storage' });
+            }
             console.log(`[File Download] Proxying external URL for ${fileType} for candidate ${id}`);
 
             try {
@@ -439,66 +469,6 @@ app.get('/api/jobfair/:id/file/:fileType', async (req, res) => {
 
     } catch (error) {
         console.error('[File Download] Error:', error);
-        res.status(500).json({ error: error.message });
-    }
-});
-
-// Endpoint 2: Proxy for external URLs
-app.get('/api/proxy-file', async (req, res) => {
-    try {
-        const fileUrl = req.query.url;
-
-        if (!fileUrl) {
-            return res.status(400).json({ error: 'URL parameter required' });
-        }
-
-        console.log(`[Proxy] Fetching: ${fileUrl.substring(0, 100)}...`);
-
-        // Handle base64 data URLs
-        if (fileUrl.startsWith('data:')) {
-            const matches = fileUrl.match(/^data:([^;]+);base64,(.+)$/);
-
-            if (!matches) {
-                return res.status(400).json({ error: 'Invalid base64 format' });
-            }
-
-            const mimeType = matches[1];
-            const base64Data = matches[2];
-            const buffer = Buffer.from(base64Data, 'base64');
-
-            res.set({
-                'Content-Type': mimeType,
-                'Content-Length': buffer.length,
-                'Access-Control-Allow-Origin': '*'
-            });
-
-            return res.send(buffer);
-        }
-
-        // Handle external URLs
-        if (fileUrl.startsWith('http://') || fileUrl.startsWith('https://')) {
-            const response = await fetch(fileUrl);
-
-            if (!response.ok) {
-                throw new Error(`Fetch failed: ${response.status}`);
-            }
-
-            const contentType = response.headers.get('content-type') || 'application/octet-stream';
-            const buffer = await response.buffer();
-
-            res.set({
-                'Content-Type': contentType,
-                'Content-Length': buffer.length,
-                'Access-Control-Allow-Origin': '*'
-            });
-
-            return res.send(buffer);
-        }
-
-        return res.status(400).json({ error: 'Invalid URL format' });
-
-    } catch (error) {
-        console.error('[Proxy] Error:', error);
         res.status(500).json({ error: error.message });
     }
 });
@@ -768,7 +738,7 @@ app.post('/api/jobfair', async (req, res) => {
             await addInterviewData(interviewEntry);
 
             try {
-                console.log(`[Brevo] Attempting to send email to ${jobFairData.email}`);
+                console.log("[Brevo] Sending job fair confirmation email");
 
                 await upsertContact(jobFairData.email, {
                     FIRSTNAME: jobFairData.name,
@@ -801,7 +771,7 @@ app.post('/api/jobfair', async (req, res) => {
                 };
 
                 const data = await apiInstance.sendTransacEmail(sendSmtpEmail);
-                console.log(`[Brevo] Email sent: ${JSON.stringify(data)}`);
+                console.log("[Brevo] Job fair confirmation email sent");
             } catch (emailError) {
                 console.error("[Brevo] Error sending email:", emailError);
             }
@@ -1042,54 +1012,6 @@ app.delete('/api/service-enquiries/:id', async (req, res) => {
     }
 });
 
-// --- Career Applications Routes ---
-
-app.post('/api/careers', async (req, res) => {
-    try {
-        const body = req.body;
-        const getValue = (val, defaultVal = '') => (val !== undefined && val !== null ? val : defaultVal);
-
-        const careerData = {
-            firstName: getValue(body.firstName),
-            lastName: getValue(body.lastName),
-            email: getValue(body.email),
-            phone: getValue(body.phone),
-            currentLocation: getValue(body.currentLocation),
-            experience: getValue(body.experience),
-            portfolio: getValue(body.portfolio),
-            resumeURL: getValue(body.resumeURL),       // Firebase Storage URL
-            resumeFileName: getValue(body.resumeFileName),
-            roleOfInterest: getValue(body.roleOfInterest),
-            message: getValue(body.message),
-            createdAt: new Date().toISOString(),
-        };
-
-        const result = await addCareer(careerData);
-        res.status(201).json({ message: 'Application submitted successfully', data: result });
-    } catch (error) {
-        console.error('Career application error:', error);
-        res.status(500).json({ error: error.message });
-    }
-});
-
-app.get('/api/careers', async (req, res) => {
-    try {
-        const data = await getSwordnexCareers();
-        res.status(200).json(data);
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
-});
-
-app.delete('/api/careers/:id', async (req, res) => {
-    try {
-        const result = await deleteCareer(req.params.id);
-        res.status(200).json(result);
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
-});
-
 // --- Helper: Sync Contact to Brevo ---
 
 async function upsertContact(email, attributes) {
@@ -1102,7 +1024,7 @@ async function upsertContact(email, attributes) {
 
     try {
         await contactsApi.createContact(createContact);
-        console.log(`[Brevo] Contact synced: ${email}`);
+        console.log("[Brevo] Contact synced");
     } catch (error) {
         console.warn(`[Brevo] Contact sync warning:`, error.message);
     }
@@ -1112,7 +1034,7 @@ async function upsertContact(email, attributes) {
 app.post('/api/trigger-email', async (req, res) => {
     try {
         const { email, name, interviewCode } = req.body;
-        console.log("[Brevo] Trigger Data:", { email, name, interviewCode });
+        console.log("[Brevo] Manual email trigger");
 
         const brevo = setupBrevo();
 
@@ -1143,7 +1065,7 @@ app.post('/api/trigger-email', async (req, res) => {
         };
 
         const data = await apiInstance.sendTransacEmail(sendSmtpEmail);
-        console.log(`[Brevo] Success: ${JSON.stringify(data)}`);
+        console.log("[Brevo] Manual email sent");
         res.status(200).json({ success: true, data });
     } catch (error) {
         console.error("[Brevo] Error:", error);
@@ -1225,74 +1147,12 @@ app.delete('/api/events/:id', async (req, res) => {
     }
 });
 
-// --- Workshops CRUD Routes ---
-
-app.get('/api/workshops', async (req, res) => {
-    try {
-        const data = await getAllWorkshops();
-        res.status(200).json(data);
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
-});
-
 app.get('/api/workshops/slug/:slug', async (req, res) => {
     try {
         const data = await getWorkshopBySlug(req.params.slug);
         res.status(200).json(data);
     } catch (error) {
         res.status(404).json({ error: error.message });
-    }
-});
-
-app.get('/api/workshops/:id', async (req, res) => {
-    try {
-        const data = await getWorkshopById(req.params.id);
-        res.status(200).json(data);
-    } catch (error) {
-        res.status(404).json({ error: error.message });
-    }
-});
-
-app.post('/api/workshops', async (req, res) => {
-    try {
-        const body = req.body;
-        const getValue = (val, defaultVal = '') => (val !== undefined && val !== null ? val : defaultVal);
-
-        const workshopData = {
-            title: getValue(body.title),
-            subtitle: getValue(body.subtitle),
-            date: getValue(body.date),
-            time: getValue(body.time),
-            venue: getValue(body.venue),
-            category: getValue(body.category),
-            description: getValue(body.description),
-            highlightPoints: getValue(body.highlightPoints),
-            image: getValue(body.image),
-        };
-
-        const result = await addWorkshop(workshopData);
-        res.status(201).json({ message: 'Workshop added successfully', data: result });
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
-});
-
-app.put('/api/workshops/:id', async (req, res) => {
-    try {
-        const result = await updateWorkshop(req.params.id, req.body);
-        res.status(200).json({ message: 'Workshop updated successfully', data: result });
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
-});
-
-app.delete('/api/workshops/:id', async (req, res) => {
-    try {
-        const result = await deleteWorkshop(req.params.id);
-        res.status(200).json(result);
-    } catch (error) {
-        res.status(500).json({ error: error.message });
     }
 });
 
@@ -1398,16 +1258,6 @@ app.delete('/api/event-registrations/:id', async (req, res) => {
 // Files are uploaded client-side to Firebase Storage.
 // This route receives only JSON with file download URLs.
 
-// GET /api/events  — list all events for admin panel dropdown
-app.get('/api/events', async (req, res) => {
-    try {
-        const data = await getAllEvents();
-        res.status(200).json(data);
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
-});
-
 // POST /api/events/:eventId/register  (JSON body — full candidate data)
 app.post('/api/events/:eventId/register', async (req, res) => {
     try {
@@ -1491,7 +1341,7 @@ app.post('/api/events/:eventId/register', async (req, res) => {
                     interviewCode: regData.interviewCode
                 };
                 await apiInstance.sendTransacEmail(sendSmtpEmail);
-                console.log(`[Brevo] Event registration email sent to ${regData.email}`);
+                console.log("[Brevo] Event registration email sent");
             } catch (emailErr) {
                 console.error('[Brevo] Event registration email error:', emailErr.message);
             }
@@ -1581,15 +1431,6 @@ app.delete('/api/partners/:id', async (req, res) => {
     }
 });
 
-// Global Error Handler
-app.use((err, req, res, next) => {
-    console.error("Global Error:", err);
-    res.status(err.status || 500).json({
-        error: true,
-        message: err.message || "Internal Server Error"
-    });
-});
-
 // ==================== DASHBOARD SYNC API ==================== //
 
 // --- Jobs Routes ---
@@ -1629,16 +1470,6 @@ app.delete('/api/jobs/:id', async (req, res) => {
     }
 });
 
-// --- Career Routes ---
-app.get('/api/careers', async (req, res) => {
-    try {
-        const data = await getSwordnexCareers();
-        res.status(200).json(data);
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
-});
-
 app.get('/api/careers/:id', async (req, res) => {
     try {
         const data = await getCareerById(req.params.id);
@@ -1648,27 +1479,9 @@ app.get('/api/careers/:id', async (req, res) => {
     }
 });
 
-app.post('/api/careers', async (req, res) => {
-    try {
-        const result = await addCareer(req.body);
-        res.status(201).json(result);
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
-});
-
 app.put('/api/careers/:id', async (req, res) => {
     try {
         const result = await updateCareer(req.params.id, req.body);
-        res.status(200).json(result);
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
-});
-
-app.delete('/api/careers/:id', async (req, res) => {
-    try {
-        const result = await deleteCareer(req.params.id);
         res.status(200).json(result);
     } catch (error) {
         res.status(500).json({ error: error.message });
@@ -1776,8 +1589,11 @@ app.get('/api/affiliate/commissions', async (req, res) => {
 app.post('/api/affiliate/request-payout', async (req, res) => {
     try {
         const { affiliateId, amount } = req.body;
-        if (!affiliateId || !amount) return res.status(400).json({ success: false, error: 'affiliateId and amount required' });
-        const result = await requestPayout(affiliateId, amount);
+        const payoutAmount = Number(amount);
+        if (!affiliateId || !Number.isFinite(payoutAmount) || payoutAmount <= 0) {
+            return res.status(400).json({ success: false, error: 'affiliateId and a positive amount are required' });
+        }
+        const result = await requestPayout(affiliateId, payoutAmount);
         res.status(result.success ? 200 : 400).json(result);
     } catch (error) {
         res.status(500).json({ success: false, error: error.message });
@@ -1916,16 +1732,19 @@ app.delete('/api/admin/affiliates/:id', async (req, res) => {
 });
 
 // ── User Management & Roles ─────────────────────────────────────────────────
-const ADMIN_SECRET = 'SwordNex!123#';
+// Access to these routes is checked by middleware/auth.js (Admin only, except /api/roles).
 
 app.get('/api/roles', (req, res) => {
-    res.json({ roles: ['Admin', 'HR', 'Support', 'Marketing', 'Finance'] });
+    res.json({ roles: STAFF_ROLES });
 });
 
 app.post('/api/users/create', async (req, res) => {
-    const { email, password, role, firstName, lastName, mobileNumber, adminSecret } = req.body;
-    if (!adminSecret || adminSecret !== ADMIN_SECRET) {
-        return res.status(403).json({ error: 'Unauthorized' });
+    const { email, password, role, firstName, lastName, mobileNumber } = req.body;
+    if (!email || !password) {
+        return res.status(400).json({ error: 'Email and password are required' });
+    }
+    if (!STAFF_ROLES.includes(role)) {
+        return res.status(400).json({ error: `Role must be one of: ${STAFF_ROLES.join(', ')}` });
     }
     try {
         const userRecord = await admin.auth().createUser({ email, password });
@@ -1934,7 +1753,7 @@ app.post('/api/users/create', async (req, res) => {
             firstName: firstName || '',
             lastName: lastName || '',
             email,
-            role: role || 'User',
+            role,
             mobileNumber: mobileNumber || '',
             createdAt: new Date().toISOString(),
         });
@@ -1945,16 +1764,11 @@ app.post('/api/users/create', async (req, res) => {
 });
 
 app.get('/api/users', async (req, res) => {
-    const adminSecret = req.query.adminSecret || req.headers['x-admin-secret'];
-    if (!adminSecret || adminSecret !== ADMIN_SECRET) {
-        return res.status(403).json({ error: 'Unauthorized' });
-    }
     try {
         const snapshot = await admin.firestore().collection('users').get();
-        const ADMIN_ROLES = ['Admin', 'HR', 'Support', 'Marketing', 'Finance'];
         const users = snapshot.docs
             .map(doc => ({ id: doc.id, ...doc.data() }))
-            .filter(u => ADMIN_ROLES.includes(u.role));
+            .filter(u => STAFF_ROLES.includes(u.role));
         res.json({ users });
     } catch (error) {
         res.status(500).json({ error: error.message });
@@ -1962,9 +1776,8 @@ app.get('/api/users', async (req, res) => {
 });
 
 app.delete('/api/users/:id', async (req, res) => {
-    const adminSecret = req.body.adminSecret || req.headers['x-admin-secret'];
-    if (!adminSecret || adminSecret !== ADMIN_SECRET) {
-        return res.status(403).json({ error: 'Unauthorized' });
+    if (req.params.id === req.user.uid) {
+        return res.status(400).json({ error: 'You cannot delete your own account' });
     }
     try {
         await admin.auth().deleteUser(req.params.id);
@@ -1973,6 +1786,15 @@ app.delete('/api/users/:id', async (req, res) => {
     } catch (error) {
         res.status(400).json({ error: error.message });
     }
+});
+
+// Global error handler (must be registered after all routes)
+app.use((err, req, res, next) => {
+    console.error("Global Error:", err);
+    res.status(err.status || 500).json({
+        error: true,
+        message: err.status && err.status < 500 ? err.message : "Internal Server Error"
+    });
 });
 
 module.exports = app;
