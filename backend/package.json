@@ -1,9 +1,10 @@
 {
-  "name": "functions",
-  "description": "Cloud Functions for Firebase",
+  "name": "swordnex-backend",
+  "description": "SwordNex main site API (Firebase Cloud Functions + Express)",
   "main": "index.js",
   "type": "commonjs",
   "scripts": {
+    "dev": "node src/server.js",
     "serve": "firebase serve --only functions",
     "shell": "firebase functions:shell",
     "start": "npm run shell",
@@ -23,5 +24,6 @@
   },
   "engines": {
     "node": "20"
-  }
+  },
+  "private": true
 }

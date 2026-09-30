@@ -59,7 +59,7 @@
 //     timeoutSeconds: 120,
 //     memory: '256MiB'
 // }, async (req, res) => {
-//     const app = require('./server');
+//     const app = require('./src/server');
 //     return app(req, res);
 // });
 
@@ -176,7 +176,7 @@ exports.api = onRequest(
         memory: '256MiB',
     },
     async (req, res) => {
-        const app = require('./server');
+        const app = require('./src/server');
         return app(req, res);
     }
 );

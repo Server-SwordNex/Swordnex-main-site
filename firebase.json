@@ -4,16 +4,18 @@
   },
   "functions": [
     {
-      "source": "backend-functions",
+      "source": "backend",
       "codebase": "default",
       "ignore": [
         "node_modules",
-        ".env"
+        ".env",
+        "scripts",
+        "*.log"
       ]
     }
   ],
   "hosting": {
-    "public": "dist",
+    "public": "frontend/dist",
     "ignore": [
       "firebase.json",
       "**/.*",

@@ -13,10 +13,10 @@ Install dependencies for both the frontend and the backend.
 
 ```bash
 # Frontend dependencies
-npm install
+cd frontend && npm install && cd ..
 
 # Backend (Functions) dependencies
-cd backend-functions
+cd backend
 npm install
 cd ..
 ```
@@ -25,7 +25,7 @@ cd ..
 Create a production build of the Vite frontend.
 
 ```bash
-npm run build
+npm run build   # builds frontend/ into frontend/dist
 ```
 
 ### Step 3: Configure Environment Variables
