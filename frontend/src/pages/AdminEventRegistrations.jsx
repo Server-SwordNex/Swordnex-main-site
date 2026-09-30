@@ -9,6 +9,7 @@ import API_BASE_URL from "../config/apiConfig";
 import * as XLSX from "xlsx";
 import JSZip from "jszip";
 import { saveAs } from "file-saver";
+import { apiFetch } from "../services/apiClient";
 
 const AdminEventRegistrations = ({ isEmbedded = false }) => {
  const { type } = useParams();
@@ -44,19 +45,19 @@ const AdminEventRegistrations = ({ isEmbedded = false }) => {
  // ── Metadata Fetching ───────────────────────────────────────────────────
  useEffect(() => {
  // Events
- fetch(`${API_BASE_URL}/api/events`)
+ apiFetch(`${API_BASE_URL}/api/events`)
  .then(r => r.json())
  .then(data => setEvents(Array.isArray(data) ? data : []))
  .catch(err => console.error("Error fetching events:", err));
 
  // Workshops
- fetch(`${API_BASE_URL}/api/workshops`)
+ apiFetch(`${API_BASE_URL}/api/workshops`)
  .then(r => r.json())
  .then(data => setWorkshops(Array.isArray(data) ? data : (data.data || [])))
  .catch(err => console.error("Error fetching workshops:", err));
 
  // Job Fair
- fetch(`${API_BASE_URL}/api/jobfair`)
+ apiFetch(`${API_BASE_URL}/api/jobfair`)
  .then(r => r.json())
  .then(data => setJobfairData(Array.isArray(data) ? data : []))
  .catch(err => console.error("Error fetching jobfair:", err));
@@ -101,12 +102,12 @@ const AdminEventRegistrations = ({ isEmbedded = false }) => {
  const fetchAllEvents = useCallback(async () => {
  setLoading(true);
  try {
- const evRes = await fetch(`${API_BASE_URL}/api/events`);
+ const evRes = await apiFetch(`${API_BASE_URL}/api/events`);
  const eventsData = await evRes.json();
  const allRegs = [];
  for (const ev of (Array.isArray(eventsData) ? eventsData : [])) {
  try {
- const res = await fetch(`${API_BASE_URL}/api/events/${ev.id}/registrations`);
+ const res = await apiFetch(`${API_BASE_URL}/api/events/${ev.id}/registrations`);
  if (res.ok) {
  const regs = await res.json();
  allRegs.push(...(Array.isArray(regs) ? regs : []).map(r => ({ ...r, _eventTitle: ev.title })));
@@ -124,7 +125,7 @@ const AdminEventRegistrations = ({ isEmbedded = false }) => {
  const fetchAllWorkshops = useCallback(async () => {
  setLoading(true);
  try {
- const wsRes = await fetch(`${API_BASE_URL}/api/workshops`);
+ const wsRes = await apiFetch(`${API_BASE_URL}/api/workshops`);
  const raw = await wsRes.json();
  const wsList = Array.isArray(raw) ? raw : (raw.data || []);
  const allRegs = [];
@@ -132,7 +133,7 @@ const AdminEventRegistrations = ({ isEmbedded = false }) => {
  // Helper to fetch from a specific parent
  const fetchFromParent = async (parentId, title) => {
  try {
- const res = await fetch(`${API_BASE_URL}/api/workshops/${parentId}/registrations`);
+ const res = await apiFetch(`${API_BASE_URL}/api/workshops/${parentId}/registrations`);
  if (res.ok) {
  const regs = await res.json();
  return (Array.isArray(regs) ? regs : []).map(r => ({ ...r, _eventTitle: title }));
@@ -159,7 +160,7 @@ const AdminEventRegistrations = ({ isEmbedded = false }) => {
 
  // 2. Legacy Flat Collection fallback
  try {
- const legacyRes = await fetch(`${API_BASE_URL}/api/workshop-registrations`);
+ const legacyRes = await apiFetch(`${API_BASE_URL}/api/workshop-registrations`);
  if (legacyRes.ok) {
  const legacyRegs = await legacyRes.json();
  allRegs.push(...(Array.isArray(legacyRegs) ? legacyRegs : []));
@@ -192,13 +193,13 @@ const AdminEventRegistrations = ({ isEmbedded = false }) => {
  }
 
  // Fetch from ID
- const resId = await fetch(`${API_BASE_URL}/api/${itemType === "workshop" ? "workshops" : "events"}/${itemId}/registrations`);
+ const resId = await apiFetch(`${API_BASE_URL}/api/${itemType === "workshop" ? "workshops" : "events"}/${itemId}/registrations`);
  const regsId = resId.ok ? await resId.json() : [];
  const allRegs = (Array.isArray(regsId) ? regsId : []).map(r => ({ ...r, _eventTitle: title }));
 
  // For workshops, also fetch from slug as fallback/orphan recovery
  if (itemType === "workshop" && slug && slug !== itemId) {
- const resSlug = await fetch(`${API_BASE_URL}/api/workshops/${slug}/registrations`);
+ const resSlug = await apiFetch(`${API_BASE_URL}/api/workshops/${slug}/registrations`);
  if (resSlug.ok) {
  const regsSlug = await resSlug.json();
  const formattedSlugRegs = (Array.isArray(regsSlug) ? regsSlug : []).map(r => ({ ...r, _eventTitle: title }));
@@ -219,7 +220,7 @@ const AdminEventRegistrations = ({ isEmbedded = false }) => {
  const fetchAllJobfair = useCallback(async () => {
  setLoading(true);
  try {
- const jfRes = await fetch(`${API_BASE_URL}/api/jobfair`);
+ const jfRes = await apiFetch(`${API_BASE_URL}/api/jobfair`);
  const jfData = await jfRes.json();
  const formattedRegs = (Array.isArray(jfData) ? jfData : []).map(r => ({ 
  ...r, 
@@ -237,13 +238,13 @@ const AdminEventRegistrations = ({ isEmbedded = false }) => {
  setLoading(true);
  try {
  // Fetch all events registrations
- const evRes = await fetch(`${API_BASE_URL}/api/events`);
+ const evRes = await apiFetch(`${API_BASE_URL}/api/events`);
  const eventsData = await evRes.json();
  const allRegs = [];
  
  for (const ev of (Array.isArray(eventsData) ? eventsData : [])) {
  try {
- const res = await fetch(`${API_BASE_URL}/api/events/${ev.id}/registrations`);
+ const res = await apiFetch(`${API_BASE_URL}/api/events/${ev.id}/registrations`);
  if (res.ok) {
  const regs = await res.json();
  allRegs.push(...(Array.isArray(regs) ? regs : []).map(r => ({ ...r, _eventTitle: ev.title })));
@@ -253,7 +254,7 @@ const AdminEventRegistrations = ({ isEmbedded = false }) => {
 
  // Fetch all job fair data
  try {
- const jfRes = await fetch(`${API_BASE_URL}/api/jobfair`);
+ const jfRes = await apiFetch(`${API_BASE_URL}/api/jobfair`);
  const jfData = await jfRes.json();
  allRegs.push(...(Array.isArray(jfData) ? jfData : []).map(r => ({ ...r, _eventTitle: "Maruthupandiyar" })));
  } catch (_) { }
@@ -365,7 +366,7 @@ const AdminEventRegistrations = ({ isEmbedded = false }) => {
  const fetchFileFromServer = async (candidateId, fileType) => {
  try {
  const url = `${API_BASE_URL}/api/jobfair/${candidateId}/file/${fileType}`;
- const response = await fetch(url);
+ const response = await apiFetch(url);
  if (!response.ok) return null;
  const contentType = response.headers.get('content-type') || '';
  const arrayBuffer = await response.arrayBuffer();

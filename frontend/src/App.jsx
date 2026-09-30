@@ -1,169 +1,190 @@
-import React from 'react';
-import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router-dom";
+import React, { lazy, Suspense, useEffect } from 'react';
+import { Helmet } from 'react-helmet-async';
+import { getPageMeta } from './config/pageMeta';
+import { Routes, Route, Navigate, useLocation, ScrollRestoration, createBrowserRouter, RouterProvider } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
-import Home from "./pages/Home";
-import About from "./pages/About";
-import Services from "./pages/Services";
-import Products from "./pages/Products";
-import Testimonials from "./pages/Testimonials";
-import Career from "./pages/Career";
-import Carrer1 from './pages/career1';
-import Contact from "./pages/Contact";
-import Carrer2 from './pages/career2';
-import Carrer3 from './pages/career3';
-import Carrer4 from './pages/career4';
-import Carrer5 from './pages/career5';
-import Carrer6 from './pages/career6';
-import ApplicationDevelopment from './pages/ApplicationDevelopmentService';
-import DigitalMedia from './pages/DigitalMediaService';
-import ItTraining from './pages/ItTrainingAndSkillDevelopmentService';
-import Service4 from './pages/Service4';
-import ITInfrastructure from './pages/ITInfrastructureService';
-import HRConsulting from './pages/HRConsultingService';
-import Job from './pages/Job';
-import JobDetails from './pages/JobDetails';
-import CourseEnquiryForm, { CourseEnquiryPage } from './components/CourseEnquiryForm';
-import PrivacyPolicy from './pages/PrivacyPolicy';
-import CookiePolicy from './pages/CookiePolicy';
-import GDPRCompliance from './pages/GDPRCompliance';
-import TrademarkPolicy from './pages/TM-policy';
-import Terms from './pages/Terms';
-import IPRComplaints from './pages/IPR-Complaints';
-import Security from './pages/Security';
-import CareerMain from './pages/CareerMain';
-import Application from './pages/Application';
-import BlogPage from './pages/BlogPage';
-import BlogPostPage from './pages/BlogPostPage';
-import SupportPage from './pages/SupportPage';
-import FAQPage from './pages/FAQPage';
-import Workplace from './pages/Workplace';
-import Admin from './pages/Admin';
-import Events from './pages/Events';
-import Adminjobfair from './pages/Adminjobfair';
-import SignUp from './components/Auth/SignUp';
-import SignIn from './components/Auth/SignIn';
-import Vcbewcebwciubekcakbcnhe8fhawh from './pages/Vcbewcebwciubekcakbcnhe8fhawh';
-import EventDetailPage from './pages/EventDetailPage';
-import EventRegisterPage from './pages/EventRegisterPage';
+const Home = lazy(() => import('./pages/Home'));
+const About = lazy(() => import('./pages/About'));
+const Services = lazy(() => import('./pages/Services'));
+const Products = lazy(() => import('./pages/Products'));
+const Testimonials = lazy(() => import('./pages/Testimonials'));
+const Career = lazy(() => import('./pages/Career'));
+const Carrer1 = lazy(() => import('./pages/career1'));
+const Contact = lazy(() => import('./pages/Contact'));
+const Carrer2 = lazy(() => import('./pages/career2'));
+const Carrer3 = lazy(() => import('./pages/career3'));
+const Carrer4 = lazy(() => import('./pages/career4'));
+const Carrer5 = lazy(() => import('./pages/career5'));
+const Carrer6 = lazy(() => import('./pages/career6'));
+const ApplicationDevelopment = lazy(() => import('./pages/ApplicationDevelopmentService'));
+const DigitalMedia = lazy(() => import('./pages/DigitalMediaService'));
+const ItTraining = lazy(() => import('./pages/ItTrainingAndSkillDevelopmentService'));
+const Service4 = lazy(() => import('./pages/Service4'));
+const ITInfrastructure = lazy(() => import('./pages/ITInfrastructureService'));
+const HRConsulting = lazy(() => import('./pages/HRConsultingService'));
+const Job = lazy(() => import('./pages/Job'));
+const JobDetails = lazy(() => import('./pages/JobDetails'));
+const CourseEnquiryPage = lazy(() => import('./components/CourseEnquiryForm').then((m) => ({ default: m.CourseEnquiryPage })));
+const PrivacyPolicy = lazy(() => import('./pages/PrivacyPolicy'));
+const CookiePolicy = lazy(() => import('./pages/CookiePolicy'));
+const GDPRCompliance = lazy(() => import('./pages/GDPRCompliance'));
+const TrademarkPolicy = lazy(() => import('./pages/TM-policy'));
+const Terms = lazy(() => import('./pages/Terms'));
+const IPRComplaints = lazy(() => import('./pages/IPR-Complaints'));
+const Security = lazy(() => import('./pages/Security'));
+const CareerMain = lazy(() => import('./pages/CareerMain'));
+const Application = lazy(() => import('./pages/Application'));
+const BlogPage = lazy(() => import('./pages/BlogPage'));
+const BlogPostPage = lazy(() => import('./pages/BlogPostPage'));
+const SupportPage = lazy(() => import('./pages/SupportPage'));
+const FAQPage = lazy(() => import('./pages/FAQPage'));
+const Workplace = lazy(() => import('./pages/Workplace'));
+const Admin = lazy(() => import('./pages/Admin'));
+const Events = lazy(() => import('./pages/Events'));
+const SignIn = lazy(() => import('./components/Auth/SignIn'));
+const Vcbewcebwciubekcakbcnhe8fhawh = lazy(() => import('./pages/Vcbewcebwciubekcakbcnhe8fhawh'));
+const EventDetailPage = lazy(() => import('./pages/EventDetailPage'));
+const EventRegisterPage = lazy(() => import('./pages/EventRegisterPage'));
 
 // import SpecialEvents from './pages/SpecialEvents';
 import ChatBot from './components/ChatBot';
 // import Ourevent from './pages/Ourevent';
-import Workshop from './pages/Workshop';
-import WorkshopList from './pages/WorkshopsList';
-import WorkshopRegisterPage from './pages/WorkshopRegisterPage';
-import HrDashboard from './components/HR/HrDashboard';
-import SupportDashboard from './components/Support/SupportDashboard';
-import MarketingDashboard from './pages/MarketingDashboard';
-import FinanceDashboard from './pages/FinanceDashboard';
+const Workshop = lazy(() => import('./pages/Workshop'));
+const WorkshopList = lazy(() => import('./pages/WorkshopsList'));
+const WorkshopRegisterPage = lazy(() => import('./pages/WorkshopRegisterPage'));
+const HrDashboard = lazy(() => import('./components/HR/HrDashboard'));
+const SupportDashboard = lazy(() => import('./components/Support/SupportDashboard'));
+const MarketingDashboard = lazy(() => import('./pages/MarketingDashboard'));
+const FinanceDashboard = lazy(() => import('./pages/FinanceDashboard'));
 import ProtectedRoute from './components/Auth/ProtectedRoute';
-import ScrollToTop from './components/ScrollToTop';
-// import AdminEventRegistrations from './pages/AdminEventRegistrations';
-// import EventDetailPage from './pages/EventDetail';
+// // import EventDetailPage from './pages/EventDetail';
 import { AuthProvider } from './context/AuthContext';
+import NotFound from './pages/NotFound';
 
-import UIUXDesignCourseDetail from './pages/CourseDetail/UIUXDesignCourseDetail';
-import DataScienceCourseDetail from './pages/CourseDetail/DataScienceCourseDetail';
-import AppDevelopmentCourseDetail from './pages/CourseDetail/AppDevelopmentCourseDetail';
-import DigitalMarketingCourseDetail from './pages/CourseDetail/DigitalMarketingCourseDetail';
-import DataAnalyticsCourseDetail from './pages/CourseDetail/DataAnalyticsCourseDetail';
-import FullstackdevopmentCourseDetail from './pages/CourseDetail/FullstackdevopmentCourseDetail';
-import AIMLCourseDetail from './pages/CourseDetail/AIMLCourseDetail';
-import InternshipProgramDetail from './pages/CourseDetail/InternshipProgramDetail';
+const UIUXDesignCourseDetail = lazy(() => import('./pages/CourseDetail/UIUXDesignCourseDetail'));
+const DataScienceCourseDetail = lazy(() => import('./pages/CourseDetail/DataScienceCourseDetail'));
+const AppDevelopmentCourseDetail = lazy(() => import('./pages/CourseDetail/AppDevelopmentCourseDetail'));
+const DigitalMarketingCourseDetail = lazy(() => import('./pages/CourseDetail/DigitalMarketingCourseDetail'));
+const DataAnalyticsCourseDetail = lazy(() => import('./pages/CourseDetail/DataAnalyticsCourseDetail'));
+const FullstackdevopmentCourseDetail = lazy(() => import('./pages/CourseDetail/FullstackdevopmentCourseDetail'));
+const AIMLCourseDetail = lazy(() => import('./pages/CourseDetail/AIMLCourseDetail'));
+const InternshipProgramDetail = lazy(() => import('./pages/CourseDetail/InternshipProgramDetail'));
 
-import AffiliateLanding from './pages/affiliate/AffiliateLanding';
-import AffiliateSignup from './pages/affiliate/AffiliateSignup';
-import AffiliateLogin from './pages/affiliate/AffiliateLogin';
-import AffiliateDashboard from './pages/affiliate/AffiliateDashboard';
-import AffiliateLinks from './pages/affiliate/AffiliateLinks';
-import AffiliateCommissions from './pages/affiliate/AffiliateCommissions';
-import AffiliatePayouts from './pages/affiliate/AffiliatePayouts';
-import AffiliateSettings from './pages/affiliate/AffiliateSettings';
+const AffiliateLanding = lazy(() => import('./pages/affiliate/AffiliateLanding'));
+const AffiliateSignup = lazy(() => import('./pages/affiliate/AffiliateSignup'));
+const AffiliateLogin = lazy(() => import('./pages/affiliate/AffiliateLogin'));
+const AffiliateDashboard = lazy(() => import('./pages/affiliate/AffiliateDashboard'));
+const AffiliateLinks = lazy(() => import('./pages/affiliate/AffiliateLinks'));
+const AffiliateCommissions = lazy(() => import('./pages/affiliate/AffiliateCommissions'));
+const AffiliatePayouts = lazy(() => import('./pages/affiliate/AffiliatePayouts'));
+const AffiliateSettings = lazy(() => import('./pages/affiliate/AffiliateSettings'));
 import AffiliateRoute from './components/Affiliate/AffiliateRoute';
 
 
 // Billing Imports
-import BillingLayout from './pages/BillingPages/BillingLayout';
-import B_Home from './pages/BillingPages/HomePage/HomePage';
-import B_Software from './pages/BillingPages/B_Software/B_Software';
-import B_Small_B from './pages/BillingPages/B_Small_B/B_Small_B';
-import Free_B from './pages/BillingPages/Free_B/Free_B';
-import B_Security from './pages/BillingPages/B_Security/B_Security';
-import FullFeature from "./pages/BillingPages/Components/FullFeature/FullFeature";
-import FeaturesPage from "./pages/BillingPages/FeaturesPage/FeaturesPage";
-import Support from "./pages/BillingPages/Support/Support";
-import Help from "./pages/BillingPages/Help/Help";
-import WebinarForm from "./pages/BillingPages/WebinarForm/WebinarForm";
-import Faq from "./pages/BillingPages/Faq/Faq";
+const BillingLayout = lazy(() => import('./pages/BillingPages/BillingLayout'));
+const B_Home = lazy(() => import('./pages/BillingPages/HomePage/HomePage'));
+const B_Software = lazy(() => import('./pages/BillingPages/B_Software/B_Software'));
+const B_Small_B = lazy(() => import('./pages/BillingPages/B_Small_B/B_Small_B'));
+const Free_B = lazy(() => import('./pages/BillingPages/Free_B/Free_B'));
+const B_Security = lazy(() => import('./pages/BillingPages/B_Security/B_Security'));
+const FullFeature = lazy(() => import('./pages/BillingPages/Components/FullFeature/FullFeature'));
+const FeaturesPage = lazy(() => import('./pages/BillingPages/FeaturesPage/FeaturesPage'));
+const Support = lazy(() => import('./pages/BillingPages/Support/Support'));
+const Help = lazy(() => import('./pages/BillingPages/Help/Help'));
+const WebinarForm = lazy(() => import('./pages/BillingPages/WebinarForm/WebinarForm'));
+const Faq = lazy(() => import('./pages/BillingPages/Faq/Faq'));
 import { BillingFaqData } from "./pages/BillingPages/Faq/BillingFaqData";
 
 
 // HMS Imports
-import HmsLayout from './pages/HMS/HmsLayout';
-import HmsHome from "./pages/HMS/HomePage/HomePage";
-import HmsFeatures from "./pages/HMS/Features/Features";
-import HmsHelp from "./pages/HMS/Help/Help";
-import HmsSupport from "./pages/HMS/Support/Support";
-import HmsFaq from "./pages/HMS/Faq/Faq";
-import HmsWebinarForm from "./pages/HMS/WebinarForm/WebinarForm";
+const HmsLayout = lazy(() => import('./pages/HMS/HmsLayout'));
+const HmsHome = lazy(() => import('./pages/HMS/HomePage/HomePage'));
+const HmsFeatures = lazy(() => import('./pages/HMS/Features/Features'));
+const HmsHelp = lazy(() => import('./pages/HMS/Help/Help'));
+const HmsSupport = lazy(() => import('./pages/HMS/Support/Support'));
+const HmsFaq = lazy(() => import('./pages/HMS/Faq/Faq'));
+const HmsWebinarForm = lazy(() => import('./pages/HMS/WebinarForm/WebinarForm'));
 import { HmsFaqData } from "./pages/HMS/Faq/HmsFaqData";
-import HmsSoftware from "./pages/HMS/HmsSoftware/HmsSoftware";
-import ReservationMgmt from "./pages/HMS/ReservationMgmt/ReservationMgmt";
-import CheckIn from "./pages/HMS/CheckIn/CheckIn";
-import RoomsTrack from "./pages/HMS/RoomsTrack/RoomsTrack";
-import HmsPricing from "./pages/HMS/PricingPage/PricingPage.jsx";
+const HmsSoftware = lazy(() => import('./pages/HMS/HmsSoftware/HmsSoftware'));
+const ReservationMgmt = lazy(() => import('./pages/HMS/ReservationMgmt/ReservationMgmt'));
+const CheckIn = lazy(() => import('./pages/HMS/CheckIn/CheckIn'));
+const RoomsTrack = lazy(() => import('./pages/HMS/RoomsTrack/RoomsTrack'));
+const HmsPricing = lazy(() => import('./pages/HMS/PricingPage/PricingPage.jsx'));
 
 
 // Payroll Imports
-import PayrollLayout from './pages/Payroll/PayrollLayout';
-import PRSoftware from './pages/Payroll/PRSoftware/PRSoftware';
-import HRSoftware from './pages/Payroll/HRSoftware/HRSoftware';
-import PRDescription from './pages/Payroll/PRDescription/PRDescription';
-import PaySlip from './pages/Payroll/PaySlip/PaySlip';
-import SmallBsns from './pages/Payroll/SmallBsns/SmallBsns';
-import FreePR from './pages/Payroll/FreePR/FreePR';
-import P_Home from './pages/Payroll/HomePage/Home';
-import P_Features from './pages/Payroll/Features/Features';
-import P_Contact from './pages/Payroll/Contact/Contact';
-import P_Help from './pages/Payroll/Help/Help';
-import P_WebinarForm from './pages/Payroll/WebinarForm/WebinarForm';
-import P_Faq from './pages/Payroll/Faq/Faq';
+const PayrollLayout = lazy(() => import('./pages/Payroll/PayrollLayout'));
+const PRSoftware = lazy(() => import('./pages/Payroll/PRSoftware/PRSoftware'));
+const HRSoftware = lazy(() => import('./pages/Payroll/HRSoftware/HRSoftware'));
+const PRDescription = lazy(() => import('./pages/Payroll/PRDescription/PRDescription'));
+const PaySlip = lazy(() => import('./pages/Payroll/PaySlip/PaySlip'));
+const SmallBsns = lazy(() => import('./pages/Payroll/SmallBsns/SmallBsns'));
+const FreePR = lazy(() => import('./pages/Payroll/FreePR/FreePR'));
+const P_Home = lazy(() => import('./pages/Payroll/HomePage/Home'));
+const P_Features = lazy(() => import('./pages/Payroll/Features/Features'));
+const P_Contact = lazy(() => import('./pages/Payroll/Contact/Contact'));
+const P_Help = lazy(() => import('./pages/Payroll/Help/Help'));
+const P_WebinarForm = lazy(() => import('./pages/Payroll/WebinarForm/WebinarForm'));
+const P_Faq = lazy(() => import('./pages/Payroll/Faq/Faq'));
 import { PRFaqData } from './pages/Payroll/Faq/PRFaqData';
-import PR_Pricing from './pages/Payroll/PricingPage/PricingPage.jsx';
+const PR_Pricing = lazy(() => import('./pages/Payroll/PricingPage/PricingPage.jsx'));
+const PricingPage = lazy(() => import('./pages/BillingPages/PricingPage/PricingPage'));
+const PricingSection = lazy(() => import('./pages/Jobsheet/PricingSection/PricingSection.jsx'));
 
 
 // Invoice Imports
-import InvoiceLayout from './pages/Invoice/InvoiceLayout';
-import I_Home from "./pages/Invoice/LandingPage/MainPage/MainPage";
-import Create_Inv from "./pages/Invoice/Create_Inv/Create_Inv";
-import Free_Inv from "./pages/Invoice/Free_Inv/Free_Inv";
-import Inv_Reports from "./pages/Invoice/Inv_Reports/Inv_Reports";
-import WhatIsInv from "./pages/Invoice/Invoice/Invoice";
-import I_Support from "./pages/Invoice/Support/Support";
-import I_Help from "./pages/Invoice/Help/Help";
-import I_Faq from './pages/Invoice/Faq/Faq';
+const InvoiceLayout = lazy(() => import('./pages/Invoice/InvoiceLayout'));
+const I_Home = lazy(() => import('./pages/Invoice/LandingPage/MainPage/MainPage'));
+const Create_Inv = lazy(() => import('./pages/Invoice/Create_Inv/Create_Inv'));
+const Free_Inv = lazy(() => import('./pages/Invoice/Free_Inv/Free_Inv'));
+const Inv_Reports = lazy(() => import('./pages/Invoice/Inv_Reports/Inv_Reports'));
+const WhatIsInv = lazy(() => import('./pages/Invoice/Invoice/Invoice'));
+const I_Support = lazy(() => import('./pages/Invoice/Support/Support'));
+const I_Help = lazy(() => import('./pages/Invoice/Help/Help'));
+const I_Faq = lazy(() => import('./pages/Invoice/Faq/Faq'));
 import { InvFaqData } from './pages/Invoice/Faq/InvFaqData';
 
 
 // Jobsheet Imports
-import JobsheetLayout from './pages/Jobsheet/LandingLayout.jsx'
-import J_Home from './pages/Jobsheet/HomePage/HomePage.jsx'
-import J_FeaturesPage from './pages/Jobsheet/FeaturesPage/FeaturesPage.jsx'
-import J_Faq from './pages/Jobsheet/Faq/Faq.jsx'
+const JobsheetLayout = lazy(() => import('./pages/Jobsheet/LandingLayout.jsx'));
+const J_Home = lazy(() => import('./pages/Jobsheet/HomePage/HomePage.jsx'));
+const J_FeaturesPage = lazy(() => import('./pages/Jobsheet/FeaturesPage/FeaturesPage.jsx'));
+const J_Faq = lazy(() => import('./pages/Jobsheet/Faq/Faq.jsx'));
 import { JSFaqData } from './pages/Jobsheet/Faq/JSFaqData.jsx'
-import J_Help from './pages/Jobsheet/Help/Help.jsx'
-import J_Support from './pages/Jobsheet/Support/Support.jsx'
-import J_WebinarForm from './pages/Jobsheet/WebinarForm/WebinarForm.jsx'
-import JobsheetSoftware from './pages/Jobsheet/JobsheetSoftware/JobsheetSoftware.jsx'
-import JobsheetSecurity from './pages/Jobsheet/JobsheetSecurity/JobsheetSecurity.jsx'
-import JobsheetSmallBusiness from './pages/Jobsheet/JobsheetSmallBusiness/JobsheetSmallBusiness.jsx'
-import JobsheetAnalytics from './pages/Jobsheet/JobsheetAnalytics/JobsheetAnalytics.jsx'
-import JobsheetStatusTracking from './pages/Jobsheet/JobsheetStatusTracking/JobsheetStatusTracking.jsx'
+const J_Help = lazy(() => import('./pages/Jobsheet/Help/Help.jsx'));
+const J_Support = lazy(() => import('./pages/Jobsheet/Support/Support.jsx'));
+const J_WebinarForm = lazy(() => import('./pages/Jobsheet/WebinarForm/WebinarForm.jsx'));
+const JobsheetSoftware = lazy(() => import('./pages/Jobsheet/JobsheetSoftware/JobsheetSoftware.jsx'));
+const JobsheetSecurity = lazy(() => import('./pages/Jobsheet/JobsheetSecurity/JobsheetSecurity.jsx'));
+const JobsheetSmallBusiness = lazy(() => import('./pages/Jobsheet/JobsheetSmallBusiness/JobsheetSmallBusiness.jsx'));
+const JobsheetAnalytics = lazy(() => import('./pages/Jobsheet/JobsheetAnalytics/JobsheetAnalytics.jsx'));
+const JobsheetStatusTracking = lazy(() => import('./pages/Jobsheet/JobsheetStatusTracking/JobsheetStatusTracking.jsx'));
 
+
+const PageLoader = () => (
+  <div className="min-h-[60vh] flex items-center justify-center">
+    <div className="w-10 h-10 border-4 border-blue-500/30 border-t-blue-500 rounded-full animate-spin" />
+  </div>
+);
+
+// Keep the static tags in index.html (read by link-preview scrapers) in sync with the route.
+const setStaticTag = (selector, attr, value) => {
+  const el = document.head.querySelector(selector);
+  if (el) el.setAttribute(attr, value);
+};
 
 const AppContent = () => {
   const location = useLocation();
+  const meta = getPageMeta(location.pathname);
+
+  useEffect(() => {
+    const url = `https://swordnex.com${location.pathname === '/' ? '/' : location.pathname.replace(/\/+$/, '')}`;
+    setStaticTag('meta[name="description"]:not([data-rh])', 'content', meta.description);
+    setStaticTag('link[rel="canonical"]', 'href', url);
+    setStaticTag('meta[property="og:url"]', 'content', url);
+  }, [location.pathname, meta.description]);
 
   // Routes where specific navigation components should be hidden
   const hideNavbarRoutes = ['/hr-dashboard', '/admin', '/vcbewcebwciubekcakbcnhe8fhawh', '/support-dashboard', '/marketing-dashboard', '/finance-dashboard', '/affiliate', '/products/billing', '/products/hms', '/products/payroll', '/products/invoice', '/products/jobsheet'];
@@ -174,8 +195,10 @@ const AppContent = () => {
 
   return (
     <div className="flex flex-col min-h-screen">
+      <Helmet><title>{meta.title}</title></Helmet>
       {!shouldHideNavbar && <Navbar />}
       <main className="flex-grow">
+        <Suspense fallback={<PageLoader />}>
         <Routes>
           {/* ... standard routes ... */}
           <Route path="/" element={<Home />} />
@@ -219,7 +242,7 @@ const AppContent = () => {
           <Route path="/events" element={<Events />} />
           {/* <Route path="/events" element={<EventDetailPage />} /> */}
           {/* <Route path="/adminjobfair" element={<Adminjobfair />} /> */}
-          <Route path="/vcbewcebwciubekcakbcnhe8fhawh" element={<Vcbewcebwciubekcakbcnhe8fhawh />} />
+          <Route path="/vcbewcebwciubekcakbcnhe8fhawh" element={<ProtectedRoute allowedRoles={['HR', 'Admin']}><Vcbewcebwciubekcakbcnhe8fhawh /></ProtectedRoute>} />
           <Route path="/events/:id" element={<EventDetailPage />} />
           <Route path="/events/register/:id" element={<EventRegisterPage />} />
           {/* <Route path="/Ourevent" element={<Ourevent />} /> */}
@@ -227,7 +250,7 @@ const AppContent = () => {
           <Route path="/Workshopslist" element={<WorkshopList />} />
           <Route path="/workshops/register/:id" element={<WorkshopRegisterPage />} />
           <Route path="/signin" element={<SignIn />} />
-          <Route path="/signup" element={<SignUp />} />
+          <Route path="/signup" element={<Navigate to="/signin" replace />} />
           <Route path="/affiliate" element={<AffiliateLanding />} />
           <Route path="/affiliate/signup" element={<AffiliateSignup />} />
           <Route path="/affiliate/login" element={<AffiliateLogin />} />
@@ -366,8 +389,9 @@ const AppContent = () => {
           </Route>
 
           {/* Fallback route */}
-          <Route path="*" element={<Navigate to="/" replace />} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
+        </Suspense>
       </main>
       {!shouldHideFooterChatBot && <Footer />}
       {!shouldHideFooterChatBot && <ChatBot />}
@@ -375,11 +399,6 @@ const AppContent = () => {
   );
 };
 
-// 1. Create a root route wrapper to hold AuthProvider and ScrollRestoration
-import { Outlet, ScrollRestoration, createBrowserRouter, RouterProvider } from "react-router-dom";
-import AdminEventRegistrations from './pages/AdminEventRegistrations';
-import PricingPage from './pages/BillingPages/PricingPage/PricingPage';
-import PricingSection from './pages/Jobsheet/PricingSection/PricingSection.jsx';
 
 const RootLayout = () => {
   return (

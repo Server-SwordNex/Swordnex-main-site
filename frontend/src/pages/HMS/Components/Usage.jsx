@@ -361,9 +361,9 @@ export default function Usage() {
  title="Ready to streamline your hotel operations?"
  subtitle="Manage reservations, guest check-ins, housekeeping, billing, and reports from a single platform."
  primaryText="Start Free Trial"
- primaryLink="/hms/signup"
+ primaryLink="https://www.hms.swordnex.com/signup"
  secondaryText="Book a Demo"
- secondaryLink="/hms/contact"
+ secondaryLink="/products/hms/support"
  />
 
  <div style={{ display: "flex", justifyContent: "center" }}> <h2>CTASection</h2> </div>

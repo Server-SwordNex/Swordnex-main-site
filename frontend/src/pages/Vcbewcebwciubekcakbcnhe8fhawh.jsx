@@ -3,6 +3,7 @@ import API_BASE_URL from '../config/apiConfig';
 import * as XLSX from 'xlsx';
 import JSZip from 'jszip';
 import { saveAs } from 'file-saver';
+import { apiFetch } from "../services/apiClient";
 
 const JobFairPanel = () => {
  // Load candidates from localStorage
@@ -41,8 +42,8 @@ const JobFairPanel = () => {
  const fetchData = async () => {
  try {
  const [interviewRes, jobFairRes] = await Promise.all([
- fetch(`${API_BASE_URL}/api/interviews`),
- fetch(`${API_BASE_URL}/api/jobfair`)
+ apiFetch(`${API_BASE_URL}/api/interviews`),
+ apiFetch(`${API_BASE_URL}/api/jobfair`)
  ]);
 
  if (interviewRes.ok && jobFairRes.ok) {
@@ -112,7 +113,7 @@ const JobFairPanel = () => {
  [roundKey]: status
  };
 
- const response = await fetch(`${API_BASE_URL}/api/interviews/${existingEntry.id}`, {
+ const response = await apiFetch(`${API_BASE_URL}/api/interviews/${existingEntry.id}`, {
  method: 'PUT',
  headers: { 'Content-Type': 'application/json' },
  body: JSON.stringify(updateData)
@@ -137,7 +138,7 @@ const JobFairPanel = () => {
  [roundKey]: status // Set the current round status
  };
 
- const response = await fetch(`${API_BASE_URL}/api/interviews`, {
+ const response = await apiFetch(`${API_BASE_URL}/api/interviews`, {
  method: 'POST',
  headers: { 'Content-Type': 'application/json' },
  body: JSON.stringify(newEntry)
@@ -206,7 +207,7 @@ const JobFairPanel = () => {
  setDeleteConfirm({ show: false, id: null });
 
  try {
- const response = await fetch(`${API_BASE_URL}/api/interviews/${id}`, {
+ const response = await apiFetch(`${API_BASE_URL}/api/interviews/${id}`, {
  method: 'DELETE',
  });
 
@@ -296,7 +297,7 @@ const JobFairPanel = () => {
  const fetchBlob = async (url) => {
  if (!url) return null;
  try {
- const resp = await fetch(url);
+ const resp = await apiFetch(url);
  if (!resp.ok) throw new Error("Failed");
  return await resp.blob();
  } catch (e) { return null; }

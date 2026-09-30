@@ -29,6 +29,7 @@ import {
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Toast from '../UI/Toast';
+import { apiFetch } from "../../services/apiClient";
 
 const ApplicantDrawer = ({ isOpen, onClose, applicant, isFetching, onUpdate }) => {
  const [status, setStatus] = useState('');
@@ -401,7 +402,7 @@ const HrDashboard = () => {
  setIsDrawerOpen(true);
  setIsFetching(true);
  try {
- const response = await fetch(`${API_BASE_URL}/api/careers/${applicantId}`);
+ const response = await apiFetch(`${API_BASE_URL}/api/careers/${applicantId}`);
  if (response.ok) {
  const data = await response.json();
  setSelectedApplicant({
@@ -427,7 +428,7 @@ const HrDashboard = () => {
 
  const updateApplicant = async (applicantId, updates) => {
  try {
- const response = await fetch(`${API_BASE_URL}/api/careers/${applicantId}`, {
+ const response = await apiFetch(`${API_BASE_URL}/api/careers/${applicantId}`, {
  method: 'PUT',
  headers: { 'Content-Type': 'application/json' },
  body: JSON.stringify(updates)
@@ -460,7 +461,7 @@ const HrDashboard = () => {
  setLoading(true);
  try {
  // Fetch Applications
- const appResponse = await fetch(`${API_BASE_URL}/api/careers`);
+ const appResponse = await apiFetch(`${API_BASE_URL}/api/careers`);
  const appData = await appResponse.json();
  const apps = appData.map(data => {
  return {
@@ -478,7 +479,7 @@ const HrDashboard = () => {
  setApplications(apps);
 
  // Fetch Jobs
- const jobResponse = await fetch(`${API_BASE_URL}/api/jobs`);
+ const jobResponse = await apiFetch(`${API_BASE_URL}/api/jobs`);
  const jobsData = await jobResponse.json();
  const jobList = jobsData.map(job => ({
  id: job.id,

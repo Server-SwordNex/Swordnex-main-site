@@ -1,279 +1,498 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
-		<!--	created with www.mysitemapgenerator.com	-->
-		<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-<url>
-	<loc>https://swordnex.com/</loc>
-	<lastmod>2026-05-20T07:58:08+01:00</lastmod>
-	<priority>1.0</priority>
-</url>
-<url>
-	<loc>https://swordnex.com/contact</loc>
-	<lastmod>2026-05-20T07:58:08+01:00</lastmod>
-	<priority>1.0</priority>
-</url>
-<url>
-	<loc>https://swordnex.com/about</loc>
-	<lastmod>2026-05-20T07:58:08+01:00</lastmod>
-	<priority>1.0</priority>
-</url>
-<url>
-	<loc>https://swordnex.com/services</loc>
-	<lastmod>2026-05-20T07:58:08+01:00</lastmod>
-	<priority>1.0</priority>
-</url>
-<url>
-	<loc>https://swordnex.com/products</loc>
-	<lastmod>2026-05-20T07:58:08+01:00</lastmod>
-	<priority>1.0</priority>
-</url>
-<url>
-	<loc>https://swordnex.com/career</loc>
-	<lastmod>2026-05-20T07:58:08+01:00</lastmod>
-	<priority>1.0</priority>
-</url>
-<url>
-	<loc>https://swordnex.com/events</loc>
-	<lastmod>2026-05-20T07:58:08+01:00</lastmod>
-	<priority>1.0</priority>
-</url>
-<url>
-	<loc>https://swordnex.com/Workshopslist</loc>
-	<lastmod>2026-05-20T07:58:08+01:00</lastmod>
-	<priority>1.0</priority>
-</url>
-<url>
-	<loc>https://swordnex.com/signin</loc>
-	<lastmod>2026-05-20T07:58:08+01:00</lastmod>
-	<priority>1.0</priority>
-</url>
-<url>
-	<loc>https://swordnex.com/signup</loc>
-	<lastmod>2026-05-20T07:58:08+01:00</lastmod>
-	<priority>1.0</priority>
-</url>
-<url>
-	<loc>https://swordnex.com/services/application-development</loc>
-	<lastmod>2026-05-20T07:58:08+01:00</lastmod>
-	<priority>0.8</priority>
-</url>
-<url>
-	<loc>https://swordnex.com/services/digital-media</loc>
-	<lastmod>2026-05-20T07:58:08+01:00</lastmod>
-	<priority>0.8</priority>
-</url>
-<url>
-	<loc>https://swordnex.com/services/hr-consulting</loc>
-	<lastmod>2026-05-20T07:58:08+01:00</lastmod>
-	<priority>0.8</priority>
-</url>
-<url>
-	<loc>https://swordnex.com/services/it-training-skill-development</loc>
-	<lastmod>2026-05-20T07:58:08+01:00</lastmod>
-	<priority>0.8</priority>
-</url>
-<url>
-	<loc>https://swordnex.com/services/it-infrastructure</loc>
-	<lastmod>2026-05-20T07:58:08+01:00</lastmod>
-	<priority>0.8</priority>
-</url>
-<url>
-	<loc>https://swordnex.com/BlogPage</loc>
-	<lastmod>2026-05-20T07:58:08+01:00</lastmod>
-	<priority>1.0</priority>
-</url>
-<url>
-	<loc>https://swordnex.com/SupportPage</loc>
-	<lastmod>2026-05-20T07:58:08+01:00</lastmod>
-	<priority>1.0</priority>
-</url>
-<url>
-	<loc>https://swordnex.com/FAQPage</loc>
-	<lastmod>2026-05-20T07:58:08+01:00</lastmod>
-	<priority>1.0</priority>
-</url>
-<url>
-	<loc>https://swordnex.com/security</loc>
-	<lastmod>2026-05-20T07:58:08+01:00</lastmod>
-	<priority>1.0</priority>
-</url>
-<url>
-	<loc>https://swordnex.com/IPR-Complaints</loc>
-	<lastmod>2026-05-20T07:58:08+01:00</lastmod>
-	<priority>1.0</priority>
-</url>
-<url>
-	<loc>https://swordnex.com/Terms</loc>
-	<lastmod>2026-05-20T07:58:08+01:00</lastmod>
-	<priority>1.0</priority>
-</url>
-<url>
-	<loc>https://swordnex.com/PrivacyPolicy</loc>
-	<lastmod>2026-05-20T07:58:08+01:00</lastmod>
-	<priority>1.0</priority>
-</url>
-<url>
-	<loc>https://swordnex.com/TM-Policy</loc>
-	<lastmod>2026-05-20T07:58:08+01:00</lastmod>
-	<priority>1.0</priority>
-</url>
-<url>
-	<loc>https://swordnex.com/cookiepolicy</loc>
-	<lastmod>2026-05-20T07:58:08+01:00</lastmod>
-	<priority>1.0</priority>
-</url>
-<url>
-	<loc>https://swordnex.com/GDPRcompliance</loc>
-	<lastmod>2026-05-20T07:58:08+01:00</lastmod>
-	<priority>1.0</priority>
-</url>
-<url>
-	<loc>https://swordnex.com/Application</loc>
-	<lastmod>2026-05-20T07:58:08+01:00</lastmod>
-	<priority>1.0</priority>
-</url>
-<url>
-	<loc>https://swordnex.com/Workplace</loc>
-	<lastmod>2026-05-20T07:58:08+01:00</lastmod>
-	<priority>1.0</priority>
-</url>
-<url>
-	<loc>https://swordnex.com/Service1</loc>
-	<lastmod>2026-05-20T07:58:08+01:00</lastmod>
-	<priority>1.0</priority>
-</url>
-<url>
-	<loc>https://swordnex.com/privacy</loc>
-	<lastmod>2026-05-20T07:58:08+01:00</lastmod>
-	<priority>1.0</priority>
-</url>
-<url>
-	<loc>https://swordnex.com/course/enquiry</loc>
-	<lastmod>2026-05-20T07:58:08+01:00</lastmod>
-	<priority>0.8</priority>
-</url>
-<url>
-	<loc>https://swordnex.com/career1</loc>
-	<lastmod>2026-05-20T07:58:08+01:00</lastmod>
-	<priority>1.0</priority>
-</url>
-<url>
-	<loc>https://swordnex.com/career4</loc>
-	<lastmod>2026-05-20T07:58:08+01:00</lastmod>
-	<priority>1.0</priority>
-</url>
-<url>
-	<loc>https://swordnex.com/career2</loc>
-	<lastmod>2026-05-20T07:58:08+01:00</lastmod>
-	<priority>1.0</priority>
-</url>
-<url>
-	<loc>https://swordnex.com/career3</loc>
-	<lastmod>2026-05-20T07:58:08+01:00</lastmod>
-	<priority>1.0</priority>
-</url>
-<url>
-	<loc>https://swordnex.com/career5</loc>
-	<lastmod>2026-05-20T07:58:08+01:00</lastmod>
-	<priority>1.0</priority>
-</url>
-<url>
-	<loc>https://swordnex.com/career6</loc>
-	<lastmod>2026-05-20T07:58:08+01:00</lastmod>
-	<priority>1.0</priority>
-</url>
-<url>
-	<loc>https://swordnex.com/docs/payroll-setup</loc>
-	<lastmod>2026-05-20T07:58:08+01:00</lastmod>
-	<priority>0.8</priority>
-</url>
-<url>
-	<loc>https://swordnex.com/docs/hrm-onboarding</loc>
-	<lastmod>2026-05-20T07:58:08+01:00</lastmod>
-	<priority>0.8</priority>
-</url>
-<url>
-	<loc>https://swordnex.com/docs/gst-reports</loc>
-	<lastmod>2026-05-20T07:58:08+01:00</lastmod>
-	<priority>0.8</priority>
-</url>
-<url>
-	<loc>https://swordnex.com/docs/biometric</loc>
-	<lastmod>2026-05-20T07:58:08+01:00</lastmod>
-	<priority>0.8</priority>
-</url>
-<url>
-	<loc>https://swordnex.com/docs/api</loc>
-	<lastmod>2026-05-20T07:58:08+01:00</lastmod>
-	<priority>0.8</priority>
-</url>
-<url>
-	<loc>https://swordnex.com/docs/mobile</loc>
-	<lastmod>2026-05-20T07:58:08+01:00</lastmod>
-	<priority>0.8</priority>
-</url>
-<url>
-	<loc>https://swordnex.com/support</loc>
-	<lastmod>2026-05-20T07:58:08+01:00</lastmod>
-	<priority>1.0</priority>
-</url>
-<url>
-	<loc>https://swordnex.com/course/digital-marketing</loc>
-	<lastmod>2026-05-20T07:58:08+01:00</lastmod>
-	<priority>0.8</priority>
-</url>
-<url>
-	<loc>https://swordnex.com/course/uiux-design</loc>
-	<lastmod>2026-05-20T07:58:08+01:00</lastmod>
-	<priority>0.8</priority>
-</url>
-<url>
-	<loc>https://swordnex.com/course/data-analytics</loc>
-	<lastmod>2026-05-20T07:58:08+01:00</lastmod>
-	<priority>0.8</priority>
-</url>
-<url>
-	<loc>https://swordnex.com/course/data-science</loc>
-	<lastmod>2026-05-20T07:58:08+01:00</lastmod>
-	<priority>0.8</priority>
-</url>
-<url>
-	<loc>https://swordnex.com/course/ai-ml</loc>
-	<lastmod>2026-05-20T07:58:08+01:00</lastmod>
-	<priority>0.8</priority>
-</url>
-<url>
-	<loc>https://swordnex.com/course/app-development</loc>
-	<lastmod>2026-05-20T07:58:08+01:00</lastmod>
-	<priority>0.8</priority>
-</url>
-<url>
-	<loc>https://swordnex.com/course/fullstack-development</loc>
-	<lastmod>2026-05-20T07:58:08+01:00</lastmod>
-	<priority>0.8</priority>
-</url>
-<url>
-	<loc>https://swordnex.com/course/internship</loc>
-	<lastmod>2026-05-20T07:58:08+01:00</lastmod>
-	<priority>0.8</priority>
-</url>
-<url>
-	<loc>https://swordnex.com/testimonials</loc>
-	<lastmod>2026-05-20T07:58:08+01:00</lastmod>
-	<priority>1.0</priority>
-</url>
-<url>
-	<loc>https://swordnex.com/services/job</loc>
-	<lastmod>2026-05-20T07:58:08+01:00</lastmod>
-	<priority>0.8</priority>
-</url>
-<url>
-	<loc>https://swordnex.com/career-main</loc>
-	<lastmod>2026-05-20T07:58:08+01:00</lastmod>
-	<priority>1.0</priority>
-</url>
-<url>
-	<loc>https://swordnex.com/vcbewcebwciubekcakbcnhe8fhawh</loc>
-	<lastmod>2026-05-20T07:58:08+01:00</lastmod>
-	<priority>1.0</priority>
-</url>
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://swordnex.com/</loc>
+    <lastmod>2026-09-30</lastmod>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://swordnex.com/about</loc>
+    <lastmod>2026-09-30</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://swordnex.com/services</loc>
+    <lastmod>2026-09-30</lastmod>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://swordnex.com/products</loc>
+    <lastmod>2026-09-30</lastmod>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://swordnex.com/contact</loc>
+    <lastmod>2026-09-30</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://swordnex.com/career</loc>
+    <lastmod>2026-09-30</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://swordnex.com/career-main</loc>
+    <lastmod>2026-09-30</lastmod>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://swordnex.com/career1</loc>
+    <lastmod>2026-09-30</lastmod>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://swordnex.com/career2</loc>
+    <lastmod>2026-09-30</lastmod>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://swordnex.com/career3</loc>
+    <lastmod>2026-09-30</lastmod>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://swordnex.com/career4</loc>
+    <lastmod>2026-09-30</lastmod>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://swordnex.com/career5</loc>
+    <lastmod>2026-09-30</lastmod>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://swordnex.com/career6</loc>
+    <lastmod>2026-09-30</lastmod>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://swordnex.com/testimonials</loc>
+    <lastmod>2026-09-30</lastmod>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://swordnex.com/events</loc>
+    <lastmod>2026-09-30</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://swordnex.com/Workshopslist</loc>
+    <lastmod>2026-09-30</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://swordnex.com/blogpage</loc>
+    <lastmod>2026-09-30</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://swordnex.com/SupportPage</loc>
+    <lastmod>2026-09-30</lastmod>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://swordnex.com/FAQPage</loc>
+    <lastmod>2026-09-30</lastmod>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://swordnex.com/Workplace</loc>
+    <lastmod>2026-09-30</lastmod>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://swordnex.com/application</loc>
+    <lastmod>2026-09-30</lastmod>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://swordnex.com/affiliate</loc>
+    <lastmod>2026-09-30</lastmod>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://swordnex.com/services/application-development</loc>
+    <lastmod>2026-09-30</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://swordnex.com/services/digital-media</loc>
+    <lastmod>2026-09-30</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://swordnex.com/services/hr-consulting</loc>
+    <lastmod>2026-09-30</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://swordnex.com/services/it-training-skill-development</loc>
+    <lastmod>2026-09-30</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://swordnex.com/services/it-infrastructure</loc>
+    <lastmod>2026-09-30</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://swordnex.com/services/job</loc>
+    <lastmod>2026-09-30</lastmod>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://swordnex.com/course/uiux-design</loc>
+    <lastmod>2026-09-30</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://swordnex.com/course/data-science</loc>
+    <lastmod>2026-09-30</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://swordnex.com/course/app-development</loc>
+    <lastmod>2026-09-30</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://swordnex.com/course/digital-marketing</loc>
+    <lastmod>2026-09-30</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://swordnex.com/course/data-analytics</loc>
+    <lastmod>2026-09-30</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://swordnex.com/course/fullstack-development</loc>
+    <lastmod>2026-09-30</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://swordnex.com/course/ai-ml</loc>
+    <lastmod>2026-09-30</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://swordnex.com/course/internship</loc>
+    <lastmod>2026-09-30</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://swordnex.com/course/enquiry</loc>
+    <lastmod>2026-09-30</lastmod>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://swordnex.com/security</loc>
+    <lastmod>2026-09-30</lastmod>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://swordnex.com/PrivacyPolicy</loc>
+    <lastmod>2026-09-30</lastmod>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://swordnex.com/CookiePolicy</loc>
+    <lastmod>2026-09-30</lastmod>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://swordnex.com/GDPRCompliance</loc>
+    <lastmod>2026-09-30</lastmod>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://swordnex.com/TM-Policy</loc>
+    <lastmod>2026-09-30</lastmod>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://swordnex.com/Terms</loc>
+    <lastmod>2026-09-30</lastmod>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://swordnex.com/IPR-Complaints</loc>
+    <lastmod>2026-09-30</lastmod>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://swordnex.com/products/billing</loc>
+    <lastmod>2026-09-30</lastmod>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://swordnex.com/products/billing/software</loc>
+    <lastmod>2026-09-30</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://swordnex.com/products/billing/small-business</loc>
+    <lastmod>2026-09-30</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://swordnex.com/products/billing/free-software</loc>
+    <lastmod>2026-09-30</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://swordnex.com/products/billing/security</loc>
+    <lastmod>2026-09-30</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://swordnex.com/products/billing/features</loc>
+    <lastmod>2026-09-30</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://swordnex.com/products/billing/pricing</loc>
+    <lastmod>2026-09-30</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://swordnex.com/products/billing/support</loc>
+    <lastmod>2026-09-30</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://swordnex.com/products/billing/help</loc>
+    <lastmod>2026-09-30</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://swordnex.com/products/billing/webinars</loc>
+    <lastmod>2026-09-30</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://swordnex.com/products/billing/faq</loc>
+    <lastmod>2026-09-30</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://swordnex.com/products/hms</loc>
+    <lastmod>2026-09-30</lastmod>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://swordnex.com/products/hms/what-is-hms</loc>
+    <lastmod>2026-09-30</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://swordnex.com/products/hms/reservation-management</loc>
+    <lastmod>2026-09-30</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://swordnex.com/products/hms/guest-check-in-sw</loc>
+    <lastmod>2026-09-30</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://swordnex.com/products/hms/rooms-tracking</loc>
+    <lastmod>2026-09-30</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://swordnex.com/products/hms/features</loc>
+    <lastmod>2026-09-30</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://swordnex.com/products/hms/pricing</loc>
+    <lastmod>2026-09-30</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://swordnex.com/products/hms/help</loc>
+    <lastmod>2026-09-30</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://swordnex.com/products/hms/support</loc>
+    <lastmod>2026-09-30</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://swordnex.com/products/hms/webinars</loc>
+    <lastmod>2026-09-30</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://swordnex.com/products/hms/faq</loc>
+    <lastmod>2026-09-30</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://swordnex.com/products/payroll</loc>
+    <lastmod>2026-09-30</lastmod>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://swordnex.com/products/payroll/payroll-software</loc>
+    <lastmod>2026-09-30</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://swordnex.com/products/payroll/hr-payroll-software</loc>
+    <lastmod>2026-09-30</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://swordnex.com/products/payroll/what-is-payroll</loc>
+    <lastmod>2026-09-30</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://swordnex.com/products/payroll/payslip-templates</loc>
+    <lastmod>2026-09-30</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://swordnex.com/products/payroll/payroll-for-small-business</loc>
+    <lastmod>2026-09-30</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://swordnex.com/products/payroll/free-payroll-software</loc>
+    <lastmod>2026-09-30</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://swordnex.com/products/payroll/features</loc>
+    <lastmod>2026-09-30</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://swordnex.com/products/payroll/pricing</loc>
+    <lastmod>2026-09-30</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://swordnex.com/products/payroll/support</loc>
+    <lastmod>2026-09-30</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://swordnex.com/products/payroll/help</loc>
+    <lastmod>2026-09-30</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://swordnex.com/products/payroll/webinar</loc>
+    <lastmod>2026-09-30</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://swordnex.com/products/payroll/faq</loc>
+    <lastmod>2026-09-30</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://swordnex.com/products/invoice</loc>
+    <lastmod>2026-09-30</lastmod>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://swordnex.com/products/invoice/what-is-an-inv</loc>
+    <lastmod>2026-09-30</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://swordnex.com/products/invoice/how-to-create</loc>
+    <lastmod>2026-09-30</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://swordnex.com/products/invoice/reports-and-anlaytics</loc>
+    <lastmod>2026-09-30</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://swordnex.com/products/invoice/free-services</loc>
+    <lastmod>2026-09-30</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://swordnex.com/products/invoice/support</loc>
+    <lastmod>2026-09-30</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://swordnex.com/products/invoice/help</loc>
+    <lastmod>2026-09-30</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://swordnex.com/products/invoice/faq</loc>
+    <lastmod>2026-09-30</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://swordnex.com/products/jobsheet</loc>
+    <lastmod>2026-09-30</lastmod>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://swordnex.com/products/jobsheet/features</loc>
+    <lastmod>2026-09-30</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://swordnex.com/products/jobsheet/faq</loc>
+    <lastmod>2026-09-30</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://swordnex.com/products/jobsheet/help</loc>
+    <lastmod>2026-09-30</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://swordnex.com/products/jobsheet/pricing</loc>
+    <lastmod>2026-09-30</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://swordnex.com/products/jobsheet/support</loc>
+    <lastmod>2026-09-30</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://swordnex.com/products/jobsheet/webinar</loc>
+    <lastmod>2026-09-30</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://swordnex.com/products/jobsheet/software</loc>
+    <lastmod>2026-09-30</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://swordnex.com/products/jobsheet/security</loc>
+    <lastmod>2026-09-30</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://swordnex.com/products/jobsheet/small-business</loc>
+    <lastmod>2026-09-30</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://swordnex.com/products/jobsheet/analytics-and-reports</loc>
+    <lastmod>2026-09-30</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://swordnex.com/products/jobsheet/js-status-tracking</loc>
+    <lastmod>2026-09-30</lastmod>
+    <priority>0.7</priority>
+  </url>
 </urlset>

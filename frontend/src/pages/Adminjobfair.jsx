@@ -4,6 +4,7 @@ import API_BASE_URL from "../config/apiConfig";
 import * as XLSX from "xlsx";
 import JSZip from "jszip";
 import { saveAs } from "file-saver";
+import { apiFetch } from "../services/apiClient";
 
 const AdminJobFairDashboard = () => {
  const [candidates, setCandidates] = useState([]);
@@ -23,7 +24,7 @@ const AdminJobFairDashboard = () => {
 
  const fetchCandidates = async () => {
  try {
- const response = await fetch(`${BASE_URL}/api/jobfair`);
+ const response = await apiFetch(`${BASE_URL}/api/jobfair`);
  if (!response.ok) throw new Error("Failed to fetch candidates");
  const data = await response.json();
 
@@ -77,7 +78,7 @@ const AdminJobFairDashboard = () => {
  const candidate = candidates.find(c => c.code === id) || candidates.find(c => c.id === id);
  if (!candidate) return;
 
- const response = await fetch(`${BASE_URL}/api/jobfair/${candidate.id}`, {
+ const response = await apiFetch(`${BASE_URL}/api/jobfair/${candidate.id}`, {
  method: 'PUT',
  headers: { 'Content-Type': 'application/json' },
  body: JSON.stringify({ status }),
@@ -199,7 +200,7 @@ const AdminJobFairDashboard = () => {
  const url = `${BASE_URL}/api/jobfair/${candidateId}/file/${fileType}`;
  console.log(`Fetching: ${url}`);
 
- const response = await fetch(url);
+ const response = await apiFetch(url);
 
  if (!response.ok) {
  console.log(`Server returned ${response.status} for ${fileType}`);
@@ -532,7 +533,7 @@ Registered: ${candidate.createdAt ? new Date(candidate.createdAt).toLocaleString
  if (!selected) return;
 
  try {
- const response = await fetch(`${BASE_URL}/api/jobfair/${selected.id}`, {
+ const response = await apiFetch(`${BASE_URL}/api/jobfair/${selected.id}`, {
  method: 'DELETE',
  });
 

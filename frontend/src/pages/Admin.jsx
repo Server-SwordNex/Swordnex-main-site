@@ -10,6 +10,7 @@ import {
 } from 'lucide-react';
 import AdminEventRegistrations from './AdminEventRegistrations';
 import * as XLSX from 'xlsx';
+import { apiFetch } from "../services/apiClient";
 
 const SwordNexDashboard = () => {
  // --- State ---
@@ -116,7 +117,7 @@ const SwordNexDashboard = () => {
  useEffect(() => {
  const fetchApplications = async () => {
  try {
- const response = await fetch(`${API_BASE_URL}/api/careers`);
+ const response = await apiFetch(`${API_BASE_URL}/api/careers`);
  if (!response.ok) throw new Error('Failed to fetch applications');
  const data = await response.json();
 
@@ -153,7 +154,7 @@ const SwordNexDashboard = () => {
  useEffect(() => {
  const fetchContacts = async () => {
  try {
- const response = await fetch(`${API_BASE_URL}/api/contacts`);
+ const response = await apiFetch(`${API_BASE_URL}/api/contacts`);
  if (!response.ok) throw new Error('Failed to fetch contacts');
  const data = await response.json();
 
@@ -185,7 +186,7 @@ const SwordNexDashboard = () => {
  useEffect(() => {
  const fetchDemos = async () => {
  try {
- const response = await fetch(`${API_BASE_URL}/api/appointments`);
+ const response = await apiFetch(`${API_BASE_URL}/api/appointments`);
  if (!response.ok) throw new Error('Failed to fetch appointments');
  const data = await response.json();
 
@@ -220,7 +221,7 @@ const SwordNexDashboard = () => {
  useEffect(() => {
  const fetchCourseEnquiries = async () => {
  try {
- const response = await fetch(`${API_BASE_URL}/api/course-enquiries`);
+ const response = await apiFetch(`${API_BASE_URL}/api/course-enquiries`);
  if (!response.ok) throw new Error('Failed to fetch course enquiries');
  const data = await response.json();
 
@@ -249,7 +250,7 @@ const SwordNexDashboard = () => {
  useEffect(() => {
  const fetchEnquiries = async () => {
  try {
- const response = await fetch(`${API_BASE_URL}/api/service-enquiries`);
+ const response = await apiFetch(`${API_BASE_URL}/api/service-enquiries`);
  if (!response.ok) throw new Error('Failed to fetch enquiries');
  const data = await response.json();
 
@@ -278,7 +279,7 @@ const SwordNexDashboard = () => {
 
  const refreshBlogs = async () => {
  try {
- const response = await fetch(`${API_BASE_URL}/api/blogs`);
+ const response = await apiFetch(`${API_BASE_URL}/api/blogs`);
  if (!response.ok) throw new Error('Failed to fetch blogs');
  const data = await response.json();
 
@@ -299,7 +300,7 @@ const SwordNexDashboard = () => {
  useEffect(() => {
  const fetchChatbotLeads = async () => {
  try {
- const response = await fetch(`${API_BASE_URL}/api/chatbot-leads`);
+ const response = await apiFetch(`${API_BASE_URL}/api/chatbot-leads`);
  if (!response.ok) throw new Error('Failed to fetch chatbot leads');
  const data = await response.json();
 
@@ -326,7 +327,7 @@ const SwordNexDashboard = () => {
  useEffect(() => {
  const fetchEvents = async () => {
  try {
- const response = await fetch(`${API_BASE_URL}/api/events`);
+ const response = await apiFetch(`${API_BASE_URL}/api/events`);
  if (!response.ok) throw new Error('Failed to fetch events');
  const data = await response.json();
 
@@ -345,7 +346,7 @@ const SwordNexDashboard = () => {
  useEffect(() => {
  const fetchWorkshops = async () => {
  try {
- const response = await fetch(`${API_BASE_URL}/api/workshops`);
+ const response = await apiFetch(`${API_BASE_URL}/api/workshops`);
  if (!response.ok) throw new Error('Failed to fetch workshops');
  const data = await response.json();
  setWorkshops(data.data || []);
@@ -360,7 +361,7 @@ const SwordNexDashboard = () => {
  useEffect(() => {
  const fetchPartners = async () => {
  try {
- const response = await fetch(`${API_BASE_URL}/api/partners`);
+ const response = await apiFetch(`${API_BASE_URL}/api/partners`);
  if (!response.ok) throw new Error('Failed to fetch partners');
  const data = await response.json();
  setPartners(data);
@@ -378,7 +379,7 @@ const SwordNexDashboard = () => {
  useEffect(() => {
  const fetchAffiliates = async () => {
  try {
- const res = await fetch(`${API_BASE_URL}/api/admin/affiliates`);
+ const res = await apiFetch(`${API_BASE_URL}/api/admin/affiliates`);
  if (res.ok) {
  const data = await res.json();
  if (data.success) setAffiliates(data.data);
@@ -389,7 +390,7 @@ const SwordNexDashboard = () => {
  };
  const fetchPayouts = async () => {
  try {
- const res = await fetch(`${API_BASE_URL}/api/admin/affiliate-payouts`);
+ const res = await apiFetch(`${API_BASE_URL}/api/admin/affiliate-payouts`);
  if (res.ok) {
  const data = await res.json();
  if (data.success) setAffiliatePayouts(data.data);
@@ -460,7 +461,7 @@ const SwordNexDashboard = () => {
  try {
  if (editingEvent) {
  // UPDATE
- const response = await fetch(`${API_BASE_URL}/api/events/${editingEvent.id}`, {
+ const response = await apiFetch(`${API_BASE_URL}/api/events/${editingEvent.id}`, {
  method: 'PUT',
  headers: { 'Content-Type': 'application/json' },
  body: JSON.stringify(newEvent),
@@ -469,7 +470,7 @@ const SwordNexDashboard = () => {
  setEvents(prev => prev.map(ev => ev.id === editingEvent.id ? { ...ev, ...newEvent } : ev));
  } else {
  // CREATE
- const response = await fetch(`${API_BASE_URL}/api/events`, {
+ const response = await apiFetch(`${API_BASE_URL}/api/events`, {
  method: 'POST',
  headers: { 'Content-Type': 'application/json' },
  body: JSON.stringify(newEvent),
@@ -495,7 +496,7 @@ const SwordNexDashboard = () => {
  e.preventDefault();
  try {
  if (editingWorkshop) {
- const response = await fetch(`${API_BASE_URL}/api/workshops/${editingWorkshop.id}`, {
+ const response = await apiFetch(`${API_BASE_URL}/api/workshops/${editingWorkshop.id}`, {
  method: 'PUT',
  headers: { 'Content-Type': 'application/json' },
  body: JSON.stringify(newWorkshop),
@@ -504,7 +505,7 @@ const SwordNexDashboard = () => {
  const result = await response.json();
  setWorkshops(prev => prev.map(ws => ws.id === editingWorkshop.id ? { ...ws, ...newWorkshop } : ws));
  } else {
- const response = await fetch(`${API_BASE_URL}/api/workshops`, {
+ const response = await apiFetch(`${API_BASE_URL}/api/workshops`, {
  method: 'POST',
  headers: { 'Content-Type': 'application/json' },
  body: JSON.stringify(newWorkshop),
@@ -551,7 +552,7 @@ const SwordNexDashboard = () => {
 
  const handleExportExcel = async () => {
  try {
- const response = await fetch(`${API_BASE_URL}/api/careers`);
+ const response = await apiFetch(`${API_BASE_URL}/api/careers`);
  if (!response.ok) throw new Error('Failed to fetch applications');
  const data = await response.json();
 
@@ -609,7 +610,7 @@ const SwordNexDashboard = () => {
 
  if (type === 'application') {
  try {
- const response = await fetch(`${API_BASE_URL}/api/careers/${id}`, { method: 'DELETE' });
+ const response = await apiFetch(`${API_BASE_URL}/api/careers/${id}`, { method: 'DELETE' });
  if (response.ok) {
  const updated = applications.filter(item => item.id !== id);
  setApplications(updated);
@@ -621,7 +622,7 @@ const SwordNexDashboard = () => {
  }
  } else if (type === 'chatbot') {
  try {
- const response = await fetch(`${API_BASE_URL}/api/chatbot-leads/${id}`, { method: 'DELETE' });
+ const response = await apiFetch(`${API_BASE_URL}/api/chatbot-leads/${id}`, { method: 'DELETE' });
  if (response.ok) {
  const updated = chatbotLeads.filter(item => item.id !== id);
  setChatbotLeads(updated);
@@ -637,7 +638,7 @@ const SwordNexDashboard = () => {
  localStorage.setItem('swornex_jobs', JSON.stringify(updated));
  } else if (type === 'contact') {
  try {
- const response = await fetch(`${API_BASE_URL}/api/contacts/${id}`, { method: 'DELETE' });
+ const response = await apiFetch(`${API_BASE_URL}/api/contacts/${id}`, { method: 'DELETE' });
  if (response.ok) {
  const updated = contacts.filter(item => item.id !== id);
  setContacts(updated);
@@ -649,7 +650,7 @@ const SwordNexDashboard = () => {
  }
  } else if (type === 'demo') {
  try {
- const response = await fetch(`${API_BASE_URL}/api/appointments/${id}`, { method: 'DELETE' });
+ const response = await apiFetch(`${API_BASE_URL}/api/appointments/${id}`, { method: 'DELETE' });
  if (response.ok) {
  const updated = demos.filter(item => item.id !== id);
  setDemos(updated);
@@ -661,7 +662,7 @@ const SwordNexDashboard = () => {
  }
  } else if (type === 'enquiry') {
  try {
- const response = await fetch(`${API_BASE_URL}/api/service-enquiries/${id}`, { method: 'DELETE' });
+ const response = await apiFetch(`${API_BASE_URL}/api/service-enquiries/${id}`, { method: 'DELETE' });
  if (response.ok) {
  const updated = enquiries.filter(item => item.id !== id);
  setEnquiries(updated);
@@ -673,7 +674,7 @@ const SwordNexDashboard = () => {
  }
  } else if (type === 'event') {
  try {
- const response = await fetch(`${API_BASE_URL}/api/events/${id}`, { method: 'DELETE' });
+ const response = await apiFetch(`${API_BASE_URL}/api/events/${id}`, { method: 'DELETE' });
  if (response.ok) {
  const updated = events.filter(item => item.id !== id);
  setEvents(updated);
@@ -685,7 +686,7 @@ const SwordNexDashboard = () => {
  }
  } else if (type === 'workshop') {
  try {
- const response = await fetch(`${API_BASE_URL}/api/workshops/${id}`, { method: 'DELETE' });
+ const response = await apiFetch(`${API_BASE_URL}/api/workshops/${id}`, { method: 'DELETE' });
  if (response.ok) {
  const updated = workshops.filter(item => item.id !== id);
  setWorkshops(updated);
@@ -697,7 +698,7 @@ const SwordNexDashboard = () => {
  }
  } else if (type === 'partner') {
  try {
- const response = await fetch(`${API_BASE_URL}/api/partners/${id}`, { method: 'DELETE' });
+ const response = await apiFetch(`${API_BASE_URL}/api/partners/${id}`, { method: 'DELETE' });
  if (response.ok) {
  const updated = partners.filter(item => item.id !== id);
  setPartners(updated);
@@ -709,7 +710,7 @@ const SwordNexDashboard = () => {
  }
  } else if (type === 'course-enquiry') {
  try {
- const response = await fetch(`${API_BASE_URL}/api/course-enquiries/${id}`, { method: 'DELETE' });
+ const response = await apiFetch(`${API_BASE_URL}/api/course-enquiries/${id}`, { method: 'DELETE' });
  if (response.ok) {
  const updated = courseEnquiries.filter(item => item.id !== id);
  setCourseEnquiries(updated);
@@ -1046,7 +1047,7 @@ const SwordNexDashboard = () => {
  try {
  const url = editingBlog ? `${API_BASE_URL}/api/blogs/${editingBlog.id}` : `${API_BASE_URL}/api/blogs`;
  const method = editingBlog ? 'PUT' : 'POST';
- const response = await fetch(url, {
+ const response = await apiFetch(url, {
  method,
  headers: { 'Content-Type': 'application/json' },
  body: JSON.stringify(payload),
@@ -1072,7 +1073,7 @@ const SwordNexDashboard = () => {
  const handleDeleteBlog = async (id) => {
  if (!window.confirm('Delete this blog post? This cannot be undone.')) return;
  try {
- const response = await fetch(`${API_BASE_URL}/api/blogs/${id}`, { method: 'DELETE' });
+ const response = await apiFetch(`${API_BASE_URL}/api/blogs/${id}`, { method: 'DELETE' });
  if (!response.ok) {
  const errorData = await response.json();
  throw new Error(errorData.error || 'Failed to delete blog');
@@ -1086,7 +1087,7 @@ const SwordNexDashboard = () => {
 
  const handleToggleBlogPublished = async (blog) => {
  try {
- const response = await fetch(`${API_BASE_URL}/api/blogs/${blog.id}`, {
+ const response = await apiFetch(`${API_BASE_URL}/api/blogs/${blog.id}`, {
  method: 'PUT',
  headers: { 'Content-Type': 'application/json' },
  body: JSON.stringify({ published: !blog.published }),
@@ -1412,12 +1413,12 @@ const SwordNexDashboard = () => {
 
  const handleApproveCommission = async (id) => {
  try {
- const res = await fetch(`${API_BASE_URL}/api/admin/affiliate-commissions/${id}`, {
+ const res = await apiFetch(`${API_BASE_URL}/api/admin/affiliate-commissions/${id}`, {
  method: 'PUT', headers: { 'Content-Type': 'application/json' },
  body: JSON.stringify({ status: 'approved' }),
  });
  if (res.ok) {
- const refreshed = await fetch(`${API_BASE_URL}/api/admin/affiliates`);
+ const refreshed = await apiFetch(`${API_BASE_URL}/api/admin/affiliates`);
  if (refreshed.ok) { const d = await refreshed.json(); if (d.success) setAffiliates(d.data); }
  }
  } catch (e) { console.error(e); }
@@ -1425,12 +1426,12 @@ const SwordNexDashboard = () => {
 
  const handleRejectCommission = async (id) => {
  try {
- const res = await fetch(`${API_BASE_URL}/api/admin/affiliate-commissions/${id}`, {
+ const res = await apiFetch(`${API_BASE_URL}/api/admin/affiliate-commissions/${id}`, {
  method: 'PUT', headers: { 'Content-Type': 'application/json' },
  body: JSON.stringify({ status: 'cancelled' }),
  });
  if (res.ok) {
- const refreshed = await fetch(`${API_BASE_URL}/api/admin/affiliates`);
+ const refreshed = await apiFetch(`${API_BASE_URL}/api/admin/affiliates`);
  if (refreshed.ok) { const d = await refreshed.json(); if (d.success) setAffiliates(d.data); }
  }
  } catch (e) { console.error(e); }
@@ -1438,14 +1439,14 @@ const SwordNexDashboard = () => {
 
  const handlePayoutAction = async (id, status) => {
  try {
- const res = await fetch(`${API_BASE_URL}/api/admin/affiliate-payouts/${id}`, {
+ const res = await apiFetch(`${API_BASE_URL}/api/admin/affiliate-payouts/${id}`, {
  method: 'PUT', headers: { 'Content-Type': 'application/json' },
  body: JSON.stringify({ status }),
  });
  if (res.ok) {
  const [affRes, payoutRes] = await Promise.all([
- fetch(`${API_BASE_URL}/api/admin/affiliates`),
- fetch(`${API_BASE_URL}/api/admin/affiliate-payouts`),
+ apiFetch(`${API_BASE_URL}/api/admin/affiliates`),
+ apiFetch(`${API_BASE_URL}/api/admin/affiliate-payouts`),
  ]);
  if (affRes.ok) { const d = await affRes.json(); if (d.success) setAffiliates(d.data); }
  if (payoutRes.ok) { const d = await payoutRes.json(); if (d.success) setAffiliatePayouts(d.data); }
@@ -1456,12 +1457,12 @@ const SwordNexDashboard = () => {
  const handleToggleStatus = async (id, currentStatus) => {
  const newStatus = currentStatus === 'active' ? 'suspended' : 'active';
  try {
- const res = await fetch(`${API_BASE_URL}/api/admin/affiliates/${id}/status`, {
+ const res = await apiFetch(`${API_BASE_URL}/api/admin/affiliates/${id}/status`, {
  method: 'PUT', headers: { 'Content-Type': 'application/json' },
  body: JSON.stringify({ status: newStatus }),
  });
  if (res.ok) {
- const refreshed = await fetch(`${API_BASE_URL}/api/admin/affiliates`);
+ const refreshed = await apiFetch(`${API_BASE_URL}/api/admin/affiliates`);
  if (refreshed.ok) { const d = await refreshed.json(); if (d.success) setAffiliates(d.data); }
  }
  } catch (e) { console.error(e); }
@@ -1470,7 +1471,7 @@ const SwordNexDashboard = () => {
  const handleDeleteAffiliate = async (id) => {
  if (!window.confirm('Delete this affiliate permanently? This will remove all their data including referral codes, clicks, commissions, and payouts. This cannot be undone.')) return;
  try {
- const res = await fetch(`${API_BASE_URL}/api/admin/affiliates/${id}`, { method: 'DELETE' });
+ const res = await apiFetch(`${API_BASE_URL}/api/admin/affiliates/${id}`, { method: 'DELETE' });
  if (res.ok) {
  setAffiliates(prev => prev.filter(a => a.id !== id));
  } else {
@@ -1829,13 +1830,11 @@ const SwordNexDashboard = () => {
  const [createError, setCreateError] = useState('');
  const [createLoading, setCreateLoading] = useState(false);
 
- const ADMIN_PASSWORD = 'SwordNex!123#';
-
  const fetchUsers = async () => {
  setLoading(true);
  setFetchError('');
  try {
- const res = await fetch(`${API_BASE_URL}/api/users?adminSecret=${encodeURIComponent(ADMIN_PASSWORD)}`);
+ const res = await apiFetch(`${API_BASE_URL}/api/users`);
  if (!res.ok) {
  const data = await res.json().catch(() => ({}));
  throw new Error(data.error || `Request failed (${res.status})`);
@@ -1857,10 +1856,10 @@ const SwordNexDashboard = () => {
  setCreateError('');
  setCreateLoading(true);
  try {
- const res = await fetch(`${API_BASE_URL}/api/users/create`, {
+ const res = await apiFetch(`${API_BASE_URL}/api/users/create`, {
  method: 'POST',
  headers: { 'Content-Type': 'application/json' },
- body: JSON.stringify({ ...createForm, adminSecret: ADMIN_PASSWORD }),
+ body: JSON.stringify(createForm),
  });
  const data = await res.json();
  if (!res.ok) return setCreateError(data.error);
@@ -1877,10 +1876,8 @@ const SwordNexDashboard = () => {
  const handleDelete = async (id) => {
  if (!window.confirm('Delete this user?')) return;
  try {
- const res = await fetch(`${API_BASE_URL}/api/users/${id}`, {
+ const res = await apiFetch(`${API_BASE_URL}/api/users/${id}`, {
  method: 'DELETE',
- headers: { 'Content-Type': 'application/json' },
- body: JSON.stringify({ adminSecret: ADMIN_PASSWORD }),
  });
  if (!res.ok) return alert('Failed to delete user');
  setUsers(prev => prev.filter(u => u.id !== id));
@@ -3127,7 +3124,7 @@ const SwordNexDashboard = () => {
  })
  );
 
- const response = await fetch(`${API_BASE_URL}/api/partners/upload`, {
+ const response = await apiFetch(`${API_BASE_URL}/api/partners/upload`, {
  method: 'POST',
  headers: { 'Content-Type': 'application/json' },
  body: JSON.stringify({ images: base64Images })
@@ -3193,7 +3190,7 @@ export default SwordNexDashboard;
 // })
 // );
 
-// const response = await fetch(`${API_BASE_URL}/api/partners/upload`, {
+// const response = await apiFetch(`${API_BASE_URL}/api/partners/upload`, {
 // method: 'POST',
 // headers: { 'Content-Type': 'application/json' },
 // body: JSON.stringify({ images: base64Images })

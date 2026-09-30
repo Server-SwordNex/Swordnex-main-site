@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
 import ConsultationModal from '../components/ConsultationModal';
 import ServiceEnquiryModal from '../components/ServiceEnquiryModal';
-import { Helmet } from "react-helmet";
+import { Helmet } from "react-helmet-async";
 
 <Helmet>
  <title>Web & Mobile Application Development Services | SwordNex</title>

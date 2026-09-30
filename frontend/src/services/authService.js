@@ -1,35 +1,9 @@
 import {
- createUserWithEmailAndPassword,
  signInWithEmailAndPassword,
  signOut,
- onAuthStateChanged
-} from "firebase/auth";
-import { doc, setDoc, getDoc } from "firebase/firestore";
+ } from "firebase/auth";
+import { doc, getDoc } from "firebase/firestore";
 import { auth, db } from "../config/FirebaseConfig";
-
-/**
- * Signs up a new user and stores their role in Firestore.
- */
-export const signUpUser = async ({ email, password, firstName, lastName, role, mobileNumber }) => {
- try {
- const userCredential = await createUserWithEmailAndPassword(auth, email, password);
- const user = userCredential.user;
-
- // Store additional user info in Firestore
- await setDoc(doc(db, "users", user.uid), {
- firstName,
- lastName,
- email,
- role,
- mobileNumber,
- createdAt: new Date().toISOString(),
- });
-
- return { user, error: null };
- } catch (error) {
- return { user: null, error: error.message };
- }
-};
 
 /**
  * Signs in an existing user.

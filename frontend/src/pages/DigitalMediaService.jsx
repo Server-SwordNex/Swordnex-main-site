@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import { motion, useScroll, useTransform, useAnimation } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { useEffect } from 'react';
-import { Helmet } from "react-helmet";
+import { Helmet } from "react-helmet-async";
 
 <Helmet>
  <title>

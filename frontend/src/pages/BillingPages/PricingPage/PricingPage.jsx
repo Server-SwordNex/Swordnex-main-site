@@ -100,9 +100,9 @@ export default function PricingPage() {
  title="Ready to transform your billing operations?"
  subtitle="Generate GST-ready invoices, automate tax calculations, track payments, and maintain accurate records from a single platform."
  primaryText="Start Free Trial"
- primaryLink="/billing/signup"
+ primaryLink="https://www.billing.swordnex.com/signup"
  secondaryText="Contact Sales"
- secondaryLink="/billing/contact"
+ secondaryLink="/products/billing/support"
  />
 
  </>

@@ -15,7 +15,7 @@ export default function PricingPage() {
  "Best suited for businesses with one time billing requirements",
 
  buttonText: "Start your Billing",
- buttonLink: "https://billing.swordnex.com/signup",
+ buttonLink: "https://www.hms.swordnex.com/signup",
 
  features: [
  "All Basic Features",
@@ -39,7 +39,7 @@ export default function PricingPage() {
  "Best suited for businesses with one time and subscription billing requirements",
 
  buttonText: "Start your Billing",
- buttonLink: "https://billing.swordnex.com/signup",
+ buttonLink: "https://www.hms.swordnex.com/signup",
 
  includesText:
  "Includes everything in Standard +",
@@ -60,7 +60,7 @@ export default function PricingPage() {
  "Best suited for enterprises with advanced billing requirements",
 
  buttonText: "Get in Touch",
- buttonLink: "/products/billing/support",
+ buttonLink: "/products/hms/support",
 
  includesText:
  "Includes everything in Premium +",
@@ -100,9 +100,9 @@ export default function PricingPage() {
  title="Ready to transform your billing operations?"
  subtitle="Generate GST-ready invoices, automate tax calculations, track payments, and maintain accurate records from a single platform."
  primaryText="Start Free Trial"
- primaryLink="/billing/signup"
+ primaryLink="https://www.hms.swordnex.com/signup"
  secondaryText="Contact Sales"
- secondaryLink="/billing/contact"
+ secondaryLink="/products/hms/support"
  />
 
  </>

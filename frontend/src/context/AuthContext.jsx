@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../config/FirebaseConfig";
-import { signUpUser, signInUser, signOutUser, getUserData } from "../services/authService";
+import { signInUser, signOutUser, getUserData } from "../services/authService";
 
 const AuthContext = createContext();
 
@@ -15,26 +15,7 @@ export const AuthProvider = ({ children }) => {
  const [userData, setUserData] = useState(null);
  const [loading, setLoading] = useState(true);
 
- const signup = async (userData) => {
- const result = await signUpUser(userData);
- return result;
- };
-
  const login = async (email, password) => {
- // Default Admin Login Bypass
- if (email === 'admin@swordnex.com' && password === 'SwordNex!123#') {
- const mockUser = { uid: 'admin-123', email: 'admin@swordnex.com' };
- const mockData = { firstName: 'Admin', lastName: 'User', role: 'Admin', email: 'admin@swordnex.com' };
-
- // Persist mock admin session
- localStorage.setItem('SwordNex_Auth_Admin', JSON.stringify({ user: mockUser, userData: mockData }));
-
- setCurrentUser(mockUser);
- setUserRole('Admin');
- setUserData(mockData);
- return { user: mockUser, error: null };
- }
-
  const result = await signInUser(email, password);
  if (result.user) {
  const { data } = await getUserData(result.user.uid);
@@ -83,7 +64,6 @@ export const AuthProvider = ({ children }) => {
  currentUser,
  userRole,
  userData,
- signup,
  login,
  logout,
  loading

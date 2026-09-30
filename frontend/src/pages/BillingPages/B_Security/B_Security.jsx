@@ -126,9 +126,9 @@ export default function B_Security() {
  title="Ready to secure your billing operations?"
  subtitle="Protect sensitive financial data, guarantee enterprise-grade encryption, and maintain strict compliance with global security standards."
  primaryText="Start Secure Trial"
- primaryLink="/billing/signup"
+ primaryLink="https://www.billing.swordnex.com/signup"
  secondaryText="Contact Sales"
- secondaryLink="/billing/contact"
+ secondaryLink="/products/billing/support"
  />
 
  </>

@@ -8,7 +8,8 @@ import API_BASE_URL from '../config/apiConfig';
 const generateInterviewCode = () => {
  const letters = 'ABCDEFGHJKLMNPQRSTUVWXYZ';
  const numbers = '0123456789';
- const existing = (JSON.parse(localStorage.getItem('event-candidates')) || []).map(c => c.interviewCode);
+ let existing = [];
+ try { existing = JSON.parse(localStorage.getItem('event-interview-codes')) || []; } catch { existing = []; }
  let code, attempts = 0;
  do {
  const l1 = letters[Math.floor(Math.random() * letters.length)];
@@ -161,9 +162,12 @@ const EventRegisterPage = () => {
  throw new Error(err.error || 'Registration failed');
  }
 
- // Save to local cache
- const cached = JSON.parse(localStorage.getItem('event-candidates')) || [];
- localStorage.setItem('event-candidates', JSON.stringify([...cached, { ...payload }]));
+ // Remember only the code (not the applicant's details) to avoid reusing it on this device
+ try {
+ const codes = JSON.parse(localStorage.getItem('event-interview-codes')) || [];
+ localStorage.setItem('event-interview-codes', JSON.stringify([...codes, code]));
+ localStorage.removeItem('event-candidates');
+ } catch { /* storage unavailable */ }
 
  setInterviewCode(code);
  setShowPopup(true);

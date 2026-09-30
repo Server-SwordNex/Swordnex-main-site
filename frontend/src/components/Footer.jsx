@@ -24,7 +24,6 @@ const Footer = () => {
  { name: "Contact", to: "/contact" },
  { name: "Affiliate", to: "/affiliate" },
  { name: "Sign In", to: "/signin" },
- { name: "Sign Up", to: "/signup" },
  ];
 
  const services = [

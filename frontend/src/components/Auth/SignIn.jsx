@@ -3,7 +3,9 @@ import { motion } from 'framer-motion';
 import { Mail, Lock, Briefcase, Eye, EyeOff, LogIn, AlertCircle } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import { sendPasswordResetEmail } from 'firebase/auth';
 import API_BASE_URL from '../../config/apiConfig';
+import { auth } from '../../config/FirebaseConfig';
 
 const SignIn = () => {
  const { login, logout } = useAuth();
@@ -18,6 +20,7 @@ const SignIn = () => {
  const [showPassword, setShowPassword] = useState(false);
  const [isSubmitting, setIsSubmitting] = useState(false);
  const [serverError, setServerError] = useState('');
+ const [resetMessage, setResetMessage] = useState('');
  const [roles, setRoles] = useState(['Admin', 'HR', 'Support']);
 
  useEffect(() => { logout(); }, []);
@@ -96,6 +99,19 @@ const SignIn = () => {
  setServerError('An unexpected error occurred. Please try again.');
  setIsSubmitting(false);
  }
+ };
+
+ const handleForgotPassword = async () => {
+ if (!/\S+@\S+\.\S+/.test(formData.email)) {
+ setErrors(prev => ({ ...prev, email: 'Enter your email address to reset your password' }));
+ return;
+ }
+ try {
+ await sendPasswordResetEmail(auth, formData.email.trim());
+ } catch (error) {
+ // Same message either way so the form does not reveal which emails have accounts.
+ }
+ setResetMessage('If an account exists for this email, a password reset link has been sent.');
  };
 
  const inputClasses = (fieldName) => `
@@ -203,8 +219,12 @@ const SignIn = () => {
  <input type="checkbox" className="w-4 h-4 rounded border-white/20 bg-white/10 checked:bg-blue-600 transition-all cursor-pointer" />
  <span className="group-hover:text-white/80 transition-colors">Remember me</span>
  </label>
- <a href="#" className="text-blue-400 hover:text-blue-300 transition-colors">Forgot password?</a>
+ <button type="button" onClick={handleForgotPassword} className="text-blue-400 hover:text-blue-300 transition-colors">Forgot password?</button>
  </div>
+
+ {resetMessage && (
+ <p className="text-sm text-blue-300 bg-blue-500/10 border border-blue-500/20 rounded-xl px-4 py-3">{resetMessage}</p>
+ )}
 
  {serverError && (
  <div className="bg-red-500/10 border border-red-500/50 rounded-xl p-4 flex items-center gap-3 text-red-400 text-sm">
@@ -232,8 +252,7 @@ const SignIn = () => {
  </form>
 
  <p className="mt-8 text-center text-white/40 text-sm">
- Don't have an account?{' '}
- <a href="/signup" className="text-blue-400 hover:text-blue-300 font-medium transition-colors">Sign Up</a>
+ Staff accounts are created by your administrator.
  </p>
  </div>
  </motion.div>

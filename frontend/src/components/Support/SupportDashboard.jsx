@@ -28,6 +28,7 @@ import {
 import { motion, AnimatePresence } from 'framer-motion';
 import Toast from '../UI/Toast';
 import API_BASE_URL from '../../config/apiConfig';
+import { apiFetch } from "../../services/apiClient";
 
 const SupportDetailDrawer = ({ isOpen, onClose, item, type, onUpdate }) => {
  const [status, setStatus] = useState('');
@@ -249,10 +250,10 @@ const SupportDashboard = () => {
  try {
  // Fetch all data from API in parallel
  const [chatbotRes, bookingsRes, contactsRes, enquiriesRes] = await Promise.all([
- fetch(`${API_BASE_URL}/api/chatbot-leads`),
- fetch(`${API_BASE_URL}/api/appointments`),
- fetch(`${API_BASE_URL}/api/contacts`),
- fetch(`${API_BASE_URL}/api/service-enquiries`)
+ apiFetch(`${API_BASE_URL}/api/chatbot-leads`),
+ apiFetch(`${API_BASE_URL}/api/appointments`),
+ apiFetch(`${API_BASE_URL}/api/contacts`),
+ apiFetch(`${API_BASE_URL}/api/service-enquiries`)
  ]);
 
  const chatbotData = await chatbotRes.json();
@@ -266,10 +267,7 @@ const SupportDashboard = () => {
  setEnquiries(Array.isArray(enquiriesData) ? enquiriesData : enquiriesData.data || []);
  } catch (error) {
  console.error("Failed to load support data from API:", error);
- 
- // Fallback to localStorage if API fails (optional, but good for resilience during transition)
- const storedChatbotLeads = JSON.parse(localStorage.getItem('chatbot_leads')) || [];
- setChatbotLeads(storedChatbotLeads);
+
  } finally {
  setIsFetching(false);
  }
@@ -313,7 +311,7 @@ const SupportDashboard = () => {
  const endpoint = endpoints[activeTab];
  if (!endpoint) return;
 
- const response = await fetch(`${API_BASE_URL}${endpoint}`, {
+ const response = await apiFetch(`${API_BASE_URL}${endpoint}`, {
  method: 'PUT',
  headers: { 'Content-Type': 'application/json' },
  body: JSON.stringify(updates)
@@ -357,7 +355,7 @@ const SupportDashboard = () => {
  };
 
  const endpoint = endpoints[activeTab];
- const response = await fetch(`${API_BASE_URL}${endpoint}`, {
+ const response = await apiFetch(`${API_BASE_URL}${endpoint}`, {
  method: 'DELETE'
  });
 

@@ -208,8 +208,6 @@ Would you like to connect with us right now? 📞`;
  };
 
  const submitLeadToBackend = async (data) => {
- console.log("Submitting lead to database:", data);
-
  try {
  const response = await fetch(`${API_BASE_URL}/api/chatbot-leads`, {
  method: "POST",
@@ -227,18 +225,9 @@ Would you like to connect with us right now? 📞`;
  throw new Error('Failed to save lead to database');
  }
 
- console.log('Lead saved successfully to database');
-
- // Still keep local storage for immediate UI reflected in current session if needed, 
- // but the Admin page will now pull from DB.
- const existingLeads = JSON.parse(localStorage.getItem('chatbot_leads')) || [];
- localStorage.setItem('chatbot_leads', JSON.stringify([{ ...data, id: Date.now() }, ...existingLeads]));
 
  } catch (error) {
- console.error('Error saving lead to database:', error);
- // Fallback: only use localStorage if DB fails
- const existingLeads = JSON.parse(localStorage.getItem('chatbot_leads')) || [];
- localStorage.setItem('chatbot_leads', JSON.stringify([{ ...data, id: Date.now(), dbError: true }, ...existingLeads]));
+ console.error('Error saving chatbot lead:', error.message);
  }
  };
 

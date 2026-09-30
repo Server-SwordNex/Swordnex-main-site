@@ -1,10 +1,11 @@
 import API_BASE_URL from "../config/apiConfig";
+import { apiFetch } from "./apiClient";
 
 const BASE = `${API_BASE_URL}/api`;
 
 async function request(url, options = {}) {
  try {
- const res = await fetch(url, {
+ const res = await apiFetch(url, {
  headers: { "Content-Type": "application/json", ...options.headers },
  ...options,
  });

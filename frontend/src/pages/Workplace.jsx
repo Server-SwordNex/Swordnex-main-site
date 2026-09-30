@@ -10,7 +10,7 @@ import {
  CheckBadgeIcon,
 } from "@heroicons/react/24/outline";
 import { Building2, Mail, Phone, MapPin } from "lucide-react";
-import { Helmet } from "react-helmet";
+import { Helmet } from "react-helmet-async";
 
 const WorkplaceCulture = () => {
  return (
