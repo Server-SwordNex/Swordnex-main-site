@@ -9,6 +9,7 @@ import { Autoplay } from "swiper/modules";
 import kaja from '../assets/Founder_1.jpeg';
 import "swiper/css";
 import { Helmet } from "react-helmet-async";
+import DotField from '../components/UI/DotField';
 
 <Helmet>
  <title>
@@ -168,12 +169,29 @@ const Home = () => {
 
  {/* CENTERED TEXT CONTENT */}
  <div className="flex flex-col items-center text-center space-y-6 max-w-8xl mx-auto relative z-10">
- <h1 className="font-display font-extrabold text-4xl sm:text-5xl lg:text-8xl xl:text-6xl text-gray-900 dark:text-white leading-tight scroll-animate scroll-animate-delay-1">
- Looking for the 
- <span className="block text-transparent bg-clip-text bg-gradient-to-r from-primary to-purple-500 mt-2 lg:mt-1 pb-1 lg:pb-2">
- Best IT Solutions & Software Company in Tamil Nadu? 
- </span>
- </h1>
+        <div className="relative w-full max-w-6xl mx-auto py-6 sm:py-8 px-4 sm:px-6 rounded-3xl overflow-hidden flex items-center justify-center">
+          {/* Interactive DotField background canvas */}
+          <div className="absolute inset-0 pointer-events-none -z-0 dot-field-mask">
+            <DotField
+              dotRadius={1.5}
+              dotSpacing={14}
+              bulgeStrength={35}
+              glowRadius={160}
+              sparkle={false}
+              waveAmplitude={1}
+              gradientFrom="#3B82F6"
+              gradientTo="#ffffff"
+              glowColor="#3B82F6"
+            />
+          </div>
+
+          <h1 className="relative z-10 font-display font-extrabold text-4xl sm:text-5xl lg:text-8xl xl:text-6xl text-gray-900 dark:text-white leading-tight scroll-animate scroll-animate-delay-1">
+            Looking for the 
+            <span className="block text-transparent bg-clip-text bg-gradient-to-r from-primary to-purple-500 mt-2 lg:mt-1 pb-1 lg:pb-2">
+              Best IT Solutions & Software Company in Tamil Nadu? 
+            </span>
+          </h1>
+        </div>
 
  <p className="text-lg sm:text-xl lg:text-2xl text-gray-600 dark:text-gray-400 leading-relaxed max-w-6xl mx-auto">
  Get expert IT Services, Custom Software Development, SaaS Solutions, and Business Automation tailored for your enterprise. Partner with SwordNex Technologies—a premier IT Solutions provider—to build scalable digital solutions and accelerate your business growth.
