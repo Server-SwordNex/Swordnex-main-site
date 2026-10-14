@@ -1,0 +1,110 @@
+/* Interactive 3D Paragraph without any box, border, or shadow */
+.interactive-3d-text-container {
+  perspective: 1000px;
+  transform-style: preserve-3d;
+  width: 100%;
+  max-width: 32rem; /* matches max-w-lg */
+  position: relative;
+  user-select: none;
+  -webkit-user-select: none;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  padding: 0;
+  margin: 0;
+  will-change: transform;
+}
+
+.interactive-3d-text-body {
+  position: relative;
+  transform-style: preserve-3d;
+  cursor: default;
+  padding: 0;
+  margin: 0;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+}
+
+/* Base layer: identical to original About.jsx paragraph styling */
+.interactive-3d-text-base {
+  margin: 0;
+  font-size: 0.875rem; /* text-sm */
+  line-height: 1.625; /* leading-relaxed */
+  color: #4b5563; /* text-gray-600 */
+  text-align: left;
+  transform: translateZ(0);
+}
+
+@media (min-width: 640px) {
+  .interactive-3d-text-base {
+    font-size: 1rem; /* sm:text-base */
+  }
+}
+
+@media (min-width: 768px) {
+  .interactive-3d-text-base {
+    font-size: 1.125rem; /* md:text-lg */
+  }
+}
+
+:is(.dark) .interactive-3d-text-base {
+  color: #d1d5db; /* dark:text-gray-300 */
+}
+
+/* Light overlay: Exact same typography, superimposed over base layer.
+   NO drop-shadow, NO blur, NO glow. The text simply turns blue in color!
+   STRICTLY constrained to the single active line (var(--line-y)), affecting ~2-3 words. */
+.interactive-3d-text-light {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  font-size: 0.875rem;
+  line-height: 1.625;
+  text-align: left;
+  pointer-events: none;
+  user-select: none;
+  transform: translateZ(1px);
+  will-change: opacity;
+  
+  /* Elliptical highlight strictly bound to a single line:
+     Horizontal radius: 56px (covers ~2-3 words).
+     Vertical radius: var(--radius-y, 13px) (strictly contained within the active line). */
+  background: radial-gradient(
+    ellipse 56px var(--radius-y, 13px) at var(--mouse-x, -9999px) var(--line-y, -9999px),
+    #2563eb 0%,
+    #2563eb 45%,
+    #60a5fa 78%,
+    rgba(96, 165, 250, 0.25) 92%,
+    transparent 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  opacity: var(--light-opacity, 0);
+  transition: opacity 0.2s ease;
+}
+
+@media (min-width: 640px) {
+  .interactive-3d-text-light {
+    font-size: 1rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .interactive-3d-text-light {
+    font-size: 1.125rem;
+  }
+}
+
+:is(.dark) .interactive-3d-text-light {
+  background: radial-gradient(
+    ellipse 56px var(--radius-y, 13px) at var(--mouse-x, -9999px) var(--line-y, -9999px),
+    #38bdf8 0%,
+    #38bdf8 45%,
+    #60a5fa 78%,
+    rgba(96, 165, 250, 0.25) 92%,
+    transparent 100%
+  );
+}

@@ -1,0 +1,90 @@
+/* Interactive Letters Hover & Highlight Effect */
+.interactive-heading-container {
+  display: inline;
+}
+
+.interactive-word {
+  display: inline-block;
+  white-space: nowrap;
+}
+
+.interactive-char {
+  display: inline-block;
+  position: relative;
+  cursor: pointer;
+  user-select: text;
+  transform-origin: center bottom;
+  will-change: transform, color, text-shadow;
+  border-radius: 4px;
+  transition: transform 0.45s cubic-bezier(0.25, 1, 0.5, 1),
+              color 0.45s ease,
+              text-shadow 0.45s ease,
+              background-color 0.45s ease,
+              box-shadow 0.45s ease;
+}
+
+/* When cursor touches the character or touch event activates it */
+.interactive-char:hover,
+.interactive-char.is-hovered {
+  transform: translateY(-4px) scale(1.15);
+  transition: transform 0.1s cubic-bezier(0.34, 1.56, 0.64, 1),
+              color 0.1s ease,
+              text-shadow 0.1s ease,
+              background-color 0.1s ease,
+              box-shadow 0.1s ease;
+  z-index: 10;
+}
+
+/* Neutral Variant: Initially Black text -> Highlights to Blue */
+.interactive-char-neutral {
+  color: inherit;
+}
+
+.interactive-char-neutral:hover,
+.interactive-char-neutral.is-hovered {
+  color: #2563eb; /* Vibrant Royal Blue */
+  text-shadow: 0 0 16px rgba(37, 99, 235, 0.65), 0 0 28px rgba(59, 130, 246, 0.35);
+  background-color: rgba(37, 99, 235, 0.08);
+  box-shadow: 0 2px 10px rgba(37, 99, 235, 0.15);
+}
+
+.dark .interactive-char-neutral:hover,
+.dark .interactive-char-neutral.is-hovered {
+  color: #60a5fa;
+  text-shadow: 0 0 18px rgba(96, 165, 250, 0.8), 0 0 32px rgba(59, 130, 246, 0.5);
+  background-color: rgba(96, 165, 250, 0.18);
+  box-shadow: 0 2px 12px rgba(96, 165, 250, 0.25);
+}
+
+/* Primary Variant: Initially Blue text -> Highlights to Black */
+.interactive-char-primary {
+  color: hsl(var(--primary)); /* Default Royal Blue */
+}
+
+.interactive-char-primary:hover,
+.interactive-char-primary.is-hovered {
+  color: #0d121b; /* Turns Black when touched */
+  text-shadow: 0 0 14px rgba(13, 18, 27, 0.35), 0 0 24px rgba(13, 18, 27, 0.2);
+  background-color: rgba(13, 18, 27, 0.08);
+  box-shadow: 0 2px 10px rgba(13, 18, 27, 0.18);
+}
+
+.dark .interactive-char-primary:hover,
+.dark .interactive-char-primary.is-hovered {
+  color: #ffffff; /* Turns White in dark mode */
+  text-shadow: 0 0 18px rgba(255, 255, 255, 0.8), 0 0 30px rgba(255, 255, 255, 0.4);
+  background-color: rgba(255, 255, 255, 0.16);
+  box-shadow: 0 2px 12px rgba(255, 255, 255, 0.25);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .interactive-char {
+    transition: none !important;
+    transform: none !important;
+  }
+  .interactive-char:hover,
+  .interactive-char.is-hovered {
+    transform: none !important;
+    transition: none !important;
+  }
+}
