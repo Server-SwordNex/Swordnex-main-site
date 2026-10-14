@@ -1,0 +1,257 @@
+/* Interactive Dotted Earth Component Styles */
+.interactive-earth-wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 480px;
+  height: 450px;
+  min-height: 420px;
+  aspect-ratio: 1 / 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  user-select: none;
+  cursor: grab;
+  overflow: visible;
+}
+
+@media (max-width: 1024px) {
+  .interactive-earth-wrapper {
+    max-width: 430px;
+    height: 410px;
+    min-height: 380px;
+  }
+}
+
+@media (max-width: 640px) {
+  .interactive-earth-wrapper {
+    max-width: 350px;
+    height: 340px;
+    min-height: 310px;
+  }
+}
+
+.interactive-earth-wrapper:active {
+  cursor: grabbing;
+}
+
+.interactive-earth-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  touch-action: none;
+  z-index: 5; /* In front of back orbiting items (z: 2), behind front orbiting items (z: 12) */
+}
+
+/* Orbiting Services Container */
+.orbiting-services-container {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  overflow: visible;
+}
+
+.orbiting-service-item {
+  position: absolute;
+  top: 0;
+  left: 0;
+  pointer-events: auto;
+  cursor: pointer;
+  transform-origin: center center;
+  opacity: 0; /* Prevents 0,0 flash before first frame calculation */
+  transition: opacity 0.2s ease;
+  will-change: transform, opacity;
+}
+
+/* Glassmorphic Cyber Pill Badge */
+.orbiting-service-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.28rem 0.75rem;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.88);
+  border: 1px solid rgba(37, 99, 235, 0.35);
+  box-shadow: 0 4px 14px -2px rgba(37, 99, 235, 0.18),
+              0 0 10px -2px rgba(56, 189, 248, 0.25);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transition: border-color 0.25s ease, box-shadow 0.25s ease, background-color 0.25s ease;
+  white-space: nowrap;
+}
+
+:is(.dark) .orbiting-service-badge {
+  background: rgba(15, 23, 42, 0.88);
+  border: 1px solid rgba(56, 189, 248, 0.35);
+  box-shadow: 0 4px 16px -2px rgba(0, 0, 0, 0.5),
+              0 0 12px -2px rgba(56, 189, 248, 0.3);
+}
+
+.orbiting-service-item:hover .orbiting-service-badge {
+  border-color: #2563eb;
+  background: rgba(255, 255, 255, 0.98);
+  box-shadow: 0 6px 20px -2px rgba(37, 99, 235, 0.35),
+              0 0 16px 2px rgba(56, 189, 248, 0.45);
+}
+
+:is(.dark) .orbiting-service-item:hover .orbiting-service-badge {
+  border-color: #38bdf8;
+  background: rgba(15, 23, 42, 0.98);
+  box-shadow: 0 6px 20px -2px rgba(56, 189, 248, 0.45),
+              0 0 18px 2px rgba(37, 99, 235, 0.5);
+}
+
+/* Pulsing LED Dot */
+.service-led-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: #2563eb;
+  box-shadow: 0 0 8px #38bdf8;
+  animation: serviceLedPulse 1.8s ease-in-out infinite;
+}
+
+:is(.dark) .service-led-dot {
+  background-color: #38bdf8;
+  box-shadow: 0 0 8px #38bdf8, 0 0 12px #2563eb;
+}
+
+@keyframes serviceLedPulse {
+  0%, 100% {
+    opacity: 0.6;
+    transform: scale(0.9);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.15);
+  }
+}
+
+.service-icon {
+  font-size: 15px !important;
+  color: #2563eb;
+  transition: color 0.2s ease;
+}
+
+:is(.dark) .service-icon {
+  color: #38bdf8;
+}
+
+/* Glitchy but Readable Typography */
+.glitch-text {
+  position: relative;
+  display: inline-block;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: #0f172a;
+  text-transform: uppercase;
+}
+
+:is(.dark) .glitch-text {
+  color: #f1f5f9;
+}
+
+/* Pseudo-elements for Chromatic Aberration & Slice Glitch */
+.glitch-text::before,
+.glitch-text::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  opacity: 0.8;
+}
+
+.glitch-text::before {
+  color: #38bdf8;
+  z-index: -1;
+  animation: cyberGlitchTop 3.4s infinite ease-in-out alternate-reverse;
+}
+
+.glitch-text::after {
+  color: #2563eb;
+  z-index: -2;
+  animation: cyberGlitchBottom 2.8s infinite ease-in-out alternate-reverse;
+}
+
+:is(.dark) .glitch-text::after {
+  color: #60a5fa;
+}
+
+@keyframes cyberGlitchTop {
+  0%, 88% {
+    transform: translate(0, 0);
+    clip-path: inset(0 0 0 0);
+    opacity: 0;
+  }
+  89% {
+    transform: translate(-1.5px, -0.5px) skewX(-2deg);
+    clip-path: inset(10% 0 65% 0);
+    opacity: 0.85;
+  }
+  92% {
+    transform: translate(1px, 0.5px);
+    clip-path: inset(45% 0 25% 0);
+    opacity: 0.9;
+  }
+  95% {
+    transform: translate(-1px, 0) skewX(1deg);
+    clip-path: inset(70% 0 10% 0);
+    opacity: 0.75;
+  }
+  98%, 100% {
+    transform: translate(0, 0);
+    clip-path: inset(0 0 0 0);
+    opacity: 0;
+  }
+}
+
+@keyframes cyberGlitchBottom {
+  0%, 86% {
+    transform: translate(0, 0);
+    clip-path: inset(0 0 0 0);
+    opacity: 0;
+  }
+  87% {
+    transform: translate(1.5px, 0.5px) skewX(2deg);
+    clip-path: inset(60% 0 15% 0);
+    opacity: 0.85;
+  }
+  90% {
+    transform: translate(-1px, -0.5px);
+    clip-path: inset(20% 0 50% 0);
+    opacity: 0.9;
+  }
+  94% {
+    transform: translate(1px, 0) skewX(-1deg);
+    clip-path: inset(5% 0 80% 0);
+    opacity: 0.75;
+  }
+  98%, 100% {
+    transform: translate(0, 0);
+    clip-path: inset(0 0 0 0);
+    opacity: 0;
+  }
+}
+
+/* Respect user preferences */
+@media (prefers-reduced-motion: reduce) {
+  .glitch-text::before,
+  .glitch-text::after {
+    animation: none !important;
+    display: none !important;
+  }
+  .service-led-dot {
+    animation: none !important;
+  }
+}
