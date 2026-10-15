@@ -1,0 +1,85 @@
+/* AboutSections.css - Clean styling for standard About page */
+
+.about-page {
+  width: 100%;
+  overflow-x: hidden;
+}
+
+/* "Business Growth" heading & glow:
+   - Hovering anywhere on the heading triggers the glow on Business Growth.
+   - On hover out, the glow slowly and smoothly fades to zero over 2.6 seconds. */
+.business-growth-heading {
+  cursor: default;
+}
+
+.business-growth-glow {
+  display: inline-block;
+  text-shadow:
+    0 0 0px rgba(37, 99, 235, 0),
+    0 0 0px rgba(59, 130, 246, 0);
+  /* Smooth lingering decay lasting a few seconds after hover out */
+  transition: text-shadow 2.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.business-growth-heading:hover .business-growth-glow,
+.business-growth-glow:hover {
+  /* Refined, reduced-intensity blue glow */
+  text-shadow:
+    0 0 10px rgba(37, 99, 235, 0.55),
+    0 0 20px rgba(59, 130, 246, 0.35);
+  /* Responsive power-up */
+  transition: text-shadow 0.35s ease-out;
+}
+
+:is(.dark) .business-growth-glow {
+  text-shadow:
+    0 0 0px rgba(96, 165, 250, 0),
+    0 0 0px rgba(59, 130, 246, 0);
+  transition: text-shadow 2.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+:is(.dark) .business-growth-heading:hover .business-growth-glow,
+:is(.dark) .business-growth-glow:hover {
+  /* Refined, reduced-intensity sky/cyan glow */
+  text-shadow:
+    0 0 12px rgba(96, 165, 250, 0.65),
+    0 0 24px rgba(59, 130, 246, 0.4);
+  transition: text-shadow 0.35s ease-out;
+}
+
+/* Service description subtitle: scales up and thickens ultra-smoothly on hover */
+.about-service-description {
+  display: inline-block;
+  transform-origin: center;
+  cursor: default;
+  will-change: transform, text-shadow, color;
+  text-shadow: 0 0 0px currentColor;
+  transition:
+    transform 0.52s cubic-bezier(0.16, 1, 0.3, 1),
+    text-shadow 0.52s cubic-bezier(0.16, 1, 0.3, 1),
+    color 0.52s ease-out;
+}
+
+.about-service-description:hover {
+  transform: scale(1.038);
+  /* Smooth optical thickening without line-breaking jumps or stroke aliasing */
+  text-shadow:
+    0 0 0.5px currentColor,
+    0 0 0.5px currentColor;
+  color: #111827;
+}
+
+:is(.dark) .about-service-description {
+  text-shadow: 0 0 0px currentColor;
+  transition:
+    transform 0.52s cubic-bezier(0.16, 1, 0.3, 1),
+    text-shadow 0.52s cubic-bezier(0.16, 1, 0.3, 1),
+    color 0.52s ease-out;
+}
+
+:is(.dark) .about-service-description:hover {
+  color: #f9fafb;
+  text-shadow:
+    0 0 0.5px currentColor,
+    0 0 0.5px currentColor;
+}

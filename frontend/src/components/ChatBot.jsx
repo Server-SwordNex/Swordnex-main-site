@@ -19,6 +19,68 @@ const ChatBot = () => {
  const [showCallOptions, setShowCallOptions] = useState(false);
  const messagesEndRef = useRef(null);
 
+ // Cloud tooltip typing animation state
+ const [isBtnHovered, setIsBtnHovered] = useState(false);
+ const [displayedTooltip, setDisplayedTooltip] = useState("");
+ const [isTypingTooltip, setIsTypingTooltip] = useState(false);
+ const [showTooltipIcon, setShowTooltipIcon] = useState(false);
+ const typingTimerRef = useRef(null);
+
+ const FULL_TOOLTIP = "Chat with us !";
+
+ const handleBtnMouseEnter = () => {
+   setIsBtnHovered(true);
+   setIsTypingTooltip(true);
+   setShowTooltipIcon(false);
+   setDisplayedTooltip("");
+
+   if (typingTimerRef.current) clearInterval(typingTimerRef.current);
+
+   const chars = Array.from(FULL_TOOLTIP);
+   let charIndex = 0;
+   typingTimerRef.current = setInterval(() => {
+     charIndex++;
+     setDisplayedTooltip(chars.slice(0, charIndex).join(""));
+     if (charIndex >= chars.length) {
+       clearInterval(typingTimerRef.current);
+       typingTimerRef.current = null;
+       setIsTypingTooltip(false);
+       setShowTooltipIcon(true);
+     }
+   }, 45);
+ };
+
+ const handleBtnMouseLeave = () => {
+   setIsBtnHovered(false);
+   if (typingTimerRef.current) {
+     clearInterval(typingTimerRef.current);
+     typingTimerRef.current = null;
+   }
+   setIsTypingTooltip(false);
+   setShowTooltipIcon(false);
+   setTimeout(() => {
+     setDisplayedTooltip("");
+   }, 220);
+ };
+
+ useEffect(() => {
+   if (isOpen) {
+     setIsBtnHovered(false);
+     if (typingTimerRef.current) {
+       clearInterval(typingTimerRef.current);
+       typingTimerRef.current = null;
+     }
+     setDisplayedTooltip("");
+     setShowTooltipIcon(false);
+   }
+ }, [isOpen]);
+
+ useEffect(() => {
+   return () => {
+     if (typingTimerRef.current) clearInterval(typingTimerRef.current);
+   };
+ }, []);
+
  // Phone number for callback
  const CALL_NUMBER = "8610404930";
 
@@ -351,6 +413,10 @@ Would you like to connect with us right now? 📞`;
  {/* Chat Button */}
  <button
  onClick={() => setIsOpen(!isOpen)}
+ onMouseEnter={handleBtnMouseEnter}
+ onMouseLeave={handleBtnMouseLeave}
+ onFocus={handleBtnMouseEnter}
+ onBlur={handleBtnMouseLeave}
  className="w-16 h-16 rounded-full bg-primary shadow-lg hover:bg-blue-700 transition-all duration-300 flex items-center justify-center text-white relative group"
  aria-label="Chat with us"
  >
@@ -362,9 +428,24 @@ Would you like to connect with us right now? 📞`;
  <span className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 text-white text-xs rounded-full flex items-center justify-center animate-pulse">
  1
  </span>
- {/* Tooltip */}
- <span className="absolute right-full mr-3 px-3 py-2 bg-white dark:bg-gray-800 text-gray-800 dark:text-white text-sm rounded-lg shadow-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
- Chat with us! 💬
+ {/* Cloud Speech Bubble Tooltip with Typing Animation */}
+ <span
+ className={`absolute right-full mr-3.5 px-4 py-2 min-h-[40px] min-w-[150px] bg-white dark:bg-gray-800 text-gray-800 dark:text-white text-sm font-medium rounded-2xl shadow-xl border border-gray-100 dark:border-gray-700 pointer-events-none whitespace-nowrap flex items-center justify-center gap-1.5 transition-all duration-200 origin-right ${
+ isBtnHovered ? 'opacity-100 scale-100 translate-x-0' : 'opacity-0 scale-95 translate-x-2'
+ }`}
+ aria-hidden={!isBtnHovered}
+ >
+ <span className="font-medium tracking-wide">{displayedTooltip}</span>
+ {isTypingTooltip && (
+ <span className="inline-block w-0.5 h-3.5 bg-primary rounded-full animate-pulse ml-0.5" />
+ )}
+ {showTooltipIcon && (
+ <span className="material-icons-round text-primary text-[18px] select-none inline-flex items-center transition-all duration-300 transform scale-100">
+ textsms
+ </span>
+ )}
+ {/* Speech bubble tail */}
+ <span className="absolute -right-2 top-1/2 -translate-y-1/2 w-0 h-0 border-y-[6px] border-y-transparent border-l-[8px] border-l-white dark:border-l-gray-800" />
  </span>
  </>
  )}
