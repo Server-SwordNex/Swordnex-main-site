@@ -21,12 +21,30 @@ export default defineConfig({
     chunkSizeWarningLimit: 1000,
     rollupOptions: {
       output: {
-        manualChunks: {
-          'vendor-react': ['react', 'react-dom', 'react-router-dom'],
-          'vendor-utils': ['framer-motion', 'lucide-react', 'swiper'],
-          'vendor-excel': ['xlsx', 'jszip'],
-        }
-      }
-    }
+        manualChunks(id) {
+          if (!id.includes("node_modules")) return;
+
+          if (
+            id.includes("react") ||
+            id.includes("react-dom") ||
+            id.includes("react-router-dom")
+          ) {
+            return "vendor-react";
+          }
+
+          if (
+            id.includes("framer-motion") ||
+            id.includes("lucide-react") ||
+            id.includes("swiper")
+          ) {
+            return "vendor-utils";
+          }
+
+          if (id.includes("xlsx") || id.includes("jszip")) {
+            return "vendor-excel";
+          }
+        },
+      },
+    },
   },
 });
