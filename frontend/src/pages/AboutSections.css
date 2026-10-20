@@ -47,8 +47,9 @@
   transition: text-shadow 0.35s ease-out;
 }
 
-/* Service description subtitle: scales up and thickens ultra-smoothly on hover */
-.about-service-description {
+/* Service & company description subtitles: scales up and thickens ultra-smoothly on hover */
+.about-service-description,
+.about-company-description {
   display: inline-block;
   transform-origin: center;
   cursor: default;
@@ -60,7 +61,8 @@
     color 0.52s ease-out;
 }
 
-.about-service-description:hover {
+.about-service-description:hover,
+.about-company-description:hover {
   transform: scale(1.038);
   /* Smooth optical thickening without line-breaking jumps or stroke aliasing */
   text-shadow:
@@ -69,7 +71,8 @@
   color: #111827;
 }
 
-:is(.dark) .about-service-description {
+:is(.dark) .about-service-description,
+:is(.dark) .about-company-description {
   text-shadow: 0 0 0px currentColor;
   transition:
     transform 0.52s cubic-bezier(0.16, 1, 0.3, 1),
@@ -77,9 +80,522 @@
     color 0.52s ease-out;
 }
 
-:is(.dark) .about-service-description:hover {
+:is(.dark) .about-service-description:hover,
+:is(.dark) .about-company-description:hover {
   color: #f9fafb;
   text-shadow:
     0 0 0.5px currentColor,
     0 0 0.5px currentColor;
 }
+
+/* "Our Story" block & heading glow:
+   - Hovering anywhere on the Our Story text block or heading highlights the title in glowing blue.
+   - On hover out, the glow smoothly and gracefully fades to zero over 2.6 seconds. */
+.our-story-block {
+  position: relative;
+  width: 100%;
+}
+
+.our-story-title {
+  display: inline-block;
+  cursor: pointer;
+  color: #0f172a;
+  text-shadow:
+    0 0 0px rgba(37, 99, 235, 0),
+    0 0 0px rgba(59, 130, 246, 0);
+  transition:
+    color 2.6s cubic-bezier(0.16, 1, 0.3, 1),
+    text-shadow 2.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+:is(.dark) .our-story-title {
+  color: #ffffff;
+  text-shadow:
+    0 0 0px rgba(96, 165, 250, 0),
+    0 0 0px rgba(59, 130, 246, 0);
+  transition:
+    color 2.6s cubic-bezier(0.16, 1, 0.3, 1),
+    text-shadow 2.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.our-story-block:hover .our-story-title,
+.our-story-title:hover {
+  color: #2563eb;
+  text-shadow:
+    0 0 10px rgba(37, 99, 235, 0.55),
+    0 0 20px rgba(59, 130, 246, 0.35);
+  transition:
+    color 0.35s ease-out,
+    text-shadow 0.35s ease-out;
+}
+
+:is(.dark) .our-story-block:hover .our-story-title,
+:is(.dark) .our-story-title:hover {
+  color: #38bdf8;
+  text-shadow:
+    0 0 12px rgba(96, 165, 250, 0.65),
+    0 0 24px rgba(59, 130, 246, 0.4);
+  transition:
+    color 0.35s ease-out,
+    text-shadow 0.35s ease-out;
+}
+
+/* 3D Flip Framework Cards beside Our Story */
+.framework-flip-card {
+  perspective: 1000px;
+  width: 100%;
+  height: 116px;
+  position: relative;
+  z-index: 1;
+}
+
+@media (min-width: 640px) {
+  .framework-flip-card {
+    height: 114px;
+  }
+}
+
+.framework-flip-card:hover,
+.framework-flip-card.is-flipped {
+  z-index: 20;
+}
+
+.framework-flip-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+  transform-style: preserve-3d;
+  -webkit-transform-style: preserve-3d;
+  cursor: pointer;
+}
+
+.framework-flip-card:hover .framework-flip-card-inner,
+.framework-flip-card.is-flipped .framework-flip-card-inner {
+  transform: rotateY(180deg);
+}
+
+.framework-flip-card-front,
+.framework-flip-card-back {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 1rem; /* rounded-2xl */
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  display: flex;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.framework-flip-card-front {
+  transform: rotateY(0deg) translateZ(1px);
+  z-index: 2;
+  align-items: center;
+  padding: 1rem 1.25rem;
+}
+
+/* Back Face: Revealed Description Text on Flip with Running Blue Border */
+.framework-flip-card-back {
+  transform: rotateY(180deg) translateZ(1px);
+  z-index: 1;
+  padding: 2.5px; /* 2.5px border track matching View Services button */
+  background-color: #cbd5e1; /* Base track border color in light mode */
+  box-shadow: 0 4px 14px -2px rgba(15, 23, 42, 0.08);
+  transition: box-shadow 0.3s ease, background-color 0.3s ease;
+  -webkit-mask-image: -webkit-radial-gradient(white, black); /* WebKit 3D border-radius clip fix */
+}
+
+:is(.dark) .framework-flip-card-back,
+.dark .framework-flip-card-back {
+  background-color: #374151; /* Base track border color in dark mode */
+  box-shadow: 0 4px 14px -2px rgba(0, 0, 0, 0.35);
+}
+
+.framework-flip-card:hover .framework-flip-card-back,
+.framework-flip-card.is-flipped .framework-flip-card-back {
+  box-shadow: 0 8px 24px -4px rgba(37, 99, 235, 0.35), 0 0 16px -2px rgba(37, 99, 235, 0.3);
+}
+
+:is(.dark) .framework-flip-card:hover .framework-flip-card-back,
+.dark .framework-flip-card:hover .framework-flip-card-back,
+:is(.dark) .framework-flip-card.is-flipped .framework-flip-card-back,
+.dark .framework-flip-card.is-flipped .framework-flip-card-back {
+  box-shadow: 0 8px 24px -4px rgba(56, 189, 248, 0.3), 0 0 16px -2px rgba(56, 189, 248, 0.25);
+}
+
+/* The Running Bar on the back face (Sweeping Centered Conic Beam) */
+.framework-flip-card-back::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 900px;
+  height: 900px;
+  margin-top: -450px;
+  margin-left: -450px;
+  transform-origin: center center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+  z-index: 1;
+  background: conic-gradient(
+    from 0deg,
+    transparent 0deg,
+    transparent 230deg,
+    rgba(37, 99, 235, 0.3) 265deg,
+    rgba(37, 99, 235, 0.9) 305deg,
+    #2563eb 330deg,
+    #60a5fa 350deg,
+    #93c5fd 358deg,
+    transparent 360deg
+  );
+  filter: drop-shadow(0 0 10px #2563eb) drop-shadow(0 0 4px #60a5fa);
+}
+
+:is(.dark) .framework-flip-card-back::before,
+.dark .framework-flip-card-back::before {
+  background: conic-gradient(
+    from 0deg,
+    transparent 0deg,
+    transparent 230deg,
+    rgba(56, 189, 248, 0.3) 265deg,
+    rgba(56, 189, 248, 0.9) 305deg,
+    #38bdf8 330deg,
+    #60a5fa 350deg,
+    #93c5fd 358deg,
+    transparent 360deg
+  );
+  filter: drop-shadow(0 0 12px #38bdf8) drop-shadow(0 0 5px #60a5fa);
+}
+
+/* Activate bar runner when card is flipped (hovered or clicked) */
+.framework-flip-card:hover .framework-flip-card-back::before,
+.framework-flip-card.is-flipped .framework-flip-card-back::before {
+  opacity: 1;
+  animation: runBorderBar 1.9s linear infinite;
+}
+
+/* Inner content mask */
+.framework-flip-card-back-inner {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+  border-radius: calc(1rem - 2.5px);
+  background-color: #f8fafc;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 0.8rem 1.15rem;
+  box-sizing: border-box;
+  transition: background-color 0.3s ease;
+}
+
+:is(.dark) .framework-flip-card-back-inner,
+.dark .framework-flip-card-back-inner {
+  background-color: #1e293b;
+}
+
+@keyframes runBorderBar {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* "Driven by Purpose & Vision" heading and running underline on "Purpose" */
+.purpose-vision-heading {
+  cursor: default;
+  display: block;
+}
+
+.purpose-highlight-word {
+  position: relative;
+  display: inline-block;
+  white-space: nowrap;
+  transition: text-shadow 0.35s ease;
+}
+
+.purpose-vision-heading:hover .purpose-highlight-word,
+.purpose-highlight-word:hover {
+  text-shadow: 0 0 12px rgba(37, 99, 235, 0.45);
+}
+
+:is(.dark) .purpose-vision-heading:hover .purpose-highlight-word,
+.dark .purpose-vision-heading:hover .purpose-highlight-word {
+  text-shadow: 0 0 14px rgba(56, 189, 248, 0.55);
+}
+
+/* The Underline Track spanning precisely from letter 'P' to 'e' */
+.purpose-underline-track {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -0.12em;
+  height: 0.08em;
+  min-height: 3px;
+  max-height: 4.5px;
+  border-radius: 9999px;
+  overflow: hidden;
+  pointer-events: none;
+  background-color: rgba(37, 99, 235, 0.2);
+  opacity: 0;
+  transform: scaleX(0.85);
+  transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  box-sizing: border-box;
+}
+
+:is(.dark) .purpose-underline-track,
+.dark .purpose-underline-track {
+  background-color: rgba(56, 189, 248, 0.25);
+}
+
+/* Reveal underline track when hovering over the heading or the word */
+.purpose-vision-heading:hover .purpose-underline-track,
+.purpose-highlight-word:hover .purpose-underline-track {
+  opacity: 1;
+  transform: scaleX(1);
+}
+
+/* The running blue bar streaming constantly from 'P' to 'e' */
+.purpose-underline-runner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 55%;
+  border-radius: inherit;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(37, 99, 235, 0.3) 15%,
+    #2563eb 45%,
+    #60a5fa 75%,
+    #93c5fd 95%,
+    transparent 100%
+  );
+  filter: drop-shadow(0 0 6px #2563eb) drop-shadow(0 0 2px #60a5fa);
+  transform: translateX(-100%);
+  will-change: transform;
+}
+
+:is(.dark) .purpose-underline-runner,
+.dark .purpose-underline-runner {
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(56, 189, 248, 0.3) 15%,
+    #38bdf8 45%,
+    #60a5fa 75%,
+    #93c5fd 95%,
+    transparent 100%
+  );
+  filter: drop-shadow(0 0 8px #38bdf8) drop-shadow(0 0 3px #60a5fa);
+}
+
+/* Activate continuous looping animation from P to e while hovered */
+.purpose-vision-heading:hover .purpose-underline-runner,
+.purpose-highlight-word:hover .purpose-underline-runner {
+  animation: runPurposeBeam 1.05s linear infinite;
+}
+
+@keyframes runPurposeBeam {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(200%);
+  }
+}
+
+/* ==========================================================================
+   Interactive Expandable "Our Mission" & "Our Vision" Cards
+   - Resting state: Shrinked compact card displaying only the icon in front of the title.
+   - Hover / Active state: The color behind the icon expands radially to flood
+     the entire card, while the card expands vertically to reveal the full content.
+   ========================================================================== */
+
+.mission-vision-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 1.5rem;
+  padding: 1.25rem 1.4rem;
+  background-color: #ffffff;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 4px 12px -2px rgba(15, 23, 42, 0.06);
+  cursor: pointer;
+  transform: translateZ(0);
+  transition:
+    transform 0.42s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.42s cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 0.42s ease;
+  user-select: none;
+}
+
+:is(.dark) .mission-vision-card {
+  background-color: #1e293b;
+  border-color: #334155;
+  box-shadow: 0 4px 14px -2px rgba(0, 0, 0, 0.35);
+}
+
+@media (min-width: 640px) {
+  .mission-vision-card {
+    padding: 1.35rem 1.6rem;
+    border-radius: 1.75rem;
+  }
+}
+
+/* Expanding background flood circle centered on the icon */
+.mission-vision-flood {
+  position: absolute;
+  top: 1.25rem;
+  left: 1.4rem;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 1;
+  transform: scale(1);
+  transform-origin: center center;
+  transition: transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform;
+}
+
+@media (min-width: 640px) {
+  .mission-vision-flood {
+    top: 1.35rem;
+    left: 1.6rem;
+  }
+}
+
+/* Radial color wave scaling to flood the entire box */
+.mission-vision-card:hover .mission-vision-flood,
+.mission-vision-card.is-expanded .mission-vision-flood {
+  transform: scale(36);
+}
+
+/* Gradients for Mission and Vision floods */
+.mission-flood {
+  background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 55%, #1e40af 100%);
+}
+
+.vision-flood {
+  background: linear-gradient(135deg, #9333ea 0%, #7c3aed 55%, #6d28d9 100%);
+}
+
+/* Icon Box */
+.mission-vision-icon-box {
+  width: 3rem;
+  height: 3rem;
+  border-radius: 0.95rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 2;
+  color: #ffffff;
+  transition:
+    background 0.35s ease,
+    background-color 0.35s ease,
+    transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 0.35s ease,
+    box-shadow 0.35s ease;
+}
+
+.mission-icon-box {
+  background: linear-gradient(135deg, #2563eb, #1d4ed8);
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+}
+
+.vision-icon-box {
+  background: linear-gradient(135deg, #9333ea, #7c3aed);
+  box-shadow: 0 4px 12px rgba(147, 51, 234, 0.3);
+}
+
+.mission-vision-card:hover .mission-vision-icon-box,
+.mission-vision-card.is-expanded .mission-vision-icon-box {
+  background: rgba(255, 255, 255, 0.22);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.14);
+  transform: scale(1.05);
+}
+
+/* Title Styling */
+.mission-vision-title {
+  color: #0f172a;
+  transition: color 0.35s ease;
+}
+
+:is(.dark) .mission-vision-title {
+  color: #ffffff;
+}
+
+.mission-vision-card:hover .mission-vision-title,
+.mission-vision-card.is-expanded .mission-vision-title {
+  color: #ffffff;
+}
+
+/* Chevron expand indicator */
+.mission-vision-chevron {
+  color: #94a3b8;
+  transition:
+    color 0.35s ease,
+    transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+:is(.dark) .mission-vision-chevron {
+  color: #64748b;
+}
+
+.mission-vision-card:hover .mission-vision-chevron,
+.mission-vision-card.is-expanded .mission-vision-chevron {
+  color: rgba(255, 255, 255, 0.95);
+  transform: rotate(180deg);
+}
+
+/* Expandable Content Grid */
+.mission-vision-content {
+  display: grid;
+  grid-template-rows: 0fr;
+  opacity: 0;
+  transition:
+    grid-template-rows 0.48s cubic-bezier(0.16, 1, 0.3, 1),
+    opacity 0.35s ease;
+}
+
+.mission-vision-card:hover .mission-vision-content,
+.mission-vision-card.is-expanded .mission-vision-content {
+  grid-template-rows: 1fr;
+  opacity: 1;
+}
+
+.mission-vision-content-inner {
+  overflow: hidden;
+}
+
+.mission-vision-desc {
+  color: rgba(255, 255, 255, 0.94);
+}
+
+/* Card hover glow & subtle lift */
+.mission-card:hover,
+.mission-card.is-expanded {
+  border-color: #3b82f6;
+  box-shadow: 0 16px 32px -6px rgba(37, 99, 235, 0.32);
+  transform: translateY(-2px);
+}
+
+.vision-card:hover,
+.vision-card.is-expanded {
+  border-color: #a855f7;
+  box-shadow: 0 16px 32px -6px rgba(147, 51, 234, 0.32);
+  transform: translateY(-2px);
+}
+
+
+

@@ -1,20 +1,30 @@
+
 import React, { useRef, useCallback, useEffect } from 'react';
 import './Interactive3DTextBlock.css';
 
 /**
  * Interactive3DTextBlock
- * Displays the paragraph text cleanly without any box or border, matching the original appearance.
- * Smoothly tilts in 3D according to cursor position, and returns smoothly to its resting state on exit.
+ * Displays paragraph text cleanly without box or border.
+ * Smoothly tilts in 3D according to cursor position, and returns smoothly to resting state on exit.
  * Highlights ONLY the single line that the cursor touches (up to 2-3 words) in blue without affecting
- * the lines above or below.
+ * the lines above or below. Supports single text or multiple paragraphs.
  */
 export const Interactive3DTextBlock = ({
-  text = 'SwordNex Technologies is a premier IT Solutions provider in Tamil Nadu, delivering Custom Software Development, SaaS products, and professional IT services to help businesses scale and dominate the digital landscape.',
-  className = ''
+  text,
+  paragraphs,
+  size = 'hero', // 'hero' | 'base'
+  enableTilt = true,
+  className = '',
+  onHoverChange,
 }) => {
   const containerRef = useRef(null);
   const textRef = useRef(null);
   const rafRef = useRef(null);
+
+  const defaultText =
+    'SwordNex Technologies is a premier IT Solutions provider in Tamil Nadu, delivering Custom Software Development, SaaS products, and professional IT services to help businesses scale and dominate the digital landscape.';
+
+  const items = paragraphs || (text ? [text] : [defaultText]);
 
   const motionRef = useRef({
     targetRotX: 0,
@@ -30,7 +40,7 @@ export const Interactive3DTextBlock = ({
     currMouseX: -9999,
     currLineY: -9999,
     radiusY: 13,
-    isHovered: false
+    isHovered: false,
   });
 
   useEffect(() => {
@@ -55,7 +65,11 @@ export const Interactive3DTextBlock = ({
       el.style.setProperty('--radius-y', `${m.radiusY.toFixed(1)}px`);
       el.style.setProperty('--light-opacity', m.currOpacity.toFixed(3));
 
-      el.style.transform = `perspective(1000px) rotateX(${m.currRotX.toFixed(2)}deg) rotateY(${m.currRotY.toFixed(2)}deg) scale3d(${m.currScale.toFixed(3)}, ${m.currScale.toFixed(3)}, 1)`;
+      if (enableTilt) {
+        el.style.transform = `perspective(1000px) rotateX(${m.currRotX.toFixed(2)}deg) rotateY(${m.currRotY.toFixed(2)}deg) scale3d(${m.currScale.toFixed(3)}, ${m.currScale.toFixed(3)}, 1)`;
+      } else {
+        el.style.transform = 'none';
+      }
 
       rafRef.current = requestAnimationFrame(animate);
     };
@@ -64,49 +78,62 @@ export const Interactive3DTextBlock = ({
     return () => {
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
     };
-  }, []);
+  }, [enableTilt]);
 
-  const handlePointerMove = useCallback((e) => {
-    const el = containerRef.current;
-    const textEl = textRef.current;
-    if (!el || !textEl) return;
+  const handlePointerMove = useCallback(
+    (e) => {
+      const el = containerRef.current;
+      const textEl = textRef.current;
+      if (!el || !textEl) return;
 
-    const rect = el.getBoundingClientRect();
-    const clientX = e.clientX ?? (e.touches && e.touches[0]?.clientX);
-    const clientY = e.clientY ?? (e.touches && e.touches[0]?.clientY);
+      const rect = el.getBoundingClientRect();
+      const clientX = e.clientX ?? (e.touches && e.touches[0]?.clientX);
+      const clientY = e.clientY ?? (e.touches && e.touches[0]?.clientY);
 
-    if (clientX === undefined || clientY === undefined) return;
+      if (clientX === undefined || clientY === undefined) return;
 
-    const relX = clientX - rect.left;
-    const relY = clientY - rect.top;
+      const pEl = e.target.closest('p') || textEl.querySelector('p') || textEl;
+      const pRect = pEl.getBoundingClientRect();
+      const pRelY = clientY - pRect.top;
 
-    // Calculate line height of paragraph to isolate the active line
-    const computedStyle = window.getComputedStyle(textEl);
-    const lineHeight = parseFloat(computedStyle.lineHeight) || 28;
+      const computedStyle = window.getComputedStyle(pEl);
+      const lineHeight = parseFloat(computedStyle.lineHeight) || 28;
 
-    // Determine the exact single line currently touched by cursor
-    const lineIndex = Math.max(0, Math.floor(relY / lineHeight));
-    const lineCenterY = (lineIndex + 0.5) * lineHeight;
-    const halfLineHeight = lineHeight * 0.44;
+      const lineIndex = Math.max(0, Math.floor(pRelY / lineHeight));
+      const pOffsetTop = pRect.top - rect.top;
+      const lineCenterY = pOffsetTop + (lineIndex + 0.5) * lineHeight;
+      const halfLineHeight = lineHeight * 0.44;
 
-    const centerX = rect.width / 2;
-    const centerY = rect.height / 2;
+      const relX = clientX - rect.left;
+      const centerX = rect.width / 2;
+      const centerY = rect.height / 2;
 
-    const normX = Math.max(-1, Math.min(1, (relX - centerX) / centerX));
-    const normY = Math.max(-1, Math.min(1, (relY - centerY) / centerY));
+      const normX = Math.max(-1, Math.min(1, (relX - centerX) / centerX));
+      const normY = Math.max(-1, Math.min(1, (clientY - rect.top - centerY) / centerY));
 
-    // Refined subtle 3D tilt (max 4.8 degrees)
-    const MAX_TILT = 4.8;
-    const m = motionRef.current;
-    m.targetRotX = -normY * MAX_TILT;
-    m.targetRotY = normX * MAX_TILT;
-    m.targetMouseX = relX;
-    m.targetLineY = lineCenterY;
-    m.radiusY = halfLineHeight;
-    m.targetScale = 1.015;
-    m.targetOpacity = 1;
-    m.isHovered = true;
-  }, []);
+      const m = motionRef.current;
+      if (enableTilt) {
+        const MAX_TILT = 4.8;
+        m.targetRotX = -normY * MAX_TILT;
+        m.targetRotY = normX * MAX_TILT;
+        m.targetScale = 1.015;
+      } else {
+        m.targetRotX = 0;
+        m.targetRotY = 0;
+        m.targetScale = 1.0;
+      }
+      m.targetMouseX = relX;
+      m.targetLineY = lineCenterY;
+      m.radiusY = halfLineHeight;
+      m.targetOpacity = 1;
+
+      if (!m.isHovered) {
+        m.isHovered = true;
+        onHoverChange?.(true);
+      }
+    },
+    [enableTilt, onHoverChange]
+  );
 
   const handlePointerLeave = useCallback(() => {
     const m = motionRef.current;
@@ -115,12 +142,13 @@ export const Interactive3DTextBlock = ({
     m.targetScale = 1.0;
     m.targetOpacity = 0;
     m.isHovered = false;
-  }, []);
+    onHoverChange?.(false);
+  }, [onHoverChange]);
 
   return (
     <div
       ref={containerRef}
-      className={`interactive-3d-text-container ${className}`}
+      className={`interactive-3d-text-container size-${size} ${className}`}
       onMouseMove={handlePointerMove}
       onMouseLeave={handlePointerLeave}
       onTouchStart={handlePointerMove}
@@ -129,14 +157,18 @@ export const Interactive3DTextBlock = ({
     >
       <div className="interactive-3d-text-body">
         {/* Base layer: Clean typography without box or border */}
-        <p ref={textRef} className="interactive-3d-text-base">
-          {text}
-        </p>
+        <div ref={textRef} className="interactive-3d-text-base space-y-3">
+          {items.map((paragraph, idx) => (
+            <p key={idx}>{paragraph}</p>
+          ))}
+        </div>
 
         {/* Highlight overlay: Only affects the single touched line, up to 2-3 words */}
-        <p className="interactive-3d-text-light" aria-hidden="true">
-          {text}
-        </p>
+        <div className="interactive-3d-text-light space-y-3" aria-hidden="true">
+          {items.map((paragraph, idx) => (
+            <p key={idx}>{paragraph}</p>
+          ))}
+        </div>
       </div>
     </div>
   );

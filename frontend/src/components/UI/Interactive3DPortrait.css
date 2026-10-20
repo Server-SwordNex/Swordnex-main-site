@@ -1,0 +1,49 @@
+/* Interactive3DPortrait.css */
+.interactive-3d-portrait-outer {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.interactive-3d-portrait-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 9999px;
+  overflow: hidden;
+  border: 4px solid #ffffff;
+  background-color: #0f172a;
+  box-shadow: 0 15px 35px -5px rgba(0, 0, 0, 0.25);
+  transform: scale(1);
+  transition:
+    transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 0.35s ease,
+    box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  cursor: pointer;
+}
+
+:is(.dark) .interactive-3d-portrait-inner {
+  border-color: #334155;
+  box-shadow: 0 15px 35px -5px rgba(0, 0, 0, 0.55);
+}
+
+/* Hover: Slight pop up and ONLY the border highlighted in white */
+.interactive-3d-portrait-inner:hover,
+.interactive-3d-portrait-outer:hover .interactive-3d-portrait-inner {
+  transform: scale(1.045);
+  border-color: #ffffff !important;
+  box-shadow:
+    0 0 0 3px #ffffff,
+    0 0 25px rgba(255, 255, 255, 0.85),
+    0 22px 45px -8px rgba(0, 0, 0, 0.35);
+}
+
+:is(.dark) .interactive-3d-portrait-inner:hover,
+:is(.dark) .interactive-3d-portrait-outer:hover .interactive-3d-portrait-inner {
+  border-color: #ffffff !important;
+  box-shadow:
+    0 0 0 3px #ffffff,
+    0 0 30px rgba(255, 255, 255, 0.9),
+    0 24px 50px -8px rgba(0, 0, 0, 0.7);
+}
