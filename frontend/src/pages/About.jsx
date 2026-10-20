@@ -1,15 +1,16 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import ConsultationModal from '../components/ConsultationModal';
-import ServiceEnquiryModal from '../components/ServiceEnquiryModal';
 import InteractiveLetters from '../components/UI/InteractiveLetters';
 import InteractiveEarth from '../components/UI/InteractiveEarth';
 import Interactive3DTextBlock from '../components/UI/Interactive3DTextBlock';
 import Interactive3DCard from '../components/UI/Interactive3DCard';
-import BorderRunnerButton from '../components/UI/BorderRunnerButton';
 import TrustStatCounter from '../components/UI/TrustStatCounter';
+import TypewriterQuote from '../components/UI/TypewriterQuote';
+import Interactive3DPortrait from '../components/UI/Interactive3DPortrait';
 import kaja from '../assets/Founder_1.jpeg';
 import { Helmet } from 'react-helmet-async';
+import { FaInstagram, FaLinkedinIn } from 'react-icons/fa6';
 import './AboutSections.css';
 
 // Motion variants for smooth in-view reveal animations
@@ -48,6 +49,86 @@ const cardSlideRight = {
     opacity: 1,
     x: 0,
     transition: { type: 'spring', stiffness: 260, damping: 25 },
+  },
+};
+
+// Container for the 3 Framework Flip Cards with sequential drop order
+const frameworkCardsContainer = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.22, // Sequentially drops each card in order
+      delayChildren: 0.12,
+    },
+  },
+};
+
+// Physics-driven gravity fall-and-land spring animation
+const cardFallAndLand = {
+  hidden: {
+    opacity: 0,
+    y: -95,
+    scale: 0.93,
+  },
+  visible: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: {
+      type: 'spring',
+      stiffness: 280,
+      damping: 18,
+      mass: 1.15,
+    },
+  },
+};
+
+// Container for Mission & Vision cards coming from the left
+const missionVisionContainer = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.16,
+      delayChildren: 0.05,
+    },
+  },
+};
+
+// "Our Mission" card comes from left side of screen and stops in position
+const missionCardSlideFromLeft = {
+  hidden: {
+    opacity: 0,
+    x: -320,
+  },
+  visible: {
+    opacity: 1,
+    x: 0,
+    transition: {
+      type: 'spring',
+      stiffness: 130,
+      damping: 19,
+      mass: 0.95,
+    },
+  },
+};
+
+// "Our Vision" card also comes from left side of screen and stops in position
+const visionCardSlideFromLeft = {
+  hidden: {
+    opacity: 0,
+    x: -420,
+  },
+  visible: {
+    opacity: 1,
+    x: 0,
+    transition: {
+      type: 'spring',
+      stiffness: 130,
+      damping: 19,
+      mass: 0.95,
+    },
   },
 };
 
@@ -101,14 +182,14 @@ const cardContentReveal = {
   hidden: {
     opacity: 0,
     transition: {
-      duration: 0.15,
+      duration: 0.1,
     },
   },
   visible: {
     opacity: 1,
     transition: {
-      delayChildren: 0.65,
-      staggerChildren: 0.1,
+      delayChildren: 0.14, // Text appears soon during the card flip transition
+      staggerChildren: 0.06,
     },
   },
 };
@@ -116,10 +197,10 @@ const cardContentReveal = {
 const cardItemReveal = {
   hidden: {
     opacity: 0,
-    y: 18,
-    filter: 'blur(4px)',
+    y: 10,
+    filter: 'blur(3px)',
     transition: {
-      duration: 0.15,
+      duration: 0.1,
     },
   },
   visible: {
@@ -127,7 +208,7 @@ const cardItemReveal = {
     y: 0,
     filter: 'blur(0px)',
     transition: {
-      duration: 0.5,
+      duration: 0.38,
       ease: [0.22, 1, 0.36, 1],
     },
   },
@@ -136,16 +217,12 @@ const cardItemReveal = {
 const About = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalOrigin, setModalOrigin] = useState(null); // 'hero' | 'default'
-  const [isEnquiryOpen, setIsEnquiryOpen] = useState(false);
   const [hoveredCard, setHoveredCard] = useState(null); // 'card1' | 'card2' | null
+  const [flippedFrameworkCard, setFlippedFrameworkCard] = useState(null);
+  const [expandedMissionVisionCard, setExpandedMissionVisionCard] = useState(null);
 
   const handleOpenHeroModal = () => {
     setModalOrigin('hero');
-    setIsModalOpen(true);
-  };
-
-  const handleOpenDefaultModal = () => {
-    setModalOrigin('default');
     setIsModalOpen(true);
   };
 
@@ -211,48 +288,6 @@ const About = () => {
                 <Interactive3DTextBlock
                   text="SwordNex Technologies is a premier IT Solutions provider in Tamil Nadu, delivering Custom Software Development, SaaS products, and professional IT services to help businesses scale and dominate the digital landscape."
                 />
-              </motion.div>
-
-              {/* CTA Buttons */}
-              <motion.div variants={fadeUp} className="flex flex-col sm:flex-row gap-3 pt-2">
-                <div className="relative inline-flex h-12 sm:h-14">
-                  <div className="invisible pointer-events-none h-12 sm:h-14 px-6 inline-flex items-center gap-2 select-none" aria-hidden="true">
-                    Get IT Solutions
-                    <span className="material-symbols-outlined text-[18px]">arrow_forward</span>
-                  </div>
-
-                  {(!isModalOpen || modalOrigin !== 'hero') && (
-                    <motion.div
-                      layoutId="hero-appointment-transform"
-                      transition={{
-                        type: 'spring',
-                        stiffness: 300,
-                        damping: 30,
-                        mass: 0.8,
-                      }}
-                      className="absolute inset-0"
-                    >
-                      <BorderRunnerButton
-                        onClick={handleOpenHeroModal}
-                        variant="primary"
-                        runnerColor="white"
-                        className="h-full w-full px-6 text-sm sm:text-base font-semibold shadow-lg shadow-blue-500/20"
-                      >
-                        Get IT Solutions
-                        <span className="material-symbols-outlined text-[18px]">arrow_forward</span>
-                      </BorderRunnerButton>
-                    </motion.div>
-                  )}
-                </div>
-
-                <BorderRunnerButton
-                  href="/Services"
-                  variant="secondary"
-                  runnerColor="blue"
-                  className="h-12 sm:h-14 px-6 text-sm sm:text-base font-semibold"
-                >
-                  View Services
-                </BorderRunnerButton>
               </motion.div>
 
               {/* Trust Indicators */}
@@ -346,12 +381,6 @@ const About = () => {
                     <strong className="text-gray-800 dark:text-gray-200">Web Applications, SaaS products, and custom digital tools</strong>{' '}
                     designed to automate your business workflows.
                   </motion.p>
-
-                  <motion.div variants={cardItemReveal} className="mt-5">
-                    <a href="/Service1" className="inline-flex items-center font-semibold text-blue-700 hover:text-blue-800 underline underline-offset-4 text-sm sm:text-base">
-                      Learn more
-                    </a>
-                  </motion.div>
                 </motion.div>
               </Interactive3DCard>
             </motion.article>
@@ -396,12 +425,6 @@ const About = () => {
                     <strong className="text-gray-800 dark:text-gray-200">ERP, CRM, and API solutions</strong>{' '}
                     to streamline operations, reduce manual work, and ensure 100% data accuracy.
                   </motion.p>
-
-                  <motion.div variants={cardItemReveal} className="mt-5">
-                    <a href="/Products" className="inline-flex items-center font-semibold text-purple-700 hover:text-purple-800 underline underline-offset-4 text-sm sm:text-base">
-                      Learn more
-                    </a>
-                  </motion.div>
                 </motion.div>
               </Interactive3DCard>
             </motion.article>
@@ -431,7 +454,7 @@ const About = () => {
             <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight text-slate-900 dark:text-white mb-3 leading-tight">
               A Result-Driven <span className="text-primary">IT Solutions Company in Tamil Nadu</span>
             </h2>
-            <p className="text-sm sm:text-base md:text-lg text-slate-600 dark:text-slate-400 max-w-4xl mx-auto leading-relaxed">
+            <p className="about-company-description text-sm sm:text-base md:text-lg text-slate-600 dark:text-slate-400 max-w-4xl mx-auto leading-relaxed">
               SwordNex Technologies is an innovative software development firm dedicated to delivering secure, scalable digital ecosystems that drive business efficiency and long-term growth.
             </p>
           </motion.div>
@@ -439,18 +462,18 @@ const About = () => {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-start">
             {/* Left Column: Story + Stats */}
             <motion.div variants={cardSlideLeft} className="flex flex-col gap-6">
-              <div>
-                <h3 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white mb-3 tracking-tight">
+              <div className="our-story-block">
+                <h3 className="our-story-title text-xl sm:text-2xl font-bold mb-3 tracking-tight">
                   Our Story
                 </h3>
-                <div className="text-sm sm:text-base text-slate-600 dark:text-slate-400 leading-relaxed space-y-3">
-                  <p>
-                    SwordNex Technologies is an innovative Software Development firm dedicated to helping businesses adopt powerful, scalable digital ecosystems. We specialize in solving complex industry challenges through Custom Software, Cloud-based SaaS products, and Digital Transformation services.
-                  </p>
-                  <p>
-                    As an active IT Company, we bridge the gap between technology and talent. Beyond our services, we provide Job-Oriented IT Training where students gain Industry Internship experience by working alongside our senior developers on live projects.
-                  </p>
-                </div>
+                <Interactive3DTextBlock
+                  size="base"
+                  enableTilt={false}
+                  paragraphs={[
+                    'SwordNex Technologies is an innovative Software Development firm dedicated to helping businesses adopt powerful, scalable digital ecosystems. We specialize in solving complex industry challenges through Custom Software, Cloud-based SaaS products, and Digital Transformation services.',
+                    'As an active IT Company, we bridge the gap between technology and talent. Beyond our services, we provide Job-Oriented IT Training where students gain Industry Internship experience by working alongside our senior developers on live projects.'
+                  ]}
+                />
               </div>
 
               {/* Stats with Lerping Counters and Interactive Hover */}
@@ -467,8 +490,14 @@ const About = () => {
               </div>
             </motion.div>
 
-            {/* Right Column: 3 Framework Cards */}
-            <motion.div variants={cardSlideRight} className="flex flex-col gap-3.5 sm:gap-4">
+            {/* Right Column: 3 Framework Flip Cards (Fall and Land in Order) */}
+            <motion.div
+              variants={frameworkCardsContainer}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: false, amount: 0.2 }}
+              className="flex flex-col gap-3.5 sm:gap-4 overflow-visible"
+            >
               {[
                 {
                   icon: 'location_on',
@@ -486,26 +515,62 @@ const About = () => {
                   desc: 'We follow a structured approach: Discovery → Design → Development → Deployment → Support to ensure scalable and efficient solutions.',
                 },
               ].map((item, i) => (
-                <div
+                <motion.div
                   key={i}
-                  className="p-4 sm:p-5 rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 hover:border-primary/50 transition-all duration-300 shadow-sm"
+                  variants={cardFallAndLand}
+                  className="w-full relative"
                 >
-                  <div className="flex items-start gap-3 sm:gap-4">
-                    <div className="p-2.5 rounded-xl bg-blue-50 dark:bg-slate-700 shadow-sm text-primary flex-shrink-0">
-                      <span className="material-symbols-outlined text-xl sm:text-2xl">
-                        {item.icon}
-                      </span>
-                    </div>
-                    <div>
-                      <h4 className="text-base font-bold text-slate-900 dark:text-white mb-1">
-                        {item.title}
-                      </h4>
-                      <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
-                        {item.desc}
-                      </p>
+                  <div
+                    className={`framework-flip-card group ${flippedFrameworkCard === i ? 'is-flipped' : ''}`}
+                    onClick={() => setFlippedFrameworkCard(flippedFrameworkCard === i ? null : i)}
+                    onMouseLeave={() => setFlippedFrameworkCard(null)}
+                    role="button"
+                    tabIndex={0}
+                    aria-label={`${item.title} card: hover or tap to flip for details`}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        setFlippedFrameworkCard(flippedFrameworkCard === i ? null : i);
+                      }
+                    }}
+                  >
+                    <div className="framework-flip-card-inner">
+                      {/* Front Face: Icon + Title only */}
+                      <div className="framework-flip-card-front border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 shadow-sm transition-colors duration-300 group-hover:border-primary/50">
+                        <div className="flex items-center gap-3.5 sm:gap-4 w-full">
+                          <div className="p-2.5 rounded-xl bg-blue-50 dark:bg-slate-700/80 shadow-sm text-primary flex-shrink-0 group-hover:bg-primary group-hover:text-white transition-colors duration-300">
+                            <span className="material-symbols-outlined text-2xl sm:text-[26px]">
+                              {item.icon}
+                            </span>
+                          </div>
+                          <h4 className="text-base sm:text-lg font-bold text-slate-900 dark:text-white tracking-tight">
+                            {item.title}
+                          </h4>
+                          <span className="material-symbols-outlined text-slate-300 dark:text-slate-600 text-lg ml-auto opacity-70 group-hover:text-primary group-hover:opacity-100 transition-all duration-300">
+                            flip
+                          </span>
+                        </div>
+                      </div>
+
+                      {/* Back Face: Revealed Description Text on Flip with Running Blue Border */}
+                      <div className="framework-flip-card-back">
+                        <div className="framework-flip-card-back-inner">
+                          <div className="flex items-center gap-1.5 mb-1.5">
+                            <span className="material-symbols-outlined text-primary text-[17px]">
+                              {item.icon}
+                            </span>
+                            <span className="text-[11px] font-bold uppercase tracking-wider text-primary">
+                              {item.title}
+                            </span>
+                          </div>
+                          <p className="text-xs sm:text-[13px] text-slate-700 dark:text-slate-300 leading-relaxed font-normal">
+                            {item.desc}
+                          </p>
+                        </div>
+                      </div>
                     </div>
                   </div>
-                </div>
+                </motion.div>
               ))}
             </motion.div>
           </div>
@@ -518,7 +583,7 @@ const About = () => {
       </section>
 
       {/* SECTION 4: Vision, Mission & Leadership */}
-      <section id="section-vision" className="relative w-full py-16 sm:py-20 lg:py-24 bg-slate-50/60 dark:bg-slate-900/40 border-y border-slate-100 dark:border-slate-800/60">
+      <section id="section-vision" className="relative w-full py-16 sm:py-20 lg:py-24 bg-slate-50/60 dark:bg-slate-900/40 border-y border-slate-100 dark:border-slate-800/60 overflow-hidden">
         <motion.div
           variants={staggerContainer}
           initial="hidden"
@@ -527,129 +592,203 @@ const About = () => {
           className="w-full max-w-[1240px] mx-auto px-4 sm:px-6 lg:px-8 flex flex-col justify-center space-y-8 sm:space-y-10"
         >
           <motion.div variants={fadeUp} className="text-center max-w-3xl mx-auto">
-            <span className="inline-block px-4 py-1.5 rounded-full bg-primary/10 text-primary text-xs font-bold uppercase tracking-wider">
-              Why SwordNex
-            </span>
-            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold text-gray-900 dark:text-white leading-tight mt-2.5">
-              Driven by <span className="text-primary">Purpose</span> & Vision
+            <div className="mb-3">
+              <span className="inline-block px-4 py-1.5 rounded-full bg-primary/10 text-primary text-xs font-bold uppercase tracking-wider">
+                Why SwordNex
+              </span>
+            </div>
+            <h2 className="purpose-vision-heading text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold text-gray-900 dark:text-white leading-tight">
+              Driven by{' '}
+              <span className="purpose-highlight-word text-primary">
+                Purpose
+                <span className="purpose-underline-track" aria-hidden="true">
+                  <span className="purpose-underline-runner" />
+                </span>
+              </span>{' '}
+              & Vision
             </h2>
-            <div className="h-1.5 w-20 bg-primary mx-auto rounded-full mt-3"></div>
           </motion.div>
 
-          {/* Mission & Vision Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <motion.div
-              variants={cardSlideLeft}
-              className="bg-white dark:bg-surface-dark p-6 sm:p-7 rounded-3xl shadow-lg border border-gray-100 dark:border-gray-700 hover:-translate-y-1 hover:shadow-xl hover:border-primary/40 transition-all duration-300"
-            >
-              <div className="w-12 h-12 rounded-2xl bg-blue-100 dark:bg-blue-900/40 flex items-center justify-center text-primary mb-3.5">
-                <span className="material-icons-round text-2xl">flag</span>
+          {/* Mission & Vision Cards: Both slide in from the left on scroll and stop in position */}
+          <motion.div
+            variants={missionVisionContainer}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: false, amount: 0.2 }}
+            className="grid grid-cols-1 md:grid-cols-2 gap-6 items-start"
+          >
+            {/* Our Mission Card */}
+            <motion.div variants={missionCardSlideFromLeft} className="w-full">
+              <div
+                className={`mission-vision-card mission-card group ${expandedMissionVisionCard === 'mission' ? 'is-expanded' : ''}`}
+                onClick={() => setExpandedMissionVisionCard(expandedMissionVisionCard === 'mission' ? null : 'mission')}
+                tabIndex={0}
+                role="button"
+                aria-expanded={expandedMissionVisionCard === 'mission'}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    setExpandedMissionVisionCard(expandedMissionVisionCard === 'mission' ? null : 'mission');
+                  }
+                }}
+              >
+                {/* Expanding background flood circle centered on the flag icon */}
+                <div className="mission-vision-flood mission-flood" aria-hidden="true" />
+
+                {/* Card inner content layer (above the flood) */}
+                <div className="relative z-10 w-full">
+                  {/* Header Row: Flag Icon in front of "Our Mission" */}
+                  <div className="flex items-center justify-between gap-3 sm:gap-4">
+                    <div className="flex items-center gap-3.5 sm:gap-4 flex-1 min-w-0">
+                      <div className="mission-vision-icon-box mission-icon-box flex-shrink-0">
+                        <span className="material-icons-round text-2xl">flag</span>
+                      </div>
+                      <h3 className="mission-vision-title text-xl sm:text-2xl font-bold tracking-tight">
+                        Our Mission
+                      </h3>
+                    </div>
+                    {/* Expand indicator icon */}
+                    <span className="mission-vision-chevron material-icons-round text-2xl flex-shrink-0">
+                      expand_more
+                    </span>
+                  </div>
+
+                  {/* Expandable Body Content */}
+                  <div className="mission-vision-content">
+                    <div className="mission-vision-content-inner">
+                      <p className="mission-vision-desc text-sm sm:text-base leading-relaxed pt-3 sm:pt-3.5">
+                        To deliver secure, scalable, and user-centric IT Solutions while empowering the next generation with practical, career-focused IT training and real-world project exposure.
+                      </p>
+                    </div>
+                  </div>
+                </div>
               </div>
-              <h3 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-2">Our Mission</h3>
-              <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
-                To deliver secure, scalable, and user-centric IT Solutions while empowering the next generation with practical, career-focused IT training and real-world project exposure.
-              </p>
             </motion.div>
 
-            <motion.div
-              variants={cardSlideRight}
-              className="bg-white dark:bg-surface-dark p-6 sm:p-7 rounded-3xl shadow-lg border border-gray-100 dark:border-gray-700 hover:-translate-y-1 hover:shadow-xl hover:border-primary/40 transition-all duration-300"
-            >
-              <div className="w-12 h-12 rounded-2xl bg-purple-100 dark:bg-purple-900/40 flex items-center justify-center text-purple-600 dark:text-purple-400 mb-3.5">
-                <span className="material-icons-round text-2xl">visibility</span>
+            {/* Our Vision Card */}
+            <motion.div variants={visionCardSlideFromLeft} className="w-full">
+              <div
+                className={`mission-vision-card vision-card group ${expandedMissionVisionCard === 'vision' ? 'is-expanded' : ''}`}
+                onClick={() => setExpandedMissionVisionCard(expandedMissionVisionCard === 'vision' ? null : 'vision')}
+                tabIndex={0}
+                role="button"
+                aria-expanded={expandedMissionVisionCard === 'vision'}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    setExpandedMissionVisionCard(expandedMissionVisionCard === 'vision' ? null : 'vision');
+                  }
+                }}
+              >
+                {/* Expanding background flood circle centered on the eye icon */}
+                <div className="mission-vision-flood vision-flood" aria-hidden="true" />
+
+                {/* Card inner content layer (above the flood) */}
+                <div className="relative z-10 w-full">
+                  {/* Header Row: Eye Icon in front of "Our Vision" */}
+                  <div className="flex items-center justify-between gap-3 sm:gap-4">
+                    <div className="flex items-center gap-3.5 sm:gap-4 flex-1 min-w-0">
+                      <div className="mission-vision-icon-box vision-icon-box flex-shrink-0">
+                        <span className="material-icons-round text-2xl">visibility</span>
+                      </div>
+                      <h3 className="mission-vision-title text-xl sm:text-2xl font-bold tracking-tight">
+                        Our Vision
+                      </h3>
+                    </div>
+                    {/* Expand indicator icon */}
+                    <span className="mission-vision-chevron material-icons-round text-2xl flex-shrink-0">
+                      expand_more
+                    </span>
+                  </div>
+
+                  {/* Expandable Body Content */}
+                  <div className="mission-vision-content">
+                    <div className="mission-vision-content-inner">
+                      <p className="mission-vision-desc text-sm sm:text-base leading-relaxed pt-3 sm:pt-3.5">
+                        To be a globally trusted Technology Partner, providing innovative Software Services and modern Digital Education that meets 2026 global industry standards.
+                      </p>
+                    </div>
+                  </div>
+                </div>
               </div>
-              <h3 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-2">Our Vision</h3>
-              <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
-                To be a globally trusted Technology Partner, providing innovative Software Services and modern Digital Education that meets 2026 global industry standards.
-              </p>
             </motion.div>
-          </div>
+          </motion.div>
 
           {/* CEO Quote + Image */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-10 items-center">
             <motion.div variants={cardSlideLeft} className="space-y-4">
               <h3 className="text-xl sm:text-2xl lg:text-3xl font-extrabold text-gray-900 dark:text-white leading-tight">
                 Leadership That <br />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary">
+                <span className="text-primary">
                   Guides Every Decision
                 </span>
               </h3>
               <div className="relative bg-white dark:bg-surface-dark p-5 sm:p-6 rounded-2xl shadow-md border border-gray-100 dark:border-gray-700">
-                <span className="material-icons-round text-primary text-3xl opacity-25 mb-1 block">format_quote</span>
-                <p className="text-gray-700 dark:text-gray-300 text-sm sm:text-base italic leading-relaxed">
-                  “At SwordNex, we build technology that fades into the background, letting your teams focus on meaningful work and business growth.”
-                </p>
+                <span className="material-icons-round text-primary text-3xl opacity-25 mb-1 block leading-none">
+                  format_quote
+                </span>
+                <TypewriterQuote
+                  quote="At SwordNex, we build technology that fades into the background, letting your teams focus on meaningful work and business growth."
+                  speed={20}
+                />
+                <div className="flex justify-end mt-1">
+                  <span className="material-icons-round text-primary text-3xl opacity-25 rotate-180 block leading-none">
+                    format_quote
+                  </span>
+                </div>
               </div>
-              <div>
+              <div className="space-y-3">
                 <a
                   href="https://www.linkedin.com/in/kajanajbudeen/"
                   target="_blank"
                   rel="noopener noreferrer"
+                  className="inline-block group"
                 >
-                  <p className="font-bold text-gray-900 dark:text-white hover:text-primary transition-colors text-base">Kaja Najbudeen</p>
+                  <p className="font-bold text-gray-900 dark:text-white group-hover:text-primary transition-colors text-base">
+                    Kaja Najbudeen
+                  </p>
                   <p className="text-xs text-primary font-semibold uppercase tracking-wider">
                     Founder & CEO, SwordNex Technologies
                   </p>
                 </a>
+
+                {/* Social media icons: Instagram, LinkedIn */}
+                <div className="flex items-center gap-3 pt-0.5">
+                  <a
+                    href="https://www.instagram.com/kajanajbudeen_/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="Instagram profile"
+                    title="Instagram"
+                    className="w-9 h-9 rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700/80 flex items-center justify-center text-slate-600 dark:text-slate-300 hover:text-white hover:bg-gradient-to-tr hover:from-[#f09433] hover:via-[#dc2743] hover:to-[#bc1888] hover:border-transparent hover:-translate-y-0.5 hover:shadow-md transition-all duration-300"
+                  >
+                    <FaInstagram className="w-4 h-4" />
+                  </a>
+                  <a
+                    href="https://www.linkedin.com/in/kajanajbudeen/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="LinkedIn profile"
+                    title="LinkedIn"
+                    className="w-9 h-9 rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700/80 flex items-center justify-center text-slate-600 dark:text-slate-300 hover:text-white hover:bg-[#0A66C2] hover:border-[#0A66C2] hover:-translate-y-0.5 hover:shadow-md transition-all duration-300"
+                  >
+                    <FaLinkedinIn className="w-4 h-4" />
+                  </a>
+                </div>
               </div>
             </motion.div>
 
             <motion.div variants={cardSlideRight} className="relative flex justify-center">
-              <div className="relative rounded-full overflow-hidden shadow-2xl w-full max-w-[240px] sm:max-w-[280px] lg:max-w-[320px] aspect-square border-4 border-white dark:border-slate-800">
-                <img
-                  src={kaja}
-                  alt="SwordNex team - Kaja Najbudeen"
-                  className="w-full h-full object-cover"
-                />
-              </div>
+              <Interactive3DPortrait
+                src={kaja}
+                alt="SwordNex team - Kaja Najbudeen"
+                className="w-full max-w-[240px] sm:max-w-[280px] lg:max-w-[320px] aspect-square"
+              />
             </motion.div>
           </div>
         </motion.div>
       </section>
 
-      {/* SECTION 5: CTA Section */}
-      <section id="section-cta" className="relative w-full py-16 sm:py-20 lg:py-24">
-        <motion.div
-          variants={staggerContainer}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-80px" }}
-          className="w-full max-w-[960px] mx-auto px-4 sm:px-6 lg:px-8 flex flex-col justify-center"
-        >
-          <motion.div
-            variants={fadeUp}
-            className="bg-white dark:bg-slate-800 rounded-3xl p-8 md:p-12 border border-slate-200 dark:border-slate-700 shadow-2xl text-center relative overflow-hidden"
-          >
-            <div className="absolute top-0 right-0 -mt-10 -mr-10 w-40 h-40 bg-primary/10 rounded-full blur-3xl"></div>
-            <div className="absolute bottom-0 left-0 -mb-10 -ml-10 w-40 h-40 bg-primary/10 rounded-full blur-3xl"></div>
-
-            <h2 className="relative text-2xl sm:text-3xl md:text-4xl font-black text-slate-900 dark:text-white mb-4 tracking-tight leading-tight">
-              Ready to grow your business with <span className="text-primary">custom web solutions</span>?
-            </h2>
-            <p className="relative text-sm sm:text-base md:text-lg text-slate-600 dark:text-slate-400 mb-8 max-w-2xl mx-auto leading-relaxed">
-              Join 50+ businesses who trust SwordNex Technologies for scalable web applications, modern websites, and enterprise software solutions.
-            </p>
-            <div className="relative flex flex-col sm:flex-row gap-4 justify-center">
-              <button
-                type="button"
-                onClick={() => setIsEnquiryOpen(true)}
-                className="inline-flex items-center justify-center h-12 px-8 rounded-xl bg-primary text-white font-bold text-base hover:bg-blue-700 transition-colors shadow-md hover:shadow-lg cursor-pointer"
-              >
-                Start Your Custom Project
-              </button>
-              <button
-                type="button"
-                onClick={handleOpenDefaultModal}
-                className="inline-flex items-center justify-center h-12 px-8 rounded-xl border border-slate-300 dark:border-slate-600 bg-transparent text-slate-700 dark:text-slate-200 font-bold text-base hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors cursor-pointer"
-              >
-                Meet Our Expert Team
-              </button>
-            </div>
-          </motion.div>
-        </motion.div>
-      </section>
-
-      <ServiceEnquiryModal isOpen={isEnquiryOpen} onClose={() => setIsEnquiryOpen(false)} />
       <ConsultationModal isOpen={isModalOpen} onClose={handleCloseModal} isHeroTransform={modalOrigin === 'hero'} />
     </div>
   );
