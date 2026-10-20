@@ -6,14 +6,121 @@ import ServiceEnquiryModal from '../components/ServiceEnquiryModal';
 import kaja from '../assets/Founder_1.jpeg';
 import { Helmet } from "react-helmet-async";
 import DotField from '../components/UI/DotField';
+import TrustStatCounter from '../components/UI/TrustStatCounter';
+import Interactive3DCard from '../components/UI/Interactive3DCard';
 import './HomeHero.css';
 
 const renderInteractiveHeadingText = (text) =>
  text.split('').map((character, index) => (
    <span className="home-hero-heading-letter" key={`${character}-${index}`}>
-     {character}
+     {character === ' ' ? '\u00a0' : character}
    </span>
  ));
+
+const renderLetterRevealText = (text, startIndex = 0) => {
+ let characterIndex = startIndex;
+
+ return text.split(' ').map((word, wordIndex) => (
+   <React.Fragment key={`${word}-${wordIndex}`}>
+     {wordIndex > 0 && ' '}
+     <span className="trust-heading-word" aria-hidden="true">
+       {Array.from(word, (character) => {
+         const index = characterIndex++;
+         return (
+           <span
+             className="trust-heading-letter"
+             key={`${index}-${character}`}
+             style={{ animationDelay: `${index * 24}ms` }}
+           >
+             {character}
+           </span>
+         );
+       })}
+     </span>
+   </React.Fragment>
+ ));
+};
+
+const trustHeadingText = 'Trusted by Businesses Worldwide ';
+const trustHeadingBrand = 'SwordNex';
+const trustHeadingRevealDelay =
+ (trustHeadingText.length + trustHeadingBrand.length - 1) * 24 + 450;
+const challengeHeadingText = 'Business Problems to Smart IT Solutions';
+const challengeDescriptionRevealDelay =
+ (challengeHeadingText.length - 1) * 24 + 450;
+const productsEyebrowText = 'IT Products & SaaS Solutions';
+const productsHeadingText = 'Software Products & SaaS Solutions';
+const whyChooseHeadingText = 'Why Choose Our IT Services';
+const whyChooseDescriptionRevealDelay =
+ (whyChooseHeadingText.length - 1) * 24 + 450;
+
+const serviceCards = [
+ {
+   id: 'development',
+   title: 'Custom Software & Web Development',
+   icon: 'widgets',
+   accent: '#2563eb',
+   iconColor: 'text-blue-600 dark:text-blue-400',
+   iconBackground: 'bg-blue-50 dark:bg-blue-900/30',
+   description: 'Delivering scalable Web Application Development, E-commerce solutions, and cross-platform mobile apps. We specialize in MERN Stack, UI/UX design, and high-performance Frontend/Backend development for business automation',
+   tag: 'Built for scale',
+   tagColor: 'bg-blue-100 dark:bg-blue-900/50 text-blue-800 dark:text-blue-200',
+   href: '/services/application-development'
+ },
+ {
+   id: 'marketing',
+   title: 'Digital Marketing & SEO Solutions',
+   icon: 'campaign',
+   accent: '#f97316',
+   iconColor: 'text-orange-500 dark:text-orange-400',
+   iconBackground: 'bg-orange-50 dark:bg-orange-900/30',
+   description: 'Data-driven Search Engine Optimization, Content Marketing, and Social Media Strategy. We focus on Google Ads (PPC), Meta Marketing, and Conversion Rate Optimization to drive high-quality business leads',
+   tag: 'Leads with clarity',
+   tagColor: 'bg-orange-100 dark:bg-orange-900/50 text-orange-800 dark:text-orange-200',
+   href: '/services/digital-media'
+ },
+ {
+   id: 'training',
+   title: 'Job-Oriented IT Courses & Training',
+   icon: 'school',
+   accent: '#0d9488',
+   iconColor: 'text-teal-600 dark:text-teal-400',
+   iconBackground: 'bg-teal-50 dark:bg-teal-900/30',
+   description: 'Industry-led training from an active IT company. Expert-led Full Stack Development, Python for Data Science, Artificial Intelligence, and Cyber Security with Live Project Internships and Placement Assistance',
+   tag: 'Skills that ship…',
+   tagColor: 'bg-teal-100 dark:bg-teal-900/50 text-teal-800 dark:text-teal-200',
+   href: '/services/it-training-skill-development'
+ },
+ {
+   id: 'infrastructure',
+   title: 'Cloud Solutions & IT Infrastructure',
+   icon: 'dns',
+   accent: '#4f46e5',
+   iconColor: 'text-indigo-600 dark:text-indigo-400',
+   iconBackground: 'bg-indigo-50 dark:bg-indigo-900/30',
+   description: 'Reliable Cloud Computing services, Cybersecurity solutions, and Network Administration. We provide expert AWS/Azure Cloud Migration, Server Maintenance, and secure Database Management',
+   tag: 'Reliable foundations',
+   tagColor: 'bg-indigo-100 dark:bg-indigo-900/50 text-indigo-800 dark:text-indigo-200',
+   href: '/services/it-infrastructure'
+ },
+ {
+   id: 'hr-consulting',
+   title: 'HR Consulting & Enterprise Management',
+   icon: 'groups',
+   accent: '#db2777',
+   iconColor: 'text-pink-600 dark:text-pink-400',
+   iconBackground: 'bg-pink-50 dark:bg-pink-900/30',
+   description: 'Comprehensive Talent Acquisition, Staffing Solutions, and Employee Management Systems. We streamline IT Staffing, Payroll Outsourcing, and business operations for tech startups in Tamil Nadu.',
+   tag: 'People-first solutions',
+   tagColor: 'bg-pink-100 dark:bg-pink-900/50 text-pink-800 dark:text-pink-200',
+   href: '/services/hr-consulting'
+ }
+];
+const serviceScrollDelays = [
+ 'scroll-animate-delay-1',
+ 'scroll-animate-delay-2',
+ 'scroll-animate-delay-3'
+];
 
 <Helmet>
  <title>
@@ -133,7 +240,9 @@ const Home = () => {
 
  const observerCallback = (entries) => {
  entries.forEach((entry) => {
- if (entry.isIntersecting) {
+ if (entry.target.classList.contains('replay-letter-reveal')) {
+ entry.target.classList.toggle('animate-in', entry.isIntersecting);
+ } else if (entry.isIntersecting) {
  entry.target.classList.add('animate-in');
  }
  });
@@ -215,10 +324,10 @@ const Home = () => {
 
       <h1
         aria-label="Looking for the Best IT Solutions & Software Company"
-        className="home-hero-heading font-display text-4xl font-black leading-[1.02] tracking-tight text-slate-900 dark:text-white sm:text-5xl lg:text-6xl xl:text-7xl"
+        className="home-hero-heading text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight tracking-tight text-[#0d121b] dark:text-white"
       >
          <span className="block" aria-hidden="true">{renderInteractiveHeadingText('Looking for the')}</span>
-         <span className="home-hero-heading-accent block text-sky-600 dark:text-sky-400" aria-hidden="true">{renderInteractiveHeadingText('Best IT Solutions &')}</span>
+         <span className="home-hero-heading-accent block" aria-hidden="true">{renderInteractiveHeadingText('Best IT Solutions &')}</span>
          <span className="block" aria-hidden="true">{renderInteractiveHeadingText('Software Company')}</span>
        </h1>
 
@@ -244,21 +353,37 @@ const Home = () => {
            <div className="home-hero-stat-icon mb-2 flex h-9 w-9 items-center justify-center rounded-xl bg-sky-100 text-sky-600">
              <span className="material-icons-round text-lg">check</span>
            </div>
-           <span>80+ Clients</span>
+           <TrustStatCounter
+             target={80}
+             label="Clients"
+             suffix="+"
+             className="home-hero-stat-counter"
+           />
          </div>
 
          <div className="home-hero-stat rounded-2xl border border-sky-100 bg-sky-50/80 p-3 shadow-sm">
            <div className="home-hero-stat-icon mb-2 flex h-9 w-9 items-center justify-center rounded-xl bg-sky-100 text-sky-600">
              <span className="material-icons-round text-lg">layers</span>
            </div>
-           <span>100+ Projects</span>
+           <TrustStatCounter
+             target={100}
+             label="Projects"
+             suffix="+"
+             className="home-hero-stat-counter"
+           />
          </div>
 
          <div className="home-hero-stat rounded-2xl border border-sky-100 bg-sky-50/80 p-3 shadow-sm">
            <div className="home-hero-stat-icon mb-2 flex h-9 w-9 items-center justify-center rounded-xl bg-sky-100 text-sky-600">
              <span className="material-icons-round text-lg">support_agent</span>
            </div>
-           <span>24/7 Support</span>
+           <TrustStatCounter
+             target={24}
+             label="Support"
+             suffix="/7"
+             animateOnView={false}
+             className="home-hero-stat-counter"
+           />
          </div>
        </div>
      </div>
@@ -384,20 +509,27 @@ const Home = () => {
  </header>
 
  {/* Challenges Section */}
- <section className="py-14 px-4 md:px-8 lg:py-16 scroll-animate">
+ <section className="replay-letter-reveal challenge-reveal-section py-14 px-4 md:px-8 lg:py-16 scroll-animate">
  <div className="max-w-8xl mx-auto flex flex-col items-center">
  <div className="max-w-7xl text-center mb-9">
- <h2 className="text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight mb-4">
- Business Problems to Smart IT Solutions
+ <h2
+ className="text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight mb-4"
+ aria-label={challengeHeadingText}
+ >
+ {renderLetterRevealText(challengeHeadingText)}
  </h2>
 
- <p className="text-lg max-w-6xl text-slate-600 dark:text-slate-300 leading-relaxed">
+ <p
+ className="trust-heading-description text-lg max-w-6xl text-slate-600 dark:text-slate-300 leading-relaxed transition-all duration-300 ease-in-out hover:scale-[1.02] hover:font-semibold"
+ style={{ '--trust-heading-reveal-delay': `${challengeDescriptionRevealDelay}ms` }}
+ >
  Many businesses in Kumbakonam still depend on manual work, outdated software, and unstructured marketing strategies — which slows growth and reduces efficiency.
  </p>
  </div>
- <div className="w-full max-w-5xl bg-white dark:bg-slate-800 rounded-xl shadow-lg overflow-hidden border border-slate-100 dark:border-slate-700">
+ <div className="w-full max-w-5xl bg-white dark:bg-slate-800 rounded-xl shadow-lg border border-slate-100 dark:border-slate-700">
  <div className="flex flex-col md:flex-row">
- <div className="w-full md:w-1/2 p-6 md:p-8 bg-slate-20 dark:bg-slate-800/50 border-b md:border-b-0 md:border-r border-slate-100 dark:border-slate-700 relative overflow-hidden group">
+ <div className="w-full md:w-1/2">
+ <Interactive3DCard theme="red" tilt={false} className="home-challenge-panel w-full p-6 md:p-8 bg-slate-20 dark:bg-slate-800/50 border-b md:border-b-0 md:border-r border-slate-100 dark:border-slate-700 relative overflow-hidden group rounded-t-xl md:rounded-l-xl md:rounded-tr-none">
  <div className="absolute top-0 right-0 -mt-8 -mr-8 w-32 h-32 bg-red-100 dark:bg-red-900/20 rounded-full blur-3xl opacity-50"></div>
  <div className="relative z-10">
  <div className="flex items-center gap-3 mb-6">
@@ -430,8 +562,10 @@ const Home = () => {
  </li>
  </ul>
  </div>
+ </Interactive3DCard>
  </div>
- <div className="w-full md:w-1/2 p-6 md:p-8 bg-white dark:bg-slate-800 relative overflow-hidden">
+ <div className="w-full md:w-1/2">
+ <Interactive3DCard theme="blue" tilt={false} className="home-challenge-panel w-full p-6 md:p-8 bg-white dark:bg-slate-800 relative overflow-hidden rounded-b-xl md:rounded-r-xl md:rounded-bl-none">
  <div className="absolute bottom-0 left-0 -mb-8 -ml-8 w-40 h-40 bg-primary/10 rounded-full blur-3xl opacity-60"></div>
  <div className="relative z-10">
  <div className="flex items-center gap-3 mb-6">
@@ -478,15 +612,16 @@ const Home = () => {
  </li>
  </ul>
  </div>
+ </Interactive3DCard>
  </div>
  </div>
  </div>
  <div className="mt-12 flex flex-col md:flex-row items-center justify-center gap-6 text-center">
- <p className="text-slate-500 dark:text-red-500 font-medium"> Looking for the best IT company in Kumbakonam to grow your business?</p>
+ <p className="home-hero-cta-copy text-slate-500 dark:text-red-500 font-medium"> Looking for the best IT company in Kumbakonam to grow your business?</p>
  <button
  onClick={() => setIsConsultationOpen(true)}
- className="inline-flex items-center justify-center h-10 px-6 rounded-full bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-sm font-bold hover:opacity-90 transition-opacity gap-2 group">
- <span>Get Free IT Consultation</span>
+ className="home-hero-consultation inline-flex items-center justify-center h-10 px-6 rounded-full bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-sm font-bold hover:opacity-90 transition-opacity gap-2 group">
+ <span className="home-hero-button-label">Get Free IT Consultation</span>
  <span className="material-symbols-outlined text-lg transition-transform group-hover:translate-x-1">arrow_forward</span>
  </button>
  </div>
@@ -497,19 +632,27 @@ const Home = () => {
  </section>
 
  {/* Products Spotlight Section */}
- <section className="py-16 lg:py-20 bg-gray-50 dark:bg-surface-dark/50 relative overflow-hidden scroll-animate">
+ <section className="replay-letter-reveal products-reveal-section py-16 lg:py-20 bg-gray-50 dark:bg-surface-dark/50 relative overflow-hidden scroll-animate">
  <div className="absolute top-0 left-0 w-64 h-64 bg-blue-100 dark:bg-blue-900/20 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2"></div>
  <div className="absolute bottom-0 right-0 w-96 h-96 bg-purple-100 dark:bg-purple-900/20 rounded-full blur-3xl translate-x-1/3 translate-y-1/3"></div>
  <div className="container mx-auto px-6 relative z-10">
  <div className="text-center mb-10">
- <span className="text-primary font-bold tracking-wider uppercase text-sm mb-2 block"> IT Products & SaaS Solutions
+ <span
+ className="text-primary font-bold tracking-wider uppercase text-sm mb-2 block"
+ aria-label={productsEyebrowText}
+ > {renderLetterRevealText(productsEyebrowText)}
  </span>
- <h2 className="text-3xl md:text-4xl font-bold dark:text-white">Software Products & SaaS Solutions</h2>
+ <h2
+ className="text-3xl md:text-4xl font-bold dark:text-white"
+ aria-label={productsHeadingText}
+ >
+ {renderLetterRevealText(productsHeadingText, productsEyebrowText.length)}
+ </h2>
  <div className="w-20 h-1.5 bg-primary rounded-full mx-auto mt-4"></div>
  </div>
  <div className="grid md:grid-cols-3 gap-6 lg:gap-8">
  {/* Product Card 1 */}
- <div className="group bg-white dark:bg-background-dark rounded-xl p-6 shadow-lg border border-gray-100 dark:border-gray-700 hover:border-green-500/50 dark:hover:border-primary/50 transition-all duration-300 hover:shadow-xl hover:-translate-y-1 relative overflow-hidden scroll-animate scroll-animate-delay-1">
+ <Interactive3DCard theme="green" tilt={false} className="group h-full bg-white dark:bg-background-dark rounded-xl p-6 shadow-lg relative overflow-hidden scroll-animate scroll-animate-delay-1">
  <div className="absolute top-0 right-0 p-6 opacity-10 group-hover:opacity-20 transition-opacity">
  </div>
  <div className="relative z-10">
@@ -540,9 +683,9 @@ const Home = () => {
  Explore Billing<span className="material-icons-outlined ml-1 text-sm group-hover:translate-x-1 transition-transform">arrow_forward</span>
  </a>
  </div>
- </div>
+ </Interactive3DCard>
  {/* Product Card 2 */}
- <div className="group bg-white dark:bg-background-dark rounded-xl p-6 shadow-lg border border-gray-100 dark:border-gray-700 hover:border-blue-500/50 dark:hover:border-secondary/50 transition-all duration-300 hover:shadow-xl hover:-translate-y-1 relative overflow-hidden scroll-animate scroll-animate-delay-2">
+ <Interactive3DCard theme="blue" tilt={false} className="group h-full bg-white dark:bg-background-dark rounded-xl p-6 shadow-lg relative overflow-hidden scroll-animate scroll-animate-delay-2">
  <div className="absolute top-0 right-0 p-6 opacity-10 group-hover:opacity-20 transition-opacity">
  <span className="material-icons-outlined text-9xl text-secondary">people_alt</span>
  </div>
@@ -574,9 +717,9 @@ const Home = () => {
  Explore Payroll <span className="material-icons-outlined ml-1 text-sm group-hover:translate-x-1 transition-transform">arrow_forward</span>
  </a>
  </div>
- </div>
+ </Interactive3DCard>
  {/* Product Card 3 */}
- <div className="group bg-white dark:bg-background-dark rounded-xl p-6 shadow-lg border border-gray-100 dark:border-gray-700 hover:border-yellow-500/50 dark:hover:border-yellow-500/50 transition-all duration-300 hover:shadow-xl hover:-translate-y-1 relative overflow-hidden scroll-animate scroll-animate-delay-3">
+ <Interactive3DCard theme="yellow" tilt={false} className="group h-full bg-white dark:bg-background-dark rounded-xl p-6 shadow-lg relative overflow-hidden scroll-animate scroll-animate-delay-3">
  <div className="absolute top-0 right-0 p-6 opacity-10 group-hover:opacity-20 transition-opacity">
  </div>
  <div className="relative z-10">
@@ -612,12 +755,12 @@ const Home = () => {
  Explore HMS <span className="material-icons-outlined ml-1 text-sm group-hover:translate-x-1 transition-transform">arrow_forward</span>
  </a>
  </div>
- </div>
+ </Interactive3DCard>
  </div>
  </div>
  <div className="flex justify-center mt-10">
  <button
- className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2.5 rounded-full text-sm font-semibold shadow transition"
+ className="home-hero-product-explore bg-blue-600 hover:bg-blue-700 text-white px-6 py-2.5 rounded-full text-sm font-semibold shadow transition"
  onClick={() => window.location.href = '/products'}
  >
  Explore All IT Products
@@ -634,170 +777,75 @@ const Home = () => {
  <div className="absolute bottom-0 right-0 translate-x-1/3 translate-y-1/3 w-[500px] h-[500px] bg-indigo-200/20 dark:bg-indigo-900/10 rounded-full blur-3xl pointer-events-none"></div>
  <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
  <div className="max-w-6xl mx-auto text-center mb-10 lg:mb-12">
- <span className="block text-primary font-semibold tracking-wider uppercase text-sm mb-3">
- IT Services in Kumbakonam
+ <span
+   aria-label="IT Services in Kumbakonam"
+   className="block text-primary font-semibold tracking-wider uppercase text-sm mb-3"
+ >
+   <span aria-hidden="true">{renderInteractiveHeadingText('IT Services in Kumbakonam')}</span>
  </span>
- <h2 className="text-3xl max-w-6xl lg:text-4xl font-display font-bold text-slate-900 dark:text-white mb-6">
- Complete IT Solutions – Software, SaaS & Digital Services
+ <h2
+   aria-label="Complete IT Solutions – Software, SaaS & Digital Services"
+   className="text-3xl max-w-6xl lg:text-4xl font-display font-bold text-slate-900 dark:text-white mb-6"
+ >
+   <span aria-hidden="true">{renderInteractiveHeadingText('Complete IT Solutions – Software, SaaS & Digital Services')}</span>
  </h2>
- <p className="text-lg text-slate-500 dark:text-slate-400">
+ <p className="home-hero-cta-copy text-lg text-slate-500 dark:text-slate-400">
  We provide end-to-end IT services including software development, SaaS solutions, digital marketing, and IT training to help businesses and students grow faster.
  </p>
- <div className="flex justify-center gap-2 mt-6">
- <div className="w-8 h-1.5 bg-primary rounded-full"></div>
- <div className="w-1.5 h-1.5 bg-slate-300 dark:bg-slate-600 rounded-full"></div>
- <div className="w-1.5 h-1.5 bg-slate-300 dark:bg-slate-600 rounded-full"></div>
  </div>
+ <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 items-start gap-6">
+ {serviceCards.map((service, index) => {
+   return (
+     <article
+       key={service.id}
+       className={`service-card relative bg-card-light dark:bg-card-dark rounded-xl p-6 shadow-soft border border-slate-100 dark:border-slate-700/50 scroll-animate ${serviceScrollDelays[index % serviceScrollDelays.length]}`}
+       style={{ '--service-accent': service.accent }}
+     >
+       <div className="service-card-heading">
+         <span className={`service-card-icon w-14 h-14 rounded-xl ${service.iconBackground} ${service.iconColor} flex items-center justify-center text-3xl`}>
+           <span className="material-icons-round" aria-hidden="true">{service.icon}</span>
+         </span>
+         <h3 className="text-xl font-display font-bold text-slate-900 dark:text-white">
+           {service.title}
+         </h3>
+         <span className="service-card-indicator material-icons-round" aria-hidden="true">keyboard_arrow_down</span>
+       </div>
+       <div className="service-card-content">
+         <p className="text-slate-600 dark:text-slate-400 leading-relaxed">
+           {service.description}
+         </p>
+         <div className="mt-4 pt-4 border-t border-slate-100 dark:border-slate-700/50 flex items-center justify-between gap-3">
+           <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${service.tagColor}`}>
+             {service.tag}
+           </span>
+           <Link to={service.href} className="inline-flex items-center text-sm font-semibold text-primary hover:text-blue-700 dark:hover:text-blue-300 transition-colors cursor-pointer">
+             Learn More
+             <span className="material-icons-round text-base ml-1" aria-hidden="true">arrow_forward</span>
+           </Link>
+         </div>
+       </div>
+     </article>
+   );
+ })}
  </div>
- <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
- {/* Service Card 1 */}
- <div className="group bg-card-light dark:bg-card-dark rounded-xl p-6 shadow-soft hover:shadow-hover transition-all duration-300 hover:-translate-y-1 border border-slate-100 dark:border-slate-700/50 flex flex-col h-full scroll-animate scroll-animate-delay-1">
- <div className="mb-6">
- <div className="w-14 h-14 rounded-xl bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 flex items-center justify-center text-3xl mb-6 transition-transform group-hover:scale-110 duration-300">
- <span className="material-icons-round">widgets</span>
- </div>
- <h3 className="text-xl font-display font-bold text-slate-900 dark:text-white mb-3">
- Custom Software & Web Development
- </h3>
- <p className="text-slate-600 dark:text-slate-400 leading-relaxed mb-4 flex-grow">
- Delivering scalable Web Application Development, E-commerce solutions, and cross-platform mobile apps. We specialize in MERN Stack, UI/UX design, and high-performance Frontend/Backend development for business automation</p>
- </div>
- <div className="mt-auto pt-4 border-t border-slate-100 dark:border-slate-700/50 flex items-center justify-between">
- <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 dark:bg-blue-900/50 text-blue-800 dark:text-blue-200">
- Built for scale
- </span>
- <Link to="/services/application-development" className="inline-flex items-center text-sm font-semibold text-primary hover:text-blue-700 dark:hover:text-blue-300 transition-colors cursor-pointer">
- Learn More
- <span className="material-icons-round text-base ml-1">arrow_forward</span>
- </Link>
- </div>
- </div>
- {/* Service Card 2 */}
- <div className="group bg-card-light dark:bg-card-dark rounded-xl p-6 shadow-soft hover:shadow-hover transition-all duration-300 hover:-translate-y-1 border border-slate-100 dark:border-slate-700/50 flex flex-col h-full scroll-animate scroll-animate-delay-2">
- <div className="mb-6">
- <div className="w-14 h-14 rounded-xl bg-orange-50 dark:bg-orange-900/30 text-orange-500 dark:text-orange-400 flex items-center justify-center text-3xl mb-6 transition-transform group-hover:scale-110 duration-300">
- <span className="material-icons-round">campaign</span>
- </div>
- <h3 className="text-xl font-display font-bold text-slate-900 dark:text-white mb-3">
- Digital Marketing & SEO Solutions </h3>
- <p className="text-slate-600 dark:text-slate-400 leading-relaxed mb-4 flex-grow">
- Data-driven Search Engine Optimization, Content Marketing, and Social Media Strategy. We focus on Google Ads (PPC), Meta Marketing, and Conversion Rate Optimization to drive high-quality business leads </p>
- </div>
- <div className="mt-auto pt-4 border-t border-slate-100 dark:border-slate-700/50 flex items-center justify-between">
- <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-orange-100 dark:bg-orange-900/50 text-orange-800 dark:text-orange-200">
- Leads with clarity
- </span>
- <Link to="/services/digital-media" className="inline-flex items-center text-sm font-semibold text-primary hover:text-blue-700 dark:hover:text-blue-300 transition-colors cursor-pointer">
- Learn More
- <span className="material-icons-round text-base ml-1">arrow_forward</span>
- </Link>
- </div>
- </div>
- {/* Service Card 3 */}
- <div className="group bg-card-light dark:bg-card-dark rounded-xl p-6 shadow-soft hover:shadow-hover transition-all duration-300 hover:-translate-y-1 border border-slate-100 dark:border-slate-700/50 flex flex-col h-full scroll-animate scroll-animate-delay-3">
- <div className="mb-6">
- <div className="w-14 h-14 rounded-xl bg-teal-50 dark:bg-teal-900/30 text-teal-600 dark:text-teal-400 flex items-center justify-center text-3xl mb-6 transition-transform group-hover:scale-110 duration-300">
- <span className="material-icons-round">school</span>
- </div>
- <h3 className="text-xl font-display font-bold text-slate-900 dark:text-white mb-3">
- Job-Oriented IT Courses & Training
- </h3>
- <p className="text-slate-600 dark:text-slate-400 leading-relaxed mb-4 flex-grow">
- Industry-led training from an active IT company. Expert-led Full Stack Development, Python for Data Science, Artificial Intelligence, and Cyber Security with Live Project Internships and Placement Assistance</p>
- </div>
- <div className="mt-auto pt-4 border-t border-slate-100 dark:border-slate-700/50 flex items-center justify-between">
- <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-teal-100 dark:bg-teal-900/50 text-teal-800 dark:text-teal-200">
- Skills that ship…
- </span>
- <Link to="/services/it-training-skill-development" className="inline-flex items-center text-sm font-semibold text-primary hover:text-blue-700 dark:hover:text-blue-300 transition-colors cursor-pointer">
- Learn More
- <span className="material-icons-round text-base ml-1">arrow_forward</span>
- </Link>
- </div>
- </div>
- {/* Service Card 4 */}
- {/* <div className="group bg-card-light dark:bg-card-dark rounded-2xl p-8 shadow-soft hover:shadow-hover transition-all duration-300 hover:-translate-y-2 border border-slate-100 dark:border-slate-700/50 flex flex-col h-full scroll-animate scroll-animate-delay-4">
- <div className="mb-6">
- <div className="w-14 h-14 rounded-xl bg-purple-50 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400 flex items-center justify-center text-3xl mb-6 transition-transform group-hover:scale-110 duration-300">
- <span className="material-icons-round">auto_awesome</span>
- </div>
- <h3 className="text-xl font-display font-bold text-slate-900 dark:text-white mb-3">
- Brand & Experience Strategy
- </h3>
- <p className="text-slate-600 dark:text-slate-400 leading-relaxed mb-4 flex-grow">
- Positioning, messaging, and UX so every customer interaction feels intentional and on-brand.
- </p>
- </div>
- <div className="mt-auto pt-4 border-t border-slate-100 dark:border-slate-700/50 flex items-center justify-between">
- <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-100 dark:bg-purple-900/50 text-purple-800 dark:text-purple-200">
- Experience-led growth
- </span>
- <Link className="inline-flex items-center text-sm font-semibold text-primary hover:text-blue-700 dark:hover:text-blue-300 transition-colors" onClick={() => setIsEnquiryOpen(true)}>
- Learn More <span className="material-icons-round text-base ml-1">arrow_forward</span>
- </Link>
- </div>
- </div> */}
- {/* Service Card 5 */}
- <div className="group bg-card-light dark:bg-card-dark rounded-xl p-6 shadow-soft hover:shadow-hover transition-all duration-300 hover:-translate-y-1 border border-slate-100 dark:border-slate-700/50 flex flex-col h-full scroll-animate scroll-animate-delay-1">
- <div className="mb-6">
- <div className="w-14 h-14 rounded-xl bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 flex items-center justify-center text-3xl mb-6 transition-transform group-hover:scale-110 duration-300">
- <span className="material-icons-round">dns</span>
- </div>
- <h3 className="text-xl font-display font-bold text-slate-900 dark:text-white mb-3">
- Cloud Solutions & IT Infrastructure
- </h3>
- <p className="text-slate-600 dark:text-slate-400 leading-relaxed mb-4 flex-grow">
- Reliable Cloud Computing services, Cybersecurity solutions, and Network Administration. We provide expert AWS/Azure Cloud Migration, Server Maintenance, and secure Database Management</p>
- </div>
- <div className="mt-auto pt-4 border-t border-slate-100 dark:border-slate-700/50 flex items-center justify-between">
- <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-indigo-100 dark:bg-indigo-900/50 text-indigo-800 dark:text-indigo-200">
- Reliable foundations
- </span>
- <Link to="/services/it-infrastructure" className="inline-flex items-center text-sm font-semibold text-primary hover:text-blue-700 dark:hover:text-blue-300 transition-colors cursor-pointer">
- Learn More
- <span className="material-icons-round text-base ml-1">arrow_forward</span>
- </Link>
- </div>
- </div>
- {/* Service Card 6 */}
- <div className="group bg-card-light dark:bg-card-dark rounded-xl p-6 shadow-soft hover:shadow-hover transition-all duration-300 hover:-translate-y-1 border border-slate-100 dark:border-slate-700/50 flex flex-col h-full scroll-animate scroll-animate-delay-2">
- <div className="mb-6">
- <div className="w-14 h-14 rounded-xl bg-pink-50 dark:bg-pink-900/30 text-pink-600 dark:text-pink-400 flex items-center justify-center text-3xl mb-6 transition-transform group-hover:scale-110 duration-300">
- <span className="material-icons-round">groups</span>
- </div>
- <h3 className="text-xl font-display font-bold text-slate-900 dark:text-white mb-3">
- HR Consulting & Enterprise Management
- </h3>
- <p className="text-slate-600 dark:text-slate-400 leading-relaxed mb-4 flex-grow">
- Comprehensive Talent Acquisition, Staffing Solutions, and Employee Management Systems. We streamline IT Staffing, Payroll Outsourcing, and business operations for tech startups in Tamil Nadu.</p>
- </div>
- <div className="mt-auto pt-4 border-t border-slate-100 dark:border-slate-700/50 flex items-center justify-between">
- <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-pink-100 dark:bg-pink-900/50 text-pink-800 dark:text-pink-200">
- People-first solutions
- </span>
- <Link to="/services/hr-consulting" className="inline-flex items-center text-sm font-semibold text-primary hover:text-blue-700 dark:hover:text-blue-300 transition-colors cursor-pointer">
- Learn More
- <span className="material-icons-round text-base ml-1">arrow_forward</span>
- </Link>
- </div>
- </div>
- </div>
- </div>
- </section>
+   </div>
+   </section>
 
  {/* Trust Section with Auto-Scroll */}
- <section className="py-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 overflow-hidden scroll-animate">
+ <section className="replay-letter-reveal trust-section py-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 overflow-hidden scroll-animate">
  {/* Section Heading */}
  <div className="text-center mb-10">
- <h2 className="text-3xl lg:text-4xl font-display font-bold text-gray-900 dark:text-white mb-4">
- Trusted by Businesses Worldwide <span className="text-primary">SwordNex</span>
+ <h2
+ className="trust-heading text-3xl lg:text-4xl font-display font-bold text-gray-900 dark:text-white mb-4"
+ aria-label={`${trustHeadingText}${trustHeadingBrand}`}
+ >
+ {renderLetterRevealText(trustHeadingText)}
+ <span className="text-primary">{renderLetterRevealText(trustHeadingBrand, trustHeadingText.length)}</span>
  </h2>
- <div className="h-1.5 w-24 bg-primary mx-auto rounded-full flex gap-2 justify-center items-center">
- <div className="w-1.5 h-1.5 bg-white rounded-full"></div>
- <div className="w-1.5 h-1.5 bg-white rounded-full"></div>
- <div className="w-1.5 h-1.5 bg-white rounded-full"></div>
- </div>
- <p className="mt-6 text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+ <p
+ className="trust-heading-description mt-6 text-gray-600 dark:text-gray-400 max-w-2xl mx-auto"
+ style={{ '--trust-heading-reveal-delay': `${trustHeadingRevealDelay}ms` }}
+ >
  SwordNex delivers scalable web applications, digital products, and campaigns backed by measurable results and dedicated support.
  </p>
  </div>
@@ -805,17 +853,21 @@ const Home = () => {
  {/* Metrics Grid */}
  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-14">
  {[
- { label: "Long-Term Clients", val: "50+", icon: "groups", color: "bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400", desc: "Companies that rely on SwordNex" },
- { label: "Projects Delivered", val: "100+", icon: "inventory_2", color: "bg-red-50 dark:bg-red-900/30 text-red-600 dark:text-red-400", desc: "Custom apps and campaigns completed" },
- { label: "Uptime Guarantee", val: "100%", icon: "cloud_done", color: "bg-green-50 dark:bg-green-900/30 text-green-600 dark:text-green-400", desc: "Reliable mission-critical systems" },
- { label: "Expert Support", val: "24/7", icon: "support_agent", color: "bg-yellow-50 dark:bg-yellow-900/30 text-yellow-600 dark:text-yellow-400", desc: "Dedicated team available anytime" }
+ { label: "Long-Term Clients", value: 50, suffix: "+", icon: "groups", color: "bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400", border: "border-blue-200 dark:border-blue-800/70", desc: "Companies that rely on SwordNex" },
+ { label: "Projects Delivered", value: 100, suffix: "+", icon: "inventory_2", color: "bg-red-50 dark:bg-red-900/30 text-red-600 dark:text-red-400", border: "border-red-200 dark:border-red-800/70", desc: "Custom apps and campaigns completed" },
+ { label: "Uptime Guarantee", value: 100, suffix: "%", icon: "cloud_done", color: "bg-green-50 dark:bg-green-900/30 text-green-600 dark:text-green-400", border: "border-green-200 dark:border-green-800/70", desc: "Reliable mission-critical systems" },
+ { label: "Expert Support", value: 24, suffix: "/7", icon: "support_agent", color: "bg-yellow-50 dark:bg-yellow-900/30 text-yellow-600 dark:text-yellow-400", border: "border-yellow-200 dark:border-yellow-800/70", desc: "Dedicated team available anytime" }
  ].map((m, i) => (
- <div key={i} className="bg-white dark:bg-card-dark p-6 rounded-xl shadow-md border border-gray-100 dark:border-gray-700 text-center group scroll-animate" style={{ transitionDelay: `${i * 0.1}s` }}>
+ <div key={i} className={`trust-metric-card bg-white dark:bg-card-dark p-6 rounded-xl shadow-md border ${m.border} text-center group scroll-animate`} style={{ transitionDelay: `${i * 0.1}s` }}>
  <div className={`inline-flex items-center justify-center w-14 h-14 rounded-full ${m.color} mb-4 group-hover:scale-110 transition-transform`}>
  <span className="material-icons-round text-3xl">{m.icon}</span>
  </div>
- <h3 className="text-3xl font-display font-bold text-gray-900 dark:text-white mb-2">{m.val}</h3>
- <p className="text-gray-600 dark:text-gray-400 font-medium">{m.label}</p>
+ <TrustStatCounter
+ target={m.value}
+ suffix={m.suffix}
+ label={m.label}
+ className="trust-metric-counter"
+ />
  <p className="text-xs text-gray-400 mt-1">{m.desc}</p>
  </div>
  ))}
@@ -866,23 +918,26 @@ const Home = () => {
  </section>
 
  {/* About Section */}
- <section className="relative py-12 lg:py-14 overflow-hidden scroll-animate">
+ <section className="replay-letter-reveal relative py-12 lg:py-14 overflow-hidden scroll-animate">
  <div className="container mx-auto px-6 lg:px-12 relative z-10">
 
  {/* Heading */}
  <div className="text-center max-w-5xl mx-auto mb-10 lg:mb-12">
  <span className="inline-block py-1 px-3 rounded-full bg-blue-50 dark:bg-blue-900/30 text-primary text-sm font-semibold mb-4 tracking-wide uppercase">
- Why Choose Our IT Services
+ <span className="sr-only">{whyChooseHeadingText}</span>
+ <span aria-hidden="true">{renderLetterRevealText(whyChooseHeadingText)}</span>
  </span>
 
- <h2 className="text-3xl lg:text-4xl max-w-5xl font-bold text-gray-900 dark:text-white leading-tight mb-4">
+ <h2
+ className="trust-heading-description text-3xl lg:text-4xl max-w-5xl font-bold text-gray-900 dark:text-white leading-tight mb-4"
+ style={{ '--trust-heading-reveal-delay': `${whyChooseDescriptionRevealDelay}ms` }}
+ >
  Leading IT Company <br className="hidden md:block" />
- <span className="text-transparent py-2 bg-clip-text bg-gradient-to-r from-primary to-secondary">
+ <span className="py-2 text-primary">
  Delivering Smart Software & IT Solutions
  </span>
  </h2>
 
- <div className="h-1.5 w-24 bg-primary mx-auto rounded-full mt-6"></div>
  </div>
 
  <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10">
@@ -980,8 +1035,13 @@ const Home = () => {
  </div>
 
  <p className="text-gray-700 dark:text-gray-300 text-lg italic mb-8 leading-relaxed">
- "At SwordNex, we build powerful IT solutions and custom software that help businesses streamline operations, improve efficiency, and scale faster with modern technology."
+ At SwordNex, we build powerful IT solutions and custom software that help businesses streamline operations, improve efficiency, and scale faster with modern technology.
  </p>
+ <div className="-mt-8 mb-4 flex w-full justify-end" aria-hidden="true">
+ <span className="material-icons-round rotate-180 text-5xl text-primary opacity-50">
+ format_quote
+ </span>
+ </div>
 
  <div className="flex items-center gap-4 border-t border-gray-100 dark:border-gray-700 pt-6">
  <div className="w-16 h-16 rounded-full overflow-hidden border-2 border-primary">

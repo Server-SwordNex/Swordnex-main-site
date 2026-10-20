@@ -7,11 +7,15 @@ import './Interactive3DCard.css';
  * 2. Scales slightly bigger when hovered (scale: 1.05, translateZ: 24px).
  * 3. Smoothly returns to flat resting state on pointer leave.
  * 4. Border is intensely highlighted and blinks slowly:
- *    - 'blue' for Enterprise Software Development (#2563eb + glowing ambient aura)
- *    - 'purple' for Business Systems Integration (#a855f7 + glowing ambient aura)
+ *    - 'blue' for blue border and glowing ambient aura
+ *    - 'purple' for purple border and glowing ambient aura
+ *    - 'red' for red border and glowing ambient aura
+ *    - 'green' for green border and glowing ambient aura
+ *    - 'yellow' for yellow border and glowing ambient aura
  */
 export const Interactive3DCard = ({
-  theme = 'blue', // 'blue' | 'purple'
+  theme = 'blue', // 'blue' | 'purple' | 'red' | 'green' | 'yellow'
+  tilt = true,
   className = '',
   onHoverChange,
   children,
@@ -90,8 +94,8 @@ export const Interactive3DCard = ({
     // Refined tilt (reduced by 20% from 16 to 12.8 degrees)
     const MAX_TILT = 12.8;
     const m = motionRef.current;
-    m.targetRotX = -normY * MAX_TILT;
-    m.targetRotY = normX * MAX_TILT;
+    m.targetRotX = tilt ? -normY * MAX_TILT : 0;
+    m.targetRotY = tilt ? normX * MAX_TILT : 0;
     m.targetScale = 1.038;
     m.targetZ = 19;
     m.targetMouseX = relX;
@@ -101,7 +105,7 @@ export const Interactive3DCard = ({
       setIsHovered(true);
       onHoverChange?.(true);
     }
-  }, [onHoverChange]);
+  }, [onHoverChange, tilt]);
 
   const handlePointerLeave = useCallback(() => {
     const m = motionRef.current;
