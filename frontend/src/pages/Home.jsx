@@ -3,13 +3,124 @@ import { Link } from 'react-router-dom';
 import API_BASE_URL from '../config/apiConfig';
 import ConsultationModal from '../components/ConsultationModal';
 import ServiceEnquiryModal from '../components/ServiceEnquiryModal';
-import { motion } from 'framer-motion';
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Autoplay } from "swiper/modules";
 import kaja from '../assets/Founder_1.jpeg';
-import "swiper/css";
 import { Helmet } from "react-helmet-async";
 import DotField from '../components/UI/DotField';
+import TrustStatCounter from '../components/UI/TrustStatCounter';
+import Interactive3DCard from '../components/UI/Interactive3DCard';
+import './HomeHero.css';
+
+const renderInteractiveHeadingText = (text) =>
+ text.split('').map((character, index) => (
+   <span className="home-hero-heading-letter" key={`${character}-${index}`}>
+     {character === ' ' ? '\u00a0' : character}
+   </span>
+ ));
+
+const renderLetterRevealText = (text, startIndex = 0) => {
+ let characterIndex = startIndex;
+
+ return text.split(' ').map((word, wordIndex) => (
+   <React.Fragment key={`${word}-${wordIndex}`}>
+     {wordIndex > 0 && ' '}
+     <span className="trust-heading-word" aria-hidden="true">
+       {Array.from(word, (character) => {
+         const index = characterIndex++;
+         return (
+           <span
+             className="trust-heading-letter"
+             key={`${index}-${character}`}
+             style={{ animationDelay: `${index * 24}ms` }}
+           >
+             {character}
+           </span>
+         );
+       })}
+     </span>
+   </React.Fragment>
+ ));
+};
+
+const trustHeadingText = 'Trusted by Businesses Worldwide ';
+const trustHeadingBrand = 'SwordNex';
+const trustHeadingRevealDelay =
+ (trustHeadingText.length + trustHeadingBrand.length - 1) * 24 + 450;
+const challengeHeadingText = 'Business Problems to Smart IT Solutions';
+const challengeDescriptionRevealDelay =
+ (challengeHeadingText.length - 1) * 24 + 450;
+const productsEyebrowText = 'IT Products & SaaS Solutions';
+const productsHeadingText = 'Software Products & SaaS Solutions';
+const whyChooseHeadingText = 'Why Choose Our IT Services';
+const whyChooseDescriptionRevealDelay =
+ (whyChooseHeadingText.length - 1) * 24 + 450;
+
+const serviceCards = [
+ {
+   id: 'development',
+   title: 'Custom Software & Web Development',
+   icon: 'widgets',
+   accent: '#2563eb',
+   iconColor: 'text-blue-600 dark:text-blue-400',
+   iconBackground: 'bg-blue-50 dark:bg-blue-900/30',
+   description: 'Delivering scalable Web Application Development, E-commerce solutions, and cross-platform mobile apps. We specialize in MERN Stack, UI/UX design, and high-performance Frontend/Backend development for business automation',
+   tag: 'Built for scale',
+   tagColor: 'bg-blue-100 dark:bg-blue-900/50 text-blue-800 dark:text-blue-200',
+   href: '/services/application-development'
+ },
+ {
+   id: 'marketing',
+   title: 'Digital Marketing & SEO Solutions',
+   icon: 'campaign',
+   accent: '#f97316',
+   iconColor: 'text-orange-500 dark:text-orange-400',
+   iconBackground: 'bg-orange-50 dark:bg-orange-900/30',
+   description: 'Data-driven Search Engine Optimization, Content Marketing, and Social Media Strategy. We focus on Google Ads (PPC), Meta Marketing, and Conversion Rate Optimization to drive high-quality business leads',
+   tag: 'Leads with clarity',
+   tagColor: 'bg-orange-100 dark:bg-orange-900/50 text-orange-800 dark:text-orange-200',
+   href: '/services/digital-media'
+ },
+ {
+   id: 'training',
+   title: 'Job-Oriented IT Courses & Training',
+   icon: 'school',
+   accent: '#0d9488',
+   iconColor: 'text-teal-600 dark:text-teal-400',
+   iconBackground: 'bg-teal-50 dark:bg-teal-900/30',
+   description: 'Industry-led training from an active IT company. Expert-led Full Stack Development, Python for Data Science, Artificial Intelligence, and Cyber Security with Live Project Internships and Placement Assistance',
+   tag: 'Skills that ship…',
+   tagColor: 'bg-teal-100 dark:bg-teal-900/50 text-teal-800 dark:text-teal-200',
+   href: '/services/it-training-skill-development'
+ },
+ {
+   id: 'infrastructure',
+   title: 'Cloud Solutions & IT Infrastructure',
+   icon: 'dns',
+   accent: '#4f46e5',
+   iconColor: 'text-indigo-600 dark:text-indigo-400',
+   iconBackground: 'bg-indigo-50 dark:bg-indigo-900/30',
+   description: 'Reliable Cloud Computing services, Cybersecurity solutions, and Network Administration. We provide expert AWS/Azure Cloud Migration, Server Maintenance, and secure Database Management',
+   tag: 'Reliable foundations',
+   tagColor: 'bg-indigo-100 dark:bg-indigo-900/50 text-indigo-800 dark:text-indigo-200',
+   href: '/services/it-infrastructure'
+ },
+ {
+   id: 'hr-consulting',
+   title: 'HR Consulting & Enterprise Management',
+   icon: 'groups',
+   accent: '#db2777',
+   iconColor: 'text-pink-600 dark:text-pink-400',
+   iconBackground: 'bg-pink-50 dark:bg-pink-900/30',
+   description: 'Comprehensive Talent Acquisition, Staffing Solutions, and Employee Management Systems. We streamline IT Staffing, Payroll Outsourcing, and business operations for tech startups in Tamil Nadu.',
+   tag: 'People-first solutions',
+   tagColor: 'bg-pink-100 dark:bg-pink-900/50 text-pink-800 dark:text-pink-200',
+   href: '/services/hr-consulting'
+ }
+];
+const serviceScrollDelays = [
+ 'scroll-animate-delay-1',
+ 'scroll-animate-delay-2',
+ 'scroll-animate-delay-3'
+];
 
 <Helmet>
  <title>
@@ -46,6 +157,65 @@ const Home = () => {
  const [isConsultationOpen, setIsConsultationOpen] = useState(false);
  const [isEnquiryOpen, setIsEnquiryOpen] = useState(false);
  const [partners, setPartners] = useState([]);
+ const [activeHeroSlide, setActiveHeroSlide] = useState(0);
+ const heroVisualRef = useRef(null);
+
+ const heroSlides = [
+   {
+     word: 'Business',
+     alt: 'A team collaborating on business strategy',
+     image: 'https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&w=1400&q=85'
+   },
+   {
+     word: 'Product',
+     alt: 'A product designer planning a digital product',
+     image: 'https://images.unsplash.com/photo-1551650975-87deedd944c3?auto=format&fit=crop&w=1400&q=85'
+   },
+   {
+     word: 'Technology',
+     alt: 'A developer working with modern technology',
+     image: 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=1400&q=85'
+   },
+   {
+     word: 'Talent',
+     alt: 'A diverse team working together',
+     image: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1400&q=85'
+   },
+   {
+     word: 'Digital',
+     alt: 'Digital analytics displayed on a screen',
+     image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1400&q=85'
+   }
+ ];
+
+ useEffect(() => {
+   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return undefined;
+
+   const intervalId = window.setInterval(() => {
+     setActiveHeroSlide((currentSlide) => (currentSlide + 1) % heroSlides.length);
+   }, 3200);
+
+   return () => window.clearInterval(intervalId);
+ }, [heroSlides.length]);
+
+ const handleHeroPointerMove = (event) => {
+   const visual = heroVisualRef.current;
+   if (!visual) return;
+
+   const bounds = visual.getBoundingClientRect();
+   const pointerX = (event.clientX - bounds.left) / bounds.width - 0.5;
+   const pointerY = (event.clientY - bounds.top) / bounds.height - 0.5;
+   visual.style.setProperty('--tilt-x', `${pointerY * -5}deg`);
+   visual.style.setProperty('--tilt-y', `${pointerX * 5}deg`);
+ };
+
+ const resetHeroPointer = () => {
+   const visual = heroVisualRef.current;
+   if (!visual) return;
+
+   visual.style.setProperty('--tilt-x', '0deg');
+   visual.style.setProperty('--tilt-y', '0deg');
+ };
 
  useEffect(() => {
  const fetchPartners = async () => {
@@ -70,7 +240,9 @@ const Home = () => {
 
  const observerCallback = (entries) => {
  entries.forEach((entry) => {
- if (entry.isIntersecting) {
+ if (entry.target.classList.contains('replay-letter-reveal')) {
+ entry.target.classList.toggle('animate-in', entry.isIntersecting);
+ } else if (entry.isIntersecting) {
  entry.target.classList.add('animate-in');
  }
  });
@@ -126,117 +298,133 @@ const Home = () => {
  ];
 
  return (
- <div>
+ <>
  {/* Header/Hero Section */}
- <header className="relative pt-12 pb-12 lg:pt-16 lg:pb-16 overflow-hidden scroll-animate">
- {/* Background elements */}
- <div className="absolute top-0 right-0 -z-10 w-1/2 h-full bg-gradient-to-bl from-indigo-50/50 via-white to-white dark:from-slate-800/20 dark:via-background-dark dark:to-background-dark rounded-bl-[100px]"></div>
- <div className="absolute top-20 left-10 w-64 h-64 bg-purple-200/20 dark:bg-purple-900/10 rounded-full blur-3xl -z-10"></div>
- <div className="absolute bottom-10 right-10 w-96 h-96 bg-blue-200/20 dark:bg-blue-900/10 rounded-full blur-3xl -z-10"></div>
+ <header className="home-hero relative isolate overflow-hidden py-8 md:py-12 scroll-animate">
+ <div className="absolute inset-0 hero-grid opacity-50" />
+ <div
+   className="absolute inset-0"
+   style={{
+     background:
+       'radial-gradient(ellipse at 8% 10%, rgba(59,130,246,0.16), transparent 42%), radial-gradient(ellipse at 92% 88%, rgba(14,165,233,0.13), transparent 38%)'
+   }}
+ />
+ <div className="home-hero-glow home-hero-glow-left" aria-hidden="true" />
+ <div className="home-hero-glow home-hero-glow-right" aria-hidden="true" />
 
- {/* FULLY CENTERED CONTENT */}
- <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative text-center">
- <div className="flex flex-col items-center justify-center gap-6 lg:gap-8 py-6 lg:py-10 relative">
+ <div className="relative mx-auto max-w-[1440px] px-4 sm:px-6 lg:px-8">
+   <div className="grid items-center gap-10 lg:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)] lg:gap-14">
+     <div className="home-hero-copy relative z-10">
+      <div className="mb-6 text-left">
+         <div className="home-hero-brand inline-flex items-center gap-2 rounded-full border border-sky-200/80 bg-white/80 px-4 py-2 text-[10px] font-semibold uppercase tracking-[0.24em] text-sky-700 shadow-sm backdrop-blur-sm">
+           <span className="home-hero-brand-dot h-2.5 w-2.5 rounded-full bg-sky-600" />
+           SwordNex
+         </div>
+       </div>
 
- {/* FLOATING ICONS - SIDES */}
- <div className="absolute inset-0 pointer-events-none overflow-hidden -z-0">
- {/* LEFT SIDE ICONS */}
- <div className="absolute left-4 top-1/4 w-12 h-12 md:left-8 md:w-14 md:h-14 lg:left-12 lg:w-16 lg:h-16 bg-white/70 dark:bg-slate-800/70 backdrop-blur-md rounded-xl shadow-2xl border border-white/50 animate-[float-left_6s_ease-in-out_infinite] opacity-70 hover:opacity-100 group hover:scale-110 transition-all duration-500 z-5">
- <svg viewBox="0 0 24 24" className="w-full h-full p-2.5 text-blue-600 group-hover:text-blue-700">
- <path fill="currentColor" d="M12 2L13.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L10.91 8.26L12 2Z" />
- </svg>
- </div>
+      <h1
+        aria-label="Looking for the Best IT Solutions & Software Company"
+        className="home-hero-heading text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight tracking-tight text-[#0d121b] dark:text-white"
+      >
+         <span className="block" aria-hidden="true">{renderInteractiveHeadingText('Looking for the')}</span>
+         <span className="home-hero-heading-accent block" aria-hidden="true">{renderInteractiveHeadingText('Best IT Solutions &')}</span>
+         <span className="block" aria-hidden="true">{renderInteractiveHeadingText('Software Company')}</span>
+       </h1>
 
- <div className="absolute left-6 bottom-1/4 w-12 h-12 md:left-10 md:w-14 md:h-14 lg:left-14 lg:w-16 lg:h-16 bg-gradient-to-br from-green-500/80 to-emerald-600/80 backdrop-blur-md rounded-xl shadow-2xl border border-white/30 animate-[float-left_5s_ease-in-out_infinite_2s] opacity-70 hover:opacity-100 group hover:scale-110 transition-all duration-500 z-5">
- <svg viewBox="0 0 24 24" className="w-full h-full p-2.5 text-white">
- <path fill="currentColor" d="M7.46 20.083l1.687-7.584h5.167l1.687 7.584h3.417l-2.292-10.25h-3.417l-.834-3.667-1.25 5.667h-5.167l-.833-3.667-1.25 5.667h-3.417l-2.292 10.25h3.417zm5.084-7.584h-2.917l1.458-6.583h2.917l-1.458 6.583z" />
- </svg>
- </div>
+      <p className="home-hero-description mt-6 max-w-2xl text-base leading-relaxed text-slate-600 dark:text-slate-300 lg:text-lg">
+         Get expert IT Services, Custom Software Development, SaaS Solutions, and Business Automation tailored for your enterprise. Partner with SwordNex Technologies—a premier IT Solutions provider—to build scalable digital solutions and accelerate your business growth.
+       </p>
 
- {/* RIGHT SIDE ICONS */}
- <div className="absolute right-4 top-1/3 w-12 h-12 md:right-8 md:w-14 md:h-14 lg:right-12 lg:w-16 lg:h-16 bg-gradient-to-br from-emerald-400/80 to-teal-500/80 backdrop-blur-md rounded-xl shadow-2xl border border-white/30 animate-[float-right_7s_ease-in-out_infinite_1s] opacity-70 hover:opacity-100 group hover:scale-110 transition-all duration-500 z-5">
- <svg viewBox="0 0 48 48" className="w-full h-full p-2.5 text-white">
- <path fill="currentColor" d="M44.083 0h-35.75a6.333 6.333 0 0 0-6.333 6.333v35.75a6.333 6.333 0 0 0 6.333 6.334h35.75a6.334 6.334 0 0 0 6.333-6.334V6.333A6.334 6.334 0 0 0 44.083 0zm-3.084 39.084H7.25V8.917h33.749v30.167zM16.708 25.583h6.084v11.583h4.917V25.583h6.083v-4.75h-6.083v-4.083h-4.917v4.083h-6.084v4.75zm11.75-4.75h8.083V17.75h-8.083v3.083z" />
- </svg>
- </div>
+      <div className="mt-7 flex flex-col items-start gap-3 sm:flex-row">
+         <button
+           onClick={() => setIsConsultationOpen(true)}
+           className="home-hero-primary inline-flex items-center justify-center rounded-full bg-sky-600 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-sky-500/30 transition-all duration-300 hover:-translate-y-0.5 hover:bg-sky-700"
+         >
+           <span className="home-hero-button-label">Our IT Solutions</span>
+         </button>
+         <Link to="/services" className="home-hero-secondary inline-flex items-center justify-center rounded-full border border-slate-300 bg-white/80 px-6 py-3 text-sm font-semibold text-slate-700 shadow-sm transition-all duration-300 hover:border-sky-500 hover:text-sky-700">
+           <span className="material-icons-round mr-2 text-xl">play_circle_outline</span>
+           <span className="home-hero-button-label">Explore Job-Oriented Training</span>
+         </Link>
+       </div>
 
- <div className="absolute right-6 bottom-1/3 w-12 h-12 md:right-10 md:w-14 md:h-14 lg:right-14 lg:w-16 lg:h-16 bg-gradient-to-br from-pink-500/80 to-purple-600/80 backdrop-blur-md rounded-xl shadow-2xl border border-white/30 animate-[float-right_8s_ease-in-out_infinite_3s] opacity-70 hover:opacity-100 group hover:scale-110 transition-all duration-500 z-5">
- <svg viewBox="0 0 24 24" className="w-full h-full p-2.5 text-white">
- <path fill="currentColor" d="M3 3h3v3H3zM6 3h3v3H6zM9 3h3v3H9zM3 6h3v3H3zM6 6h3v3H6zM9 6h3v3H9zM3 9h3v3H3zM6 9h3v3H6zM9 9h3v3H9z" />
- </svg>
- </div>
- </div>
+      <div className="home-hero-stats mt-8 grid max-w-xl grid-cols-3 gap-3 text-left text-xs font-semibold text-slate-600 dark:text-slate-300 sm:gap-4">
+         <div className="home-hero-stat rounded-2xl border border-sky-100 bg-sky-50/80 p-3 shadow-sm">
+           <div className="home-hero-stat-icon mb-2 flex h-9 w-9 items-center justify-center rounded-xl bg-sky-100 text-sky-600">
+             <span className="material-icons-round text-lg">check</span>
+           </div>
+           <TrustStatCounter
+             target={80}
+             label="Clients"
+             suffix="+"
+             className="home-hero-stat-counter"
+           />
+         </div>
 
- {/* CENTERED TEXT CONTENT */}
- <div className="flex flex-col items-center text-center space-y-6 max-w-8xl mx-auto relative z-10">
-        <div className="relative w-full max-w-6xl mx-auto py-6 sm:py-8 px-4 sm:px-6 rounded-3xl overflow-hidden flex items-center justify-center">
-          {/* Interactive DotField background canvas */}
-          <div className="absolute inset-0 pointer-events-none -z-0 dot-field-mask">
-            <DotField
-              dotRadius={1.5}
-              dotSpacing={14}
-              bulgeStrength={35}
-              glowRadius={160}
-              sparkle={false}
-              waveAmplitude={1}
-              gradientFrom="#3B82F6"
-              gradientTo="#ffffff"
-              glowColor="#3B82F6"
-            />
-          </div>
+         <div className="home-hero-stat rounded-2xl border border-sky-100 bg-sky-50/80 p-3 shadow-sm">
+           <div className="home-hero-stat-icon mb-2 flex h-9 w-9 items-center justify-center rounded-xl bg-sky-100 text-sky-600">
+             <span className="material-icons-round text-lg">layers</span>
+           </div>
+           <TrustStatCounter
+             target={100}
+             label="Projects"
+             suffix="+"
+             className="home-hero-stat-counter"
+           />
+         </div>
 
-          <h1 className="relative z-10 font-display font-extrabold text-4xl sm:text-5xl lg:text-8xl xl:text-6xl text-gray-900 dark:text-white leading-tight scroll-animate scroll-animate-delay-1">
-            Looking for the 
-            <span className="block text-transparent bg-clip-text bg-gradient-to-r from-primary to-purple-500 mt-2 lg:mt-1 pb-1 lg:pb-2">
-              Best IT Solutions & Software Company in Tamil Nadu? 
-            </span>
-          </h1>
-        </div>
+         <div className="home-hero-stat rounded-2xl border border-sky-100 bg-sky-50/80 p-3 shadow-sm">
+           <div className="home-hero-stat-icon mb-2 flex h-9 w-9 items-center justify-center rounded-xl bg-sky-100 text-sky-600">
+             <span className="material-icons-round text-lg">support_agent</span>
+           </div>
+           <TrustStatCounter
+             target={24}
+             label="Support"
+             suffix="/7"
+             animateOnView={false}
+             className="home-hero-stat-counter"
+           />
+         </div>
+       </div>
+     </div>
 
- <p className="text-lg sm:text-xl lg:text-2xl text-gray-600 dark:text-gray-400 leading-relaxed max-w-6xl mx-auto">
- Get expert IT Services, Custom Software Development, SaaS Solutions, and Business Automation tailored for your enterprise. Partner with SwordNex Technologies—a premier IT Solutions provider—to build scalable digital solutions and accelerate your business growth.
- </p>
-
- <div className="flex flex-col sm:flex-row gap-4 justify-center items-center w-full max-w-2xl mx-auto scroll-animate scroll-animate-delay-3">
- <button
- onClick={() => setIsConsultationOpen(true)}
- className="inline-flex justify-center items-center px-8 py-4 rounded-full bg-primary text-white font-semibold text-lg shadow-lg shadow-indigo-500/30 hover:bg-indigo-700 hover:shadow-indigo-500/50 transition-all transform hover:-translate-y-1"
- >
- Our IT Solutions
- </button>
- <Link to="/services" className="inline-flex justify-center items-center px-8 py-4 rounded-full border-2 border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-200 font-semibold text-lg hover:border-primary hover:text-primary dark:hover:border-primary dark:hover:text-primary transition-all bg-transparent">
- <span className="material-icons-round mr-2 text-xl">play_circle_outline</span>
- Explore Job-Oriented Training
- </Link>
+     <div
+       ref={heroVisualRef}
+       className="home-hero-visual relative z-10 min-h-[360px] overflow-hidden rounded-[28px] bg-slate-900 shadow-[0_30px_80px_rgba(15,23,42,0.2)] sm:min-h-[460px] lg:min-h-[600px]"
+       onPointerMove={handleHeroPointerMove}
+       onPointerLeave={resetHeroPointer}
+       aria-label="SwordNex builds business, product, technology, talent, and digital solutions"
+     >
+       <div className="home-hero-image-stack absolute inset-0">
+         {heroSlides.map((slide, index) => (
+           <img
+             key={slide.word}
+             src={slide.image}
+             alt={slide.alt}
+             className={`home-hero-image absolute inset-0 h-full w-full object-cover ${index === activeHeroSlide ? 'is-active' : ''}`}
+             aria-hidden={index !== activeHeroSlide}
+             loading={index === activeHeroSlide ? 'eager' : 'lazy'}
+           />
+         ))}
+       </div>
+       <div className="home-hero-shade absolute inset-0" />
+       <div className="absolute inset-0 flex flex-col items-center justify-center px-5 text-center">
+         <p className="home-hero-build text-4xl font-bold tracking-tight text-white sm:text-5xl lg:text-6xl">
+           We build
+         </p>
+         <p
+           key={heroSlides[activeHeroSlide].word}
+           className="home-hero-word mt-2 text-4xl font-extrabold tracking-tight text-sky-300 sm:text-5xl lg:text-6xl"
+           aria-live="polite"
+           aria-atomic="true"
+         >
+           {heroSlides[activeHeroSlide].word}
+         </p>
+       </div>
+     </div>
+   </div>
  </div>
-
- <div className="grid grid-cols-3 gap-3 sm:gap-6 lg:gap-8 items-center text-xs sm:text-base text-gray-500 dark:text-gray-400 font-semibold scroll-animate scroll-animate-delay-4">
- <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-3 p-3 bg-green-50/50 dark:bg-green-900/20 rounded-2xl shadow-md hover:scale-105 transition-all text-center sm:text-left">
- <span className="bg-green-100 dark:bg-green-900/40 text-green-600 dark:text-green-400 rounded-xl p-2">
- <span className="material-icons-round text-lg">check</span>
- </span>
- <span>80+ Clients</span>
- </div>
-
- <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-3 p-3 bg-blue-50/50 dark:bg-blue-900/20 rounded-2xl shadow-md hover:scale-105 transition-all text-center sm:text-left">
- <span className="bg-blue-100 dark:bg-blue-900/40 text-blue-600 dark:text-blue-400 rounded-xl p-2">
- <span className="material-icons-round text-lg">layers</span>
- </span>
- <span>100+ Projects</span>
- </div>
-
- <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-3 p-3 bg-orange-50/50 dark:bg-orange-900/20 rounded-2xl shadow-md hover:scale-105 transition-all text-center sm:text-left">
- <span className="bg-orange-100 dark:bg-orange-900/40 text-orange-600 dark:text-orange-400 rounded-xl p-2">
- <span className="material-icons-round text-lg">support_agent</span>
- </span>
- <span>24/7 Support</span>
- </div>
- </div>
- </div>
-
- </div>
- </div>
- <section className="w-full bg-white dark:bg-gray-900 py-6 overflow-hidden">
+   <section className="w-full bg-white dark:bg-gray-900 py-6 overflow-hidden">
  <style>
  {`
  .marquee {
@@ -299,7 +487,7 @@ const Home = () => {
  </section>
 
  {/* CSS Animations */}
- <style jsx>{`
+ <style>{`
  @keyframes float-left {
  0%, 100% { transform: translateY(0px) translateX(0px); }
  33% { transform: translateY(-10px) translateX(10px); }
@@ -321,29 +509,36 @@ const Home = () => {
  </header>
 
  {/* Challenges Section */}
- <section className="py-20 px-4 md:px-8 scroll-animate">
+ <section className="replay-letter-reveal challenge-reveal-section py-14 px-4 md:px-8 lg:py-16 scroll-animate">
  <div className="max-w-8xl mx-auto flex flex-col items-center">
- <div className="max-w-7xl text-center mb-12">
- <h2 className="text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight mb-4">
- Business Problems to Smart IT Solutions
+ <div className="max-w-7xl text-center mb-9">
+ <h2
+ className="text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight mb-4"
+ aria-label={challengeHeadingText}
+ >
+ {renderLetterRevealText(challengeHeadingText)}
  </h2>
 
- <p className="text-lg max-w-6xl text-slate-600 dark:text-slate-300 leading-relaxed">
+ <p
+ className="trust-heading-description text-lg max-w-6xl text-slate-600 dark:text-slate-300 leading-relaxed transition-all duration-300 ease-in-out hover:scale-[1.02] hover:font-semibold"
+ style={{ '--trust-heading-reveal-delay': `${challengeDescriptionRevealDelay}ms` }}
+ >
  Many businesses in Kumbakonam still depend on manual work, outdated software, and unstructured marketing strategies — which slows growth and reduces efficiency.
  </p>
  </div>
- <div className="w-full max-w-5xl bg-white dark:bg-slate-800 rounded-2xl shadow-xl overflow-hidden border border-slate-100 dark:border-slate-700">
+ <div className="w-full max-w-5xl bg-white dark:bg-slate-800 rounded-xl shadow-lg border border-slate-100 dark:border-slate-700">
  <div className="flex flex-col md:flex-row">
- <div className="w-full md:w-1/2 p-8 md:p-12 bg-slate-20 dark:bg-slate-800/50 border-b md:border-b-0 md:border-r border-slate-100 dark:border-slate-700 relative overflow-hidden group">
+ <div className="w-full md:w-1/2">
+ <Interactive3DCard theme="red" tilt={false} className="home-challenge-panel w-full p-6 md:p-8 bg-slate-20 dark:bg-slate-800/50 border-b md:border-b-0 md:border-r border-slate-100 dark:border-slate-700 relative overflow-hidden group rounded-t-xl md:rounded-l-xl md:rounded-tr-none">
  <div className="absolute top-0 right-0 -mt-8 -mr-8 w-32 h-32 bg-red-100 dark:bg-red-900/20 rounded-full blur-3xl opacity-50"></div>
  <div className="relative z-10">
- <div className="flex items-center gap-3 mb-8">
+ <div className="flex items-center gap-3 mb-6">
  <div className="size-10 rounded-full bg-red-100 dark:bg-red-900/30 flex items-center justify-center text-red-600 dark:text-red-400">
  <span className="material-symbols-outlined">warning</span>
  </div>
  <h3 className="text-xl font-bold text-slate-800 dark:text-slate-100">Challenges</h3>
  </div>
- <ul className="space-y-8">
+ <ul className="space-y-6">
  <li className="flex items-start gap-4">
  <div className="mt-1 flex-shrink-0 p-2 rounded-lg bg-red-500/10 text-red-500">
  <span className="material-symbols-outlined">schedule</span>
@@ -367,17 +562,19 @@ const Home = () => {
  </li>
  </ul>
  </div>
+ </Interactive3DCard>
  </div>
- <div className="w-full md:w-1/2 p-8 md:p-12 bg-white dark:bg-slate-800 relative overflow-hidden">
+ <div className="w-full md:w-1/2">
+ <Interactive3DCard theme="blue" tilt={false} className="home-challenge-panel w-full p-6 md:p-8 bg-white dark:bg-slate-800 relative overflow-hidden rounded-b-xl md:rounded-r-xl md:rounded-bl-none">
  <div className="absolute bottom-0 left-0 -mb-8 -ml-8 w-40 h-40 bg-primary/10 rounded-full blur-3xl opacity-60"></div>
  <div className="relative z-10">
- <div className="flex items-center gap-3 mb-8">
+ <div className="flex items-center gap-3 mb-6">
  <div className="size-10 rounded-full bg-primary/10 flex items-center justify-center text-primary">
  <span className="material-symbols-outlined">bolt</span>
  </div>
  <h3 className="text-xl font-bold text-primary">How SwordNex helps</h3>
  </div>
- <ul className="space-y-8">
+ <ul className="space-y-6">
  <li className="flex items-start gap-4">
  <div className="mt-1 flex-shrink-0 p-2 rounded-lg bg-primary/10 text-primary">
  <span className="material-symbols-outlined text-[20px]">precision_manufacturing</span>
@@ -415,15 +612,16 @@ const Home = () => {
  </li>
  </ul>
  </div>
+ </Interactive3DCard>
  </div>
  </div>
  </div>
  <div className="mt-12 flex flex-col md:flex-row items-center justify-center gap-6 text-center">
- <p className="text-slate-500 dark:text-red-500 font-medium"> Looking for the best IT company in Kumbakonam to grow your business?</p>
+ <p className="home-hero-cta-copy text-slate-500 dark:text-red-500 font-medium"> Looking for the best IT company in Kumbakonam to grow your business?</p>
  <button
  onClick={() => setIsConsultationOpen(true)}
- className="inline-flex items-center justify-center h-10 px-6 rounded-full bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-sm font-bold hover:opacity-90 transition-opacity gap-2 group">
- <span>Get Free IT Consultation</span>
+ className="home-hero-consultation inline-flex items-center justify-center h-10 px-6 rounded-full bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-sm font-bold hover:opacity-90 transition-opacity gap-2 group">
+ <span className="home-hero-button-label">Get Free IT Consultation</span>
  <span className="material-symbols-outlined text-lg transition-transform group-hover:translate-x-1">arrow_forward</span>
  </button>
  </div>
@@ -434,19 +632,27 @@ const Home = () => {
  </section>
 
  {/* Products Spotlight Section */}
- <section className="py-24 bg-gray-50 dark:bg-surface-dark/50 relative overflow-hidden scroll-animate">
+ <section className="replay-letter-reveal products-reveal-section py-16 lg:py-20 bg-gray-50 dark:bg-surface-dark/50 relative overflow-hidden scroll-animate">
  <div className="absolute top-0 left-0 w-64 h-64 bg-blue-100 dark:bg-blue-900/20 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2"></div>
  <div className="absolute bottom-0 right-0 w-96 h-96 bg-purple-100 dark:bg-purple-900/20 rounded-full blur-3xl translate-x-1/3 translate-y-1/3"></div>
  <div className="container mx-auto px-6 relative z-10">
- <div className="text-center mb-16">
- <span className="text-primary font-bold tracking-wider uppercase text-sm mb-2 block"> IT Products & SaaS Solutions
+ <div className="text-center mb-10">
+ <span
+ className="text-primary font-bold tracking-wider uppercase text-sm mb-2 block"
+ aria-label={productsEyebrowText}
+ > {renderLetterRevealText(productsEyebrowText)}
  </span>
- <h2 className="text-3xl md:text-4xl font-bold dark:text-white">Software Products & SaaS Solutions</h2>
+ <h2
+ className="text-3xl md:text-4xl font-bold dark:text-white"
+ aria-label={productsHeadingText}
+ >
+ {renderLetterRevealText(productsHeadingText, productsEyebrowText.length)}
+ </h2>
  <div className="w-20 h-1.5 bg-primary rounded-full mx-auto mt-4"></div>
  </div>
- <div className="grid md:grid-cols-3 gap-8 lg:gap-12">
+ <div className="grid md:grid-cols-3 gap-6 lg:gap-8">
  {/* Product Card 1 */}
- <div className="group bg-white dark:bg-background-dark rounded-2xl p-8 shadow-xl border border-gray-100 dark:border-gray-700 hover:border-green-500/50 dark:hover:border-primary/50 transition-all duration-300 hover:shadow-2xl hover:-translate-y-1 relative overflow-hidden scroll-animate scroll-animate-delay-1">
+ <Interactive3DCard theme="green" tilt={false} className="group h-full bg-white dark:bg-background-dark rounded-xl p-6 shadow-lg relative overflow-hidden scroll-animate scroll-animate-delay-1">
  <div className="absolute top-0 right-0 p-6 opacity-10 group-hover:opacity-20 transition-opacity">
  </div>
  <div className="relative z-10">
@@ -454,9 +660,9 @@ const Home = () => {
  <div className="bg-green-500/10 dark:bg-yellow/20 p-3 rounded-lg">
  <img src="/assets/icoillig.png" alt="Badge" className="w-6 h-6 object-contain" />
  </div>
- <h3 className="text-2xl font-bold text-gray-900 dark:text-white">SwordNex Billing</h3>
+ <h3 className="text-xl font-bold text-gray-900 dark:text-white">SwordNex Billing</h3>
  </div>
- <h4 className="text-large font-medium text-gray-800 dark:text-gray-200 mb-6 leading-relaxed">
+ <h4 className="text-base font-medium text-gray-800 dark:text-gray-200 mb-5 leading-relaxed">
  GST Billing Software & Inventory Management System for Retail Shops in Kumbakonam.
  </h4>
  <ul className="space-y-3 mb-8">
@@ -477,9 +683,9 @@ const Home = () => {
  Explore Billing<span className="material-icons-outlined ml-1 text-sm group-hover:translate-x-1 transition-transform">arrow_forward</span>
  </a>
  </div>
- </div>
+ </Interactive3DCard>
  {/* Product Card 2 */}
- <div className="group bg-white dark:bg-background-dark rounded-2xl p-8 shadow-xl border border-gray-100 dark:border-gray-700 hover:border-blue-500/50 dark:hover:border-secondary/50 transition-all duration-300 hover:shadow-2xl hover:-translate-y-1 relative overflow-hidden scroll-animate scroll-animate-delay-2">
+ <Interactive3DCard theme="blue" tilt={false} className="group h-full bg-white dark:bg-background-dark rounded-xl p-6 shadow-lg relative overflow-hidden scroll-animate scroll-animate-delay-2">
  <div className="absolute top-0 right-0 p-6 opacity-10 group-hover:opacity-20 transition-opacity">
  <span className="material-icons-outlined text-9xl text-secondary">people_alt</span>
  </div>
@@ -488,9 +694,9 @@ const Home = () => {
  <div className="bg-blue-500/10 dark:bg-secondary/20 p-3 rounded-lg">
  <img src="/assets/icon payroll.png" alt="Badge" className="w-6 h-6 object-contain" />
  </div>
- <h3 className="text-2xl font-bold text-gray-900 dark:text-white">SwordNex Payroll</h3>
+ <h3 className="text-xl font-bold text-gray-900 dark:text-white">SwordNex Payroll</h3>
  </div>
- <h4 className="text-large font-medium text-gray-800 dark:text-gray-200 mb-6 leading-relaxed">
+ <h4 className="text-base font-medium text-gray-800 dark:text-gray-200 mb-5 leading-relaxed">
  Payroll Management Software with PF, ESI & HR Automation for Companies.
  </h4>
  <ul className="space-y-3 mb-8">
@@ -511,9 +717,9 @@ const Home = () => {
  Explore Payroll <span className="material-icons-outlined ml-1 text-sm group-hover:translate-x-1 transition-transform">arrow_forward</span>
  </a>
  </div>
- </div>
+ </Interactive3DCard>
  {/* Product Card 3 */}
- <div className="group bg-white dark:bg-background-dark rounded-2xl p-8 shadow-xl border border-gray-100 dark:border-gray-700 hover:border-yellow-500/50 dark:hover:border-yellow-500/50 transition-all duration-300 hover:shadow-2xl hover:-translate-y-1 relative overflow-hidden scroll-animate scroll-animate-delay-3">
+ <Interactive3DCard theme="yellow" tilt={false} className="group h-full bg-white dark:bg-background-dark rounded-xl p-6 shadow-lg relative overflow-hidden scroll-animate scroll-animate-delay-3">
  <div className="absolute top-0 right-0 p-6 opacity-10 group-hover:opacity-20 transition-opacity">
  </div>
  <div className="relative z-10">
@@ -521,9 +727,9 @@ const Home = () => {
  <div className="bg-yellow-500/10 dark:bg-teal-yellow/20 p-3 rounded-lg">
  <img src="/assets/icon hms.png" alt="Badge" className="w-6 h-6 object-contain" />
  </div>
- <h3 className="text-2xl font-bold text-gray-900 dark:text-white">SwordNex HMS</h3>
+ <h3 className="text-xl font-bold text-gray-900 dark:text-white">SwordNex HMS</h3>
  </div>
- <h4 className="text-large font-medium text-gray-800 dark:text-gray-200 mb-6 leading-relaxed">
+ <h4 className="text-base font-medium text-gray-800 dark:text-gray-200 mb-5 leading-relaxed">
   Hotel Management System (HMS) for Reservations, Guest Management & Billing Automation.
  </h4>
  <ul className="space-y-3 mb-8">
@@ -549,12 +755,12 @@ const Home = () => {
  Explore HMS <span className="material-icons-outlined ml-1 text-sm group-hover:translate-x-1 transition-transform">arrow_forward</span>
  </a>
  </div>
- </div>
+ </Interactive3DCard>
  </div>
  </div>
  <div className="flex justify-center mt-10">
  <button
- className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2.5 rounded-full text-sm font-semibold shadow transition"
+ className="home-hero-product-explore bg-blue-600 hover:bg-blue-700 text-white px-6 py-2.5 rounded-full text-sm font-semibold shadow transition"
  onClick={() => window.location.href = '/products'}
  >
  Explore All IT Products
@@ -566,193 +772,102 @@ const Home = () => {
  </section>
 
  {/* Services Section */}
- <section className="relative py-20 lg:py-28 overflow-hidden scroll-animate">
+ <section className="relative py-14 lg:py-18 overflow-hidden scroll-animate">
  <div className="absolute top-0 left-0 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-blue-200/20 dark:bg-blue-900/10 rounded-full blur-3xl pointer-events-none"></div>
  <div className="absolute bottom-0 right-0 translate-x-1/3 translate-y-1/3 w-[500px] h-[500px] bg-indigo-200/20 dark:bg-indigo-900/10 rounded-full blur-3xl pointer-events-none"></div>
  <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
- <div className="max-w-6xl mx-auto text-center mb-16 lg:mb-20">
- <span className="block text-primary font-semibold tracking-wider uppercase text-sm mb-3">
- IT Services in Kumbakonam
+ <div className="max-w-6xl mx-auto text-center mb-10 lg:mb-12">
+ <span
+   aria-label="IT Services in Kumbakonam"
+   className="block text-primary font-semibold tracking-wider uppercase text-sm mb-3"
+ >
+   <span aria-hidden="true">{renderInteractiveHeadingText('IT Services in Kumbakonam')}</span>
  </span>
- <h2 className="text-3xl max-w-6xl lg:text-4xl font-display font-bold text-slate-900 dark:text-white mb-6">
- Complete IT Solutions – Software, SaaS & Digital Services
+ <h2
+   aria-label="Complete IT Solutions – Software, SaaS & Digital Services"
+   className="text-3xl max-w-6xl lg:text-4xl font-display font-bold text-slate-900 dark:text-white mb-6"
+ >
+   <span aria-hidden="true">{renderInteractiveHeadingText('Complete IT Solutions – Software, SaaS & Digital Services')}</span>
  </h2>
- <p className="text-lg text-slate-500 dark:text-slate-400">
+ <p className="home-hero-cta-copy text-lg text-slate-500 dark:text-slate-400">
  We provide end-to-end IT services including software development, SaaS solutions, digital marketing, and IT training to help businesses and students grow faster.
  </p>
- <div className="flex justify-center gap-2 mt-6">
- <div className="w-8 h-1.5 bg-primary rounded-full"></div>
- <div className="w-1.5 h-1.5 bg-slate-300 dark:bg-slate-600 rounded-full"></div>
- <div className="w-1.5 h-1.5 bg-slate-300 dark:bg-slate-600 rounded-full"></div>
  </div>
+ <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 items-start gap-6">
+ {serviceCards.map((service, index) => {
+   return (
+     <article
+       key={service.id}
+       className={`service-card relative bg-card-light dark:bg-card-dark rounded-xl p-6 shadow-soft border border-slate-100 dark:border-slate-700/50 scroll-animate ${serviceScrollDelays[index % serviceScrollDelays.length]}`}
+       style={{ '--service-accent': service.accent }}
+     >
+       <div className="service-card-heading">
+         <span className={`service-card-icon w-14 h-14 rounded-xl ${service.iconBackground} ${service.iconColor} flex items-center justify-center text-3xl`}>
+           <span className="material-icons-round" aria-hidden="true">{service.icon}</span>
+         </span>
+         <h3 className="text-xl font-display font-bold text-slate-900 dark:text-white">
+           {service.title}
+         </h3>
+         <span className="service-card-indicator material-icons-round" aria-hidden="true">keyboard_arrow_down</span>
+       </div>
+       <div className="service-card-content">
+         <p className="text-slate-600 dark:text-slate-400 leading-relaxed">
+           {service.description}
+         </p>
+         <div className="mt-4 pt-4 border-t border-slate-100 dark:border-slate-700/50 flex items-center justify-between gap-3">
+           <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${service.tagColor}`}>
+             {service.tag}
+           </span>
+           <Link to={service.href} className="inline-flex items-center text-sm font-semibold text-primary hover:text-blue-700 dark:hover:text-blue-300 transition-colors cursor-pointer">
+             Learn More
+             <span className="material-icons-round text-base ml-1" aria-hidden="true">arrow_forward</span>
+           </Link>
+         </div>
+       </div>
+     </article>
+   );
+ })}
  </div>
- <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
- {/* Service Card 1 */}
- <div className="group bg-card-light dark:bg-card-dark rounded-2xl p-8 shadow-soft hover:shadow-hover transition-all duration-300 hover:-translate-y-2 border border-slate-100 dark:border-slate-700/50 flex flex-col h-full scroll-animate scroll-animate-delay-1">
- <div className="mb-6">
- <div className="w-14 h-14 rounded-xl bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 flex items-center justify-center text-3xl mb-6 transition-transform group-hover:scale-110 duration-300">
- <span className="material-icons-round">widgets</span>
- </div>
- <h3 className="text-xl font-display font-bold text-slate-900 dark:text-white mb-3">
- Custom Software & Web Development
- </h3>
- <p className="text-slate-600 dark:text-slate-400 leading-relaxed mb-4 flex-grow">
- Delivering scalable Web Application Development, E-commerce solutions, and cross-platform mobile apps. We specialize in MERN Stack, UI/UX design, and high-performance Frontend/Backend development for business automation</p>
- </div>
- <div className="mt-auto pt-4 border-t border-slate-100 dark:border-slate-700/50 flex items-center justify-between">
- <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 dark:bg-blue-900/50 text-blue-800 dark:text-blue-200">
- Built for scale
- </span>
- <Link to="/services/application-development" className="inline-flex items-center text-sm font-semibold text-primary hover:text-blue-700 dark:hover:text-blue-300 transition-colors cursor-pointer">
- Learn More
- <span className="material-icons-round text-base ml-1">arrow_forward</span>
- </Link>
- </div>
- </div>
- {/* Service Card 2 */}
- <div className="group bg-card-light dark:bg-card-dark rounded-2xl p-8 shadow-soft hover:shadow-hover transition-all duration-300 hover:-translate-y-2 border border-slate-100 dark:border-slate-700/50 flex flex-col h-full scroll-animate scroll-animate-delay-2">
- <div className="mb-6">
- <div className="w-14 h-14 rounded-xl bg-orange-50 dark:bg-orange-900/30 text-orange-500 dark:text-orange-400 flex items-center justify-center text-3xl mb-6 transition-transform group-hover:scale-110 duration-300">
- <span className="material-icons-round">campaign</span>
- </div>
- <h3 className="text-xl font-display font-bold text-slate-900 dark:text-white mb-3">
- Digital Marketing & SEO Solutions </h3>
- <p className="text-slate-600 dark:text-slate-400 leading-relaxed mb-4 flex-grow">
- Data-driven Search Engine Optimization, Content Marketing, and Social Media Strategy. We focus on Google Ads (PPC), Meta Marketing, and Conversion Rate Optimization to drive high-quality business leads </p>
- </div>
- <div className="mt-auto pt-4 border-t border-slate-100 dark:border-slate-700/50 flex items-center justify-between">
- <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-orange-100 dark:bg-orange-900/50 text-orange-800 dark:text-orange-200">
- Leads with clarity
- </span>
- <Link to="/services/digital-media" className="inline-flex items-center text-sm font-semibold text-primary hover:text-blue-700 dark:hover:text-blue-300 transition-colors cursor-pointer">
- Learn More
- <span className="material-icons-round text-base ml-1">arrow_forward</span>
- </Link>
- </div>
- </div>
- {/* Service Card 3 */}
- <div className="group bg-card-light dark:bg-card-dark rounded-2xl p-8 shadow-soft hover:shadow-hover transition-all duration-300 hover:-translate-y-2 border border-slate-100 dark:border-slate-700/50 flex flex-col h-full scroll-animate scroll-animate-delay-3">
- <div className="mb-6">
- <div className="w-14 h-14 rounded-xl bg-teal-50 dark:bg-teal-900/30 text-teal-600 dark:text-teal-400 flex items-center justify-center text-3xl mb-6 transition-transform group-hover:scale-110 duration-300">
- <span className="material-icons-round">school</span>
- </div>
- <h3 className="text-xl font-display font-bold text-slate-900 dark:text-white mb-3">
- Job-Oriented IT Courses & Training
- </h3>
- <p className="text-slate-600 dark:text-slate-400 leading-relaxed mb-4 flex-grow">
- Industry-led training from an active IT company. Expert-led Full Stack Development, Python for Data Science, Artificial Intelligence, and Cyber Security with Live Project Internships and Placement Assistance</p>
- </div>
- <div className="mt-auto pt-4 border-t border-slate-100 dark:border-slate-700/50 flex items-center justify-between">
- <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-teal-100 dark:bg-teal-900/50 text-teal-800 dark:text-teal-200">
- Skills that ship…
- </span>
- <Link to="/services/it-training-skill-development" className="inline-flex items-center text-sm font-semibold text-primary hover:text-blue-700 dark:hover:text-blue-300 transition-colors cursor-pointer">
- Learn More
- <span className="material-icons-round text-base ml-1">arrow_forward</span>
- </Link>
- </div>
- </div>
- {/* Service Card 4 */}
- {/* <div className="group bg-card-light dark:bg-card-dark rounded-2xl p-8 shadow-soft hover:shadow-hover transition-all duration-300 hover:-translate-y-2 border border-slate-100 dark:border-slate-700/50 flex flex-col h-full scroll-animate scroll-animate-delay-4">
- <div className="mb-6">
- <div className="w-14 h-14 rounded-xl bg-purple-50 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400 flex items-center justify-center text-3xl mb-6 transition-transform group-hover:scale-110 duration-300">
- <span className="material-icons-round">auto_awesome</span>
- </div>
- <h3 className="text-xl font-display font-bold text-slate-900 dark:text-white mb-3">
- Brand & Experience Strategy
- </h3>
- <p className="text-slate-600 dark:text-slate-400 leading-relaxed mb-4 flex-grow">
- Positioning, messaging, and UX so every customer interaction feels intentional and on-brand.
- </p>
- </div>
- <div className="mt-auto pt-4 border-t border-slate-100 dark:border-slate-700/50 flex items-center justify-between">
- <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-100 dark:bg-purple-900/50 text-purple-800 dark:text-purple-200">
- Experience-led growth
- </span>
- <Link className="inline-flex items-center text-sm font-semibold text-primary hover:text-blue-700 dark:hover:text-blue-300 transition-colors" onClick={() => setIsEnquiryOpen(true)}>
- Learn More <span className="material-icons-round text-base ml-1">arrow_forward</span>
- </Link>
- </div>
- </div> */}
- {/* Service Card 5 */}
- <div className="group bg-card-light dark:bg-card-dark rounded-2xl p-8 shadow-soft hover:shadow-hover transition-all duration-300 hover:-translate-y-2 border border-slate-100 dark:border-slate-700/50 flex flex-col h-full scroll-animate scroll-animate-delay-1">
- <div className="mb-6">
- <div className="w-14 h-14 rounded-xl bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 flex items-center justify-center text-3xl mb-6 transition-transform group-hover:scale-110 duration-300">
- <span className="material-icons-round">dns</span>
- </div>
- <h3 className="text-xl font-display font-bold text-slate-900 dark:text-white mb-3">
- Cloud Solutions & IT Infrastructure
- </h3>
- <p className="text-slate-600 dark:text-slate-400 leading-relaxed mb-4 flex-grow">
- Reliable Cloud Computing services, Cybersecurity solutions, and Network Administration. We provide expert AWS/Azure Cloud Migration, Server Maintenance, and secure Database Management</p>
- </div>
- <div className="mt-auto pt-4 border-t border-slate-100 dark:border-slate-700/50 flex items-center justify-between">
- <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-indigo-100 dark:bg-indigo-900/50 text-indigo-800 dark:text-indigo-200">
- Reliable foundations
- </span>
- <Link to="/services/it-infrastructure" className="inline-flex items-center text-sm font-semibold text-primary hover:text-blue-700 dark:hover:text-blue-300 transition-colors cursor-pointer">
- Learn More
- <span className="material-icons-round text-base ml-1">arrow_forward</span>
- </Link>
- </div>
- </div>
- {/* Service Card 6 */}
- <div className="group bg-card-light dark:bg-card-dark rounded-2xl p-8 shadow-soft hover:shadow-hover transition-all duration-300 hover:-translate-y-2 border border-slate-100 dark:border-slate-700/50 flex flex-col h-full scroll-animate scroll-animate-delay-2">
- <div className="mb-6">
- <div className="w-14 h-14 rounded-xl bg-pink-50 dark:bg-pink-900/30 text-pink-600 dark:text-pink-400 flex items-center justify-center text-3xl mb-6 transition-transform group-hover:scale-110 duration-300">
- <span className="material-icons-round">groups</span>
- </div>
- <h3 className="text-xl font-display font-bold text-slate-900 dark:text-white mb-3">
- HR Consulting & Enterprise Management
- </h3>
- <p className="text-slate-600 dark:text-slate-400 leading-relaxed mb-4 flex-grow">
- Comprehensive Talent Acquisition, Staffing Solutions, and Employee Management Systems. We streamline IT Staffing, Payroll Outsourcing, and business operations for tech startups in Tamil Nadu.</p>
- </div>
- <div className="mt-auto pt-4 border-t border-slate-100 dark:border-slate-700/50 flex items-center justify-between">
- <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-pink-100 dark:bg-pink-900/50 text-pink-800 dark:text-pink-200">
- People-first solutions
- </span>
- <Link to="/services/hr-consulting" className="inline-flex items-center text-sm font-semibold text-primary hover:text-blue-700 dark:hover:text-blue-300 transition-colors cursor-pointer">
- Learn More
- <span className="material-icons-round text-base ml-1">arrow_forward</span>
- </Link>
- </div>
- </div>
- </div>
- </div>
- </section>
+   </div>
+   </section>
 
  {/* Trust Section with Auto-Scroll */}
- <section className="py-16 lg:py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 overflow-hidden scroll-animate">
+ <section className="replay-letter-reveal trust-section py-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 overflow-hidden scroll-animate">
  {/* Section Heading */}
- <div className="text-center mb-16">
- <h2 className="text-3xl lg:text-4xl font-display font-bold text-gray-900 dark:text-white mb-4">
- Trusted by Businesses Worldwide <span className="text-primary">SwordNex</span>
+ <div className="text-center mb-10">
+ <h2
+ className="trust-heading text-3xl lg:text-4xl font-display font-bold text-gray-900 dark:text-white mb-4"
+ aria-label={`${trustHeadingText}${trustHeadingBrand}`}
+ >
+ {renderLetterRevealText(trustHeadingText)}
+ <span className="text-primary">{renderLetterRevealText(trustHeadingBrand, trustHeadingText.length)}</span>
  </h2>
- <div className="h-1.5 w-24 bg-primary mx-auto rounded-full flex gap-2 justify-center items-center">
- <div className="w-1.5 h-1.5 bg-white rounded-full"></div>
- <div className="w-1.5 h-1.5 bg-white rounded-full"></div>
- <div className="w-1.5 h-1.5 bg-white rounded-full"></div>
- </div>
- <p className="mt-6 text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+ <p
+ className="trust-heading-description mt-6 text-gray-600 dark:text-gray-400 max-w-2xl mx-auto"
+ style={{ '--trust-heading-reveal-delay': `${trustHeadingRevealDelay}ms` }}
+ >
  SwordNex delivers scalable web applications, digital products, and campaigns backed by measurable results and dedicated support.
  </p>
  </div>
 
  {/* Metrics Grid */}
- <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-24">
+ <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-14">
  {[
- { label: "Long-Term Clients", val: "50+", icon: "groups", color: "bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400", desc: "Companies that rely on SwordNex" },
- { label: "Projects Delivered", val: "100+", icon: "inventory_2", color: "bg-red-50 dark:bg-red-900/30 text-red-600 dark:text-red-400", desc: "Custom apps and campaigns completed" },
- { label: "Uptime Guarantee", val: "100%", icon: "cloud_done", color: "bg-green-50 dark:bg-green-900/30 text-green-600 dark:text-green-400", desc: "Reliable mission-critical systems" },
- { label: "Expert Support", val: "24/7", icon: "support_agent", color: "bg-yellow-50 dark:bg-yellow-900/30 text-yellow-600 dark:text-yellow-400", desc: "Dedicated team available anytime" }
+ { label: "Long-Term Clients", value: 50, suffix: "+", icon: "groups", color: "bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400", border: "border-blue-200 dark:border-blue-800/70", desc: "Companies that rely on SwordNex" },
+ { label: "Projects Delivered", value: 100, suffix: "+", icon: "inventory_2", color: "bg-red-50 dark:bg-red-900/30 text-red-600 dark:text-red-400", border: "border-red-200 dark:border-red-800/70", desc: "Custom apps and campaigns completed" },
+ { label: "Uptime Guarantee", value: 100, suffix: "%", icon: "cloud_done", color: "bg-green-50 dark:bg-green-900/30 text-green-600 dark:text-green-400", border: "border-green-200 dark:border-green-800/70", desc: "Reliable mission-critical systems" },
+ { label: "Expert Support", value: 24, suffix: "/7", icon: "support_agent", color: "bg-yellow-50 dark:bg-yellow-900/30 text-yellow-600 dark:text-yellow-400", border: "border-yellow-200 dark:border-yellow-800/70", desc: "Dedicated team available anytime" }
  ].map((m, i) => (
- <div key={i} className="bg-white dark:bg-card-dark p-8 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700 text-center group scroll-animate" style={{ transitionDelay: `${i * 0.1}s` }}>
- <div className={`inline-flex items-center justify-center w-16 h-16 rounded-full ${m.color} mb-6 group-hover:scale-110 transition-transform`}>
+ <div key={i} className={`trust-metric-card bg-white dark:bg-card-dark p-6 rounded-xl shadow-md border ${m.border} text-center group scroll-animate`} style={{ transitionDelay: `${i * 0.1}s` }}>
+ <div className={`inline-flex items-center justify-center w-14 h-14 rounded-full ${m.color} mb-4 group-hover:scale-110 transition-transform`}>
  <span className="material-icons-round text-3xl">{m.icon}</span>
  </div>
- <h3 className="text-4xl font-display font-bold text-gray-900 dark:text-white mb-2">{m.val}</h3>
- <p className="text-gray-600 dark:text-gray-400 font-medium">{m.label}</p>
+ <TrustStatCounter
+ target={m.value}
+ suffix={m.suffix}
+ label={m.label}
+ className="trust-metric-counter"
+ />
  <p className="text-xs text-gray-400 mt-1">{m.desc}</p>
  </div>
  ))}
@@ -803,26 +918,29 @@ const Home = () => {
  </section>
 
  {/* About Section */}
- <section className="relative py-16 lg:py-10 overflow-hidden scroll-animate">
+ <section className="replay-letter-reveal relative py-12 lg:py-14 overflow-hidden scroll-animate">
  <div className="container mx-auto px-6 lg:px-12 relative z-10">
 
  {/* Heading */}
- <div className="text-center max-w-5xl mx-auto mb-16 lg:mb-20">
+ <div className="text-center max-w-5xl mx-auto mb-10 lg:mb-12">
  <span className="inline-block py-1 px-3 rounded-full bg-blue-50 dark:bg-blue-900/30 text-primary text-sm font-semibold mb-4 tracking-wide uppercase">
- Why Choose Our IT Services
+ <span className="sr-only">{whyChooseHeadingText}</span>
+ <span aria-hidden="true">{renderLetterRevealText(whyChooseHeadingText)}</span>
  </span>
 
- <h2 className="text-4xl lg:text-5xl max-w-5xl font-bold text-gray-900 dark:text-white leading-tight mb-4">
+ <h2
+ className="trust-heading-description text-3xl lg:text-4xl max-w-5xl font-bold text-gray-900 dark:text-white leading-tight mb-4"
+ style={{ '--trust-heading-reveal-delay': `${whyChooseDescriptionRevealDelay}ms` }}
+ >
  Leading IT Company <br className="hidden md:block" />
- <span className="text-transparent py-2 bg-clip-text bg-gradient-to-r from-primary to-secondary">
+ <span className="py-2 text-primary">
  Delivering Smart Software & IT Solutions
  </span>
  </h2>
 
- <div className="h-1.5 w-24 bg-primary mx-auto rounded-full mt-6"></div>
  </div>
 
- <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16">
+ <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10">
 
  {/* Left Content */}
  <div className="lg:col-span-7 flex flex-col">
@@ -861,13 +979,13 @@ const Home = () => {
  </div>
 
  {/* Core Values */}
- <div className="h-full bg-surface-light dark:bg-surface-dark p-8 md:p-10 rounded-3xl shadow-lg border border-gray-100 dark:border-gray-700">
+ <div className="h-full bg-surface-light dark:bg-surface-dark p-6 md:p-8 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700">
  <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 flex items-center gap-3">
  <span className="material-icons-round text-primary">diamond</span>
  Core Values of Our IT Solutions
  </h3>
 
- <ul className="space-y-6">
+ <ul className="space-y-5">
  <li className="flex items-start gap-4">
  <div className="mt-1 w-6 h-6 rounded-full bg-green-100 flex items-center justify-center text-green-600">
  <span className="material-icons-round text-sm">check</span>
@@ -910,15 +1028,20 @@ const Home = () => {
  {/* Right Content */}
  <div className="lg:col-span-5 relative mt-8 lg:mt-0 flex flex-col">
 
- <div className="relative h-full flex flex-col justify-center bg-white dark:bg-surface-dark p-8 md:p-10 rounded-3xl shadow-xl border border-gray-100 dark:border-gray-700">
+ <div className="relative h-full flex flex-col justify-center bg-white dark:bg-surface-dark p-6 md:p-8 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700">
 
  <div className="mb-6">
  <span className="material-icons-round text-primary text-5xl opacity-50">format_quote</span>
  </div>
 
  <p className="text-gray-700 dark:text-gray-300 text-lg italic mb-8 leading-relaxed">
- "At SwordNex, we build powerful IT solutions and custom software that help businesses streamline operations, improve efficiency, and scale faster with modern technology."
+ At SwordNex, we build powerful IT solutions and custom software that help businesses streamline operations, improve efficiency, and scale faster with modern technology.
  </p>
+ <div className="-mt-8 mb-4 flex w-full justify-end" aria-hidden="true">
+ <span className="material-icons-round rotate-180 text-5xl text-primary opacity-50">
+ format_quote
+ </span>
+ </div>
 
  <div className="flex items-center gap-4 border-t border-gray-100 dark:border-gray-700 pt-6">
  <div className="w-16 h-16 rounded-full overflow-hidden border-2 border-primary">
@@ -952,7 +1075,7 @@ const Home = () => {
 
  {/* Our Partners Section */}
  {partners.length > 0 && (
- <section className="py-16 md:py-24 overflow-hidden bg-white dark:bg-background-dark border-t border-slate-100 dark:border-slate-800 scroll-animate">
+ <section className="py-12 md:py-16 overflow-hidden bg-white dark:bg-background-dark border-t border-slate-100 dark:border-slate-800 scroll-animate">
  <style>
  {`
  .partner-marquee {
@@ -998,7 +1121,7 @@ const Home = () => {
 
  {/* CTA Section */}
  <section className="scroll-animate">
- <div className="relative flex min-h-screen w-full flex-col justify-center items-center overflow-x-hidden p-4 sm:p-8 md:p-12">
+ <div className="relative flex w-full flex-col justify-center items-center overflow-x-hidden py-12 px-4 sm:py-16 sm:px-8 md:py-20 md:px-12">
  <div className="w-full max-w-6xl mx-auto">
 
  <div className="relative w-full overflow-hidden rounded-3xl bg-primary shadow-2xl shadow-primary/30 group">
@@ -1011,15 +1134,15 @@ const Home = () => {
  </div>
 
  {/* Content */}
- <div className="relative z-10 flex flex-col items-center justify-center px-6 py-10 sm:px-12 sm:py-24 text-center">
+ <div className="relative z-10 flex flex-col items-center justify-center px-6 py-10 sm:px-12 sm:py-14 text-center">
 
  {/* SEO Optimized Heading */}
- <h2 className="text-white max-w-5xl text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight leading-tight mb-6">
+ <h2 className="text-white max-w-5xl text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight leading-tight mb-5">
  Looking for the Best IT Company in Kumbakonam?
  </h2>
 
  {/* SEO + Conversion Paragraph */}
- <p className="text-blue-100 text-base sm:text-lg md:text-xl font-medium leading-relaxed max-w-2xl mb-10">
+ <p className="text-blue-100 text-sm sm:text-base md:text-lg font-medium leading-relaxed max-w-2xl mb-7">
  Get expert IT services, custom software development, SaaS solutions, and business automation tailored for your needs. Partner with SwordNex to build scalable digital solutions and grow your business faster.
  </p>
 
@@ -1027,11 +1150,11 @@ const Home = () => {
  <div className="flex flex-col items-center gap-4 w-full">
  <button
  onClick={() => setIsConsultationOpen(true)}
- className="group/btn relative inline-flex items-center justify-center h-14 px-8 py-3 overflow-hidden font-bold text-primary bg-white rounded-xl shadow-lg transition-all duration-300 hover:scale-[1.02] hover:shadow-xl focus:outline-none focus:ring-4 focus:ring-white/30"
+ className="group/btn relative inline-flex items-center justify-center h-12 px-7 py-3 overflow-hidden font-bold text-primary bg-white rounded-lg shadow-lg transition-all duration-300 hover:scale-[1.02] hover:shadow-xl focus:outline-none focus:ring-4 focus:ring-white/30"
  >
  <span className="absolute inset-0 w-full h-full bg-gradient-to-br from-white via-white to-blue-50"></span>
 
- <span className="relative flex items-center gap-2 text-lg">
+ <span className="relative flex items-center gap-2 text-base">
  Get IT Solutions Now
  <span className="material-symbols-outlined text-[20px] transition-transform duration-300 group-hover/btn:translate-x-1">
  arrow_forward
@@ -1058,7 +1181,7 @@ const Home = () => {
  </section>
 
  {/* Support Links Section */}
- <section className="bg-[#cfe3ff] dark:bg-[#2c2666] py-16 relative overflow-hidden scroll-animate">
+ <section className="bg-[#cfe3ff] dark:bg-[#2c2666] py-12 relative overflow-hidden scroll-animate">
  <div className="container mx-auto px-6 relative z-10">
  <div className="grid md:grid-cols-3 gap-6">
  <div className="bg-white dark:bg-surface-dark p-6 rounded-lg flex items-start gap-4 scroll-animate scroll-animate-delay-1">
@@ -1114,7 +1237,7 @@ const Home = () => {
  </section>
  <ConsultationModal isOpen={isConsultationOpen} onClose={() => setIsConsultationOpen(false)} />
  <ServiceEnquiryModal isOpen={isEnquiryOpen} onClose={() => setIsEnquiryOpen(false)} />
- </div>
+ </>
  );
 };
 

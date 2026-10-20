@@ -3,16 +3,23 @@ import './Interactive3DCard.css';
 
 /**
  * Interactive3DCard
- * 1. Highly visible, pronounced 3D tilt tracking cursor position (up to 16 deg).
- * 2. Scales slightly bigger when hovered (scale: 1.05, translateZ: 24px).
+ * 1. Highly visible, refined 3D tilt tracking cursor position (up to 12 deg).
+ * 2. Subtle, tactile scale when hovered (scale: 1.015, translateZ: 8px).
  * 3. Smoothly returns to flat resting state on pointer leave.
  * 4. Border is intensely highlighted and blinks slowly:
- *    - 'blue' for Enterprise Software Development (#2563eb + glowing ambient aura)
- *    - 'purple' for Business Systems Integration (#a855f7 + glowing ambient aura)
+ *    - 'blue' for blue border and glowing ambient aura
+ *    - 'purple' for purple border and glowing ambient aura
+ *    - 'red' for red border and glowing ambient aura
+ *    - 'green' for green border and glowing ambient aura
+ *    - 'yellow' for yellow border and glowing ambient aura
  */
 export const Interactive3DCard = ({
-  theme = 'blue', // 'blue' | 'purple'
+  theme = 'blue', // 'blue' | 'purple' | 'red' | 'green' | 'yellow'
+  tilt = true,
   className = '',
+  hoverScale = 1.015, // Refined subtle scale (reduced from 1.038)
+  hoverZ = 8, // Refined forward Z-lift (reduced from 19px)
+  maxTilt = 12,
   onHoverChange,
   children,
   ...rest
@@ -87,13 +94,11 @@ export const Interactive3DCard = ({
     const normX = Math.max(-1, Math.min(1, (relX - centerX) / centerX));
     const normY = Math.max(-1, Math.min(1, (relY - centerY) / centerY));
 
-    // Refined tilt (reduced by 20% from 16 to 12.8 degrees)
-    const MAX_TILT = 12.8;
     const m = motionRef.current;
-    m.targetRotX = -normY * MAX_TILT;
-    m.targetRotY = normX * MAX_TILT;
-    m.targetScale = 1.038;
-    m.targetZ = 19;
+    m.targetRotX = -normY * maxTilt;
+    m.targetRotY = normX * maxTilt;
+    m.targetScale = hoverScale;
+    m.targetZ = hoverZ;
     m.targetMouseX = relX;
     m.targetMouseY = relY;
     if (!m.isHovered) {
@@ -101,7 +106,7 @@ export const Interactive3DCard = ({
       setIsHovered(true);
       onHoverChange?.(true);
     }
-  }, [onHoverChange]);
+  }, [hoverScale, hoverZ, maxTilt, onHoverChange]);
 
   const handlePointerLeave = useCallback(() => {
     const m = motionRef.current;

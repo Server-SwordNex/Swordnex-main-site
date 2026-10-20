@@ -22,17 +22,29 @@ export default defineConfig({
     rollupOptions: {
       output: {
         manualChunks(id) {
-          if (id.includes('node_modules/react/') || id.includes('node_modules/react-dom/') || id.includes('node_modules/react-router-dom/')) {
-            return 'vendor-react';
+          if (!id.includes("node_modules")) return;
+
+          if (
+            id.includes("react") ||
+            id.includes("react-dom") ||
+            id.includes("react-router-dom")
+          ) {
+            return "vendor-react";
           }
-          if (id.includes('node_modules/framer-motion/') || id.includes('node_modules/lucide-react/') || id.includes('node_modules/swiper/')) {
-            return 'vendor-utils';
+
+          if (
+            id.includes("framer-motion") ||
+            id.includes("lucide-react") ||
+            id.includes("swiper")
+          ) {
+            return "vendor-utils";
           }
-          if (id.includes('node_modules/xlsx/') || id.includes('node_modules/jszip/')) {
-            return 'vendor-excel';
+
+          if (id.includes("xlsx") || id.includes("jszip")) {
+            return "vendor-excel";
           }
-        }
-      }
-    }
+        },
+      },
+    },
   },
 });

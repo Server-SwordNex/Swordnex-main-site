@@ -165,6 +165,23 @@
   .animate-pulse-soft {
     animation: pulse-soft 3s ease-in-out infinite;
   }
+
+  .hero-grid {
+    background-image: linear-gradient(to right, rgba(59,130,246,0.08) 1px, transparent 1px), linear-gradient(to bottom, rgba(59,130,246,0.08) 1px, transparent 1px);
+    background-size: 42px 42px;
+  }
+
+  .hero-highlight {
+    animation: heroFloat 5.8s ease-in-out infinite;
+  }
+
+  .hero-float {
+    animation: heroFloat 6.5s ease-in-out infinite;
+  }
+
+  .hero-float-delay {
+    animation: heroFloat 6.5s ease-in-out infinite 1.2s;
+  }
 }
 
 @keyframes float {
@@ -173,6 +190,15 @@
   }
   50% {
     transform: translateY(-20px);
+  }
+}
+
+@keyframes heroFloat {
+  0%, 100% {
+    transform: translateY(0px) translateX(0px);
+  }
+  50% {
+    transform: translateY(-12px) translateX(6px);
   }
 }
 
@@ -188,3 +214,101 @@
 html { 
   scroll-behavior: smooth; 
 }
+
+/* Running Purple Tone text gradient for Products headline */
+.running-purple-gradient {
+  display: block;
+  background-image: linear-gradient(
+    90deg,
+    #2563eb 0%,
+    #4f46e5 12%,
+    #7c3aed 20%,
+    #a855f7 28%,
+    #c084fc 33%,
+    #9333ea 38%,
+    #4f46e5 45%,
+    #2563eb 50%,
+    #4f46e5 62%,
+    #7c3aed 70%,
+    #a855f7 78%,
+    #c084fc 83%,
+    #9333ea 88%,
+    #4f46e5 95%,
+    #2563eb 100%
+  );
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+  animation: runPurpleTone 4.5s linear infinite;
+}
+
+@keyframes runPurpleTone {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: 0% 0;
+  }
+}
+
+/* Interactive Purple Runner: moves to cursor hover position with silky-smooth easing */
+.interactive-purple-runner {
+  display: inline-block;
+  user-select: none;
+  cursor: pointer;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+  background-image: linear-gradient(
+    90deg,
+    #2563eb 0%,
+    #2563eb calc(var(--glow-x, 50%) - 26%),
+    #4f46e5 calc(var(--glow-x, 50%) - 16%),
+    #7c3aed calc(var(--glow-x, 50%) - 9%),
+    #a855f7 calc(var(--glow-x, 50%) - 4%),
+    #c084fc var(--glow-x, 50%),
+    #a855f7 calc(var(--glow-x, 50%) + 4%),
+    #7c3aed calc(var(--glow-x, 50%) + 9%),
+    #4f46e5 calc(var(--glow-x, 50%) + 16%),
+    #2563eb calc(var(--glow-x, 50%) + 26%),
+    #2563eb 100%
+  );
+  transition: filter 0.3s ease;
+  will-change: background-image;
+}
+
+.dark .interactive-purple-runner {
+  background-image: linear-gradient(
+    90deg,
+    #3b82f6 0%,
+    #3b82f6 calc(var(--glow-x, 50%) - 26%),
+    #6366f1 calc(var(--glow-x, 50%) - 16%),
+    #8b5cf6 calc(var(--glow-x, 50%) - 9%),
+    #c084fc calc(var(--glow-x, 50%) - 4%),
+    #e9d5ff var(--glow-x, 50%),
+    #c084fc calc(var(--glow-x, 50%) + 4%),
+    #8b5cf6 calc(var(--glow-x, 50%) + 9%),
+    #6366f1 calc(var(--glow-x, 50%) + 16%),
+    #3b82f6 calc(var(--glow-x, 50%) + 26%),
+    #3b82f6 100%
+  );
+}
+
+.interactive-purple-runner:hover {
+  filter: drop-shadow(0 0 16px rgba(168, 85, 247, 0.4));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .running-purple-gradient {
+    animation: none;
+    background-position: 0% 0;
+  }
+}
+

@@ -18,12 +18,11 @@ export const TrustStatCounter = ({
   suffix = '',
   label = '',
   duration = 1600,
+  animateOnView = true,
   className = '',
 }) => {
-  const rawTarget = target ?? targetValue;
-  const isNumeric = rawTarget !== undefined || (value !== undefined && !isNaN(Number(value)) && typeof value === 'number');
-  const finalTarget = isNumeric ? Number(rawTarget ?? value ?? 0) : null;
-  const [count, setCount] = useState(isNumeric ? 0 : (displayValue ?? value ?? ''));
+  const finalTarget = Number(target ?? targetValue ?? value ?? 0);
+  const [count, setCount] = useState(animateOnView ? 0 : finalTarget);
   const [isLerping, setIsLerping] = useState(false);
   const containerRef = useRef(null);
   const animRef = useRef(null);
@@ -42,6 +41,11 @@ export const TrustStatCounter = ({
     if (prefersReducedMotion) {
       setCount(finalTarget);
       setIsLerping(false);
+      return;
+    }
+
+    if (!animateOnView) {
+      setCount(finalTarget);
       return;
     }
 
@@ -97,7 +101,7 @@ export const TrustStatCounter = ({
       if (animRef.current) cancelAnimationFrame(animRef.current);
       observer.disconnect();
     };
-  }, [finalTarget, duration]);
+  }, [finalTarget, duration, animateOnView]);
 
   // Split label into letters for the letter-by-letter train shine
   const letters = (label || '').split('');
