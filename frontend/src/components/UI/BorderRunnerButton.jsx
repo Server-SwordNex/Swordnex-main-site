@@ -12,7 +12,7 @@ import './BorderRunnerButton.css';
  */
 export const BorderRunnerButton = ({
   children,
-  variant = 'primary', // 'primary' | 'secondary' | 'outline'
+  variant = 'primary', // 'primary' | 'secondary' | 'outline' | 'white' | 'outline-white'
   runnerColor,         // 'white' | 'blue'
   href,
   onClick,
@@ -20,9 +20,22 @@ export const BorderRunnerButton = ({
   type = 'button',
   ...rest
 }) => {
-  const isBlue = runnerColor === 'blue' || variant === 'secondary' || variant === 'outline';
-  const resolvedVariant = isBlue ? 'secondary' : 'primary';
-  const fullClassName = `border-runner-btn is-${resolvedVariant} ${isBlue ? 'is-outline is-blue' : ''} ${className}`;
+  const isWhiteVariant = variant === 'white' || variant === 'light';
+  const isOutlineWhite = variant === 'outline-white' || variant === 'ghost-white';
+  const isBlue = !isWhiteVariant && !isOutlineWhite && (runnerColor === 'blue' || variant === 'secondary' || variant === 'outline');
+
+  let variantClass = 'is-primary';
+  if (isWhiteVariant) {
+    variantClass = 'is-white';
+  } else if (isOutlineWhite) {
+    variantClass = 'is-outline-white';
+  } else if (isBlue) {
+    variantClass = 'is-secondary is-outline is-blue';
+  }
+
+  const effectiveRunnerColor = runnerColor || (isWhiteVariant ? 'blue' : isOutlineWhite ? 'white' : isBlue ? 'blue' : 'white');
+  const runnerClass = `is-${effectiveRunnerColor}-runner`;
+  const fullClassName = `border-runner-btn ${variantClass} ${runnerClass} ${className}`;
 
   if (href) {
     return (

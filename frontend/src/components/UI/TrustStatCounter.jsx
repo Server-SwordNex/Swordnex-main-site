@@ -14,6 +14,7 @@ export const TrustStatCounter = ({
   target,
   targetValue,
   value,
+  displayValue,
   suffix = '',
   label = '',
   duration = 1600,
@@ -27,6 +28,11 @@ export const TrustStatCounter = ({
   const animRef = useRef(null);
 
   useEffect(() => {
+    if (!isNumeric) {
+      setCount(displayValue ?? value ?? '');
+      return;
+    }
+
     const el = containerRef.current;
     if (!el) return;
 
@@ -113,7 +119,7 @@ export const TrustStatCounter = ({
         className={`stat-number ${isLerping ? 'is-lerping' : ''} text-lg sm:text-xl font-bold text-[#0d121b] dark:text-white`}
       >
         {count}
-        <span className="stat-suffix">{suffix}</span>
+        {suffix ? <span className="stat-suffix">{suffix}</span> : null}
       </span>
 
       {/* Subtext with letter-by-letter blue train shine */}

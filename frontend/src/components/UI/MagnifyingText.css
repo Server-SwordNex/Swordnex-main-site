@@ -1,0 +1,76 @@
+/* Hero Description Dynamic Line-Isolated Magnifying Text */
+.hero-magnify-container {
+  position: relative;
+  display: inline;
+  cursor: default;
+  --theme-highlight: #2563eb;
+  --theme-glow: rgba(37, 99, 235, 0.35);
+  --theme-lens: rgba(37, 99, 235, 0.08);
+  --lens-opacity: 0;
+  --lens-x: 50%;
+  --lens-y: 50%;
+}
+
+:is(.dark) .hero-magnify-container {
+  --theme-highlight: #60a5fa;
+  --theme-glow: rgba(96, 165, 250, 0.45);
+  --theme-lens: rgba(96, 165, 250, 0.12);
+}
+
+/* Subtle line-confined lens aura strictly behind active line text */
+.hero-magnify-lens {
+  position: absolute;
+  inset: 0;
+  border-radius: 8px;
+  pointer-events: none;
+  opacity: var(--lens-opacity, 0);
+  background: radial-gradient(ellipse 52px 14px at var(--lens-x, 50%) var(--lens-y, 50%), var(--theme-lens), transparent 75%);
+  transition: opacity 0.2s ease-out;
+  z-index: 0;
+}
+
+.hero-magnify-content {
+  position: relative;
+  z-index: 1;
+}
+
+.hero-magnify-word {
+  display: inline-block;
+  white-space: nowrap;
+}
+
+.hero-magnify-char {
+  display: inline-block;
+  position: relative;
+  transform-origin: center center;
+  will-change: transform, color, text-shadow;
+  transition: transform 0.1s cubic-bezier(0.25, 1, 0.5, 1),
+              color 0.14s ease,
+              text-shadow 0.14s ease;
+  user-select: text;
+}
+
+/* Fallback highlight for browsers without color-mix */
+.hero-magnify-char.is-magnified {
+  color: var(--theme-highlight);
+  text-shadow: 0 0 8px var(--theme-glow);
+  z-index: 2;
+}
+
+/* Smooth continuous theme color blend using color-mix */
+@supports (color: color-mix(in srgb, red, blue)) {
+  .hero-magnify-char {
+    color: color-mix(in srgb, currentColor, var(--theme-highlight) calc(var(--zoom-weight, 0) * 100%));
+    text-shadow: 0 0 calc(var(--zoom-weight, 0) * 9px) var(--theme-glow);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-magnify-char {
+    transition: none !important;
+    transform: none !important;
+  }
+  .hero-magnify-lens {
+    display: none !important;
+  }
+}

@@ -1,0 +1,175 @@
+.interactive-desc-container {
+  position: relative;
+  display: inline-block;
+  cursor: default;
+  transform-origin: center center;
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+  --theme-highlight: #2563eb;
+  --theme-glow: rgba(37, 99, 235, 0.35);
+  --theme-lens: rgba(37, 99, 235, 0.08);
+  --lens-opacity: 0;
+  --lens-x: 50%;
+  --lens-y: 50%;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .interactive-desc-container:hover {
+    transform: scale(1.025);
+  }
+}
+
+:is(.dark) .interactive-desc-container {
+  --theme-highlight: #60a5fa;
+  --theme-glow: rgba(96, 165, 250, 0.45);
+  --theme-lens: rgba(96, 165, 250, 0.12);
+}
+
+/* Subtle line-confined lens aura strictly behind active line text on desktop */
+.interactive-desc-lens {
+  position: absolute;
+  inset: 0;
+  border-radius: 8px;
+  pointer-events: none;
+  opacity: var(--lens-opacity, 0);
+  background: radial-gradient(
+    ellipse 58px 16px at var(--lens-x, 50%) var(--lens-y, 50%),
+    var(--theme-lens),
+    transparent 75%
+  );
+  transition: opacity 0.2s ease-out;
+  z-index: 0;
+}
+
+.interactive-desc-content {
+  position: relative;
+  z-index: 1;
+}
+
+/* Word wrapper ensures 100% natural responsive line-wrapping */
+.interactive-desc-word {
+  display: inline-block;
+  white-space: nowrap;
+}
+
+/* Character styling - zooms in smoothly under cursor */
+.interactive-desc-char {
+  display: inline-block;
+  position: relative;
+  transform-origin: center center;
+  will-change: transform, color, text-shadow;
+  transition: transform 0.12s cubic-bezier(0.25, 1, 0.5, 1),
+              color 0.14s ease,
+              text-shadow 0.14s ease;
+  user-select: text;
+}
+
+/* Desktop: Smooth continuous theme color blend using color-mix */
+@supports (color: color-mix(in srgb, red, blue)) {
+  .interactive-desc-char {
+    color: color-mix(
+      in srgb,
+      currentColor,
+      var(--theme-highlight) calc(var(--hl-weight, 0) * 100%)
+    );
+    text-shadow: 0 0 calc(var(--hl-weight, 0) * 10px) var(--theme-glow);
+  }
+}
+
+/* Fallback for browsers without color-mix */
+.interactive-desc-char.is-cursor-highlighted {
+  color: var(--theme-highlight);
+  text-shadow: 0 0 8px var(--theme-glow);
+}
+
+/* ==========================================================================
+   Mobile: Scroll-triggered text reveal & highlight wave
+   Replays cleanly when scrolling away and returning
+   ========================================================================== */
+@media (max-width: 768px), (hover: none) and (pointer: coarse) {
+  /* Ambient luminous sweep across the description on mobile view enter */
+  .interactive-desc-mobile-beam {
+    position: absolute;
+    inset: -6px -12px;
+    border-radius: 9999px;
+    pointer-events: none;
+    background: radial-gradient(
+      ellipse 80px 24px at 0% 50%,
+      var(--theme-lens),
+      transparent 70%
+    );
+    opacity: 0;
+    z-index: 0;
+    animation: mobileDescBeamSweep 1.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  }
+
+  @keyframes mobileDescBeamSweep {
+    0% {
+      opacity: 0;
+      transform: translateX(-30%);
+    }
+    20% {
+      opacity: 0.9;
+    }
+    80% {
+      opacity: 0.9;
+    }
+    100% {
+      opacity: 0;
+      transform: translateX(110%);
+    }
+  }
+
+  /* Words sequentially light up in royal blue and smoothly settle back */
+  .interactive-desc-word.is-revealed {
+    animation: mobileDescWordHighlight 1.35s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+    animation-delay: calc(var(--word-idx, 0) * 45ms);
+  }
+
+  @keyframes mobileDescWordHighlight {
+    0% {
+      color: inherit;
+      text-shadow: none;
+    }
+    25% {
+      color: #2563eb;
+      text-shadow: 0 0 10px rgba(37, 99, 235, 0.45);
+    }
+    100% {
+      color: inherit;
+      text-shadow: none;
+    }
+  }
+
+  :is(.dark) .interactive-desc-word.is-revealed {
+    animation-name: mobileDescWordHighlightDark;
+  }
+
+  @keyframes mobileDescWordHighlightDark {
+    0% {
+      color: inherit;
+      text-shadow: none;
+    }
+    25% {
+      color: #60a5fa;
+      text-shadow: 0 0 12px rgba(96, 165, 250, 0.55);
+    }
+    100% {
+      color: inherit;
+      text-shadow: none;
+    }
+  }
+}
+
+/* Accessibility: respect user preference for reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .interactive-desc-char,
+  .interactive-desc-word,
+  .interactive-desc-lens,
+  .interactive-desc-mobile-beam {
+    animation: none !important;
+    transition: none !important;
+  }
+  .interactive-desc-mobile-beam {
+    display: none !important;
+  }
+}
