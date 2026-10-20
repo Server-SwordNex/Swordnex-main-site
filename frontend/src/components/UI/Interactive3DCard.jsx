@@ -7,11 +7,15 @@ import './Interactive3DCard.css';
  * 2. Subtle, tactile scale when hovered (scale: 1.015, translateZ: 8px).
  * 3. Smoothly returns to flat resting state on pointer leave.
  * 4. Border is intensely highlighted and blinks slowly:
- *    - 'blue' for Enterprise Software Development (#2563eb + glowing ambient aura)
- *    - 'purple' for Business Systems Integration (#a855f7 + glowing ambient aura)
+ *    - 'blue' for blue border and glowing ambient aura
+ *    - 'purple' for purple border and glowing ambient aura
+ *    - 'red' for red border and glowing ambient aura
+ *    - 'green' for green border and glowing ambient aura
+ *    - 'yellow' for yellow border and glowing ambient aura
  */
 export const Interactive3DCard = ({
-  theme = 'blue', // 'blue' | 'purple'
+  theme = 'blue', // 'blue' | 'purple' | 'red' | 'green' | 'yellow'
+  tilt = true,
   className = '',
   hoverScale = 1.015, // Refined subtle scale (reduced from 1.038)
   hoverZ = 8, // Refined forward Z-lift (reduced from 19px)
