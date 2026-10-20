@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import ConsultationModal from '../components/ConsultationModal';
 import ServiceEnquiryModal from '../components/ServiceEnquiryModal';
+import InteractiveGradientText from '../components/UI/InteractiveGradientText';
 
 const Products = () => {
  const [isConsultationOpen, setIsConsultationOpen] = useState(false);
@@ -74,9 +75,10 @@ const Products = () => {
  {/* Heading (SEO Optimized) */}
  <h1 className="text-slate-900 dark:text-white font-black text-3xl sm:text-4xl md:text-5xl lg:text-6xl leading-tight tracking-tight mb-5">
  Billing, Payroll & Business
- <span className="block text-transparent bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 bg-clip-text">
- Software for Growing Companies
- </span>
+ <InteractiveGradientText
+ text="Software for Growing Companies"
+ className="block"
+ />
  </h1>
 
  {/* Subtext */}
@@ -90,22 +92,13 @@ const Products = () => {
  </p>
 
  {/* CTA */}
- <div className="flex flex-col sm:flex-row gap-3 justify-center items-center">
-
+ <div className="flex justify-center items-center">
  <button
  className="h-12 sm:h-14 px-6 sm:px-8 rounded-xl bg-primary hover:bg-blue-700 text-white font-semibold text-sm sm:text-base shadow-lg hover:shadow-xl transition-all"
  onClick={() => setIsConsultationOpen(true)}
  >
  Get Free Demo
  </button>
-
- <button
- className="h-12 sm:h-14 px-2 sm:px-8 rounded-xl border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white font-medium text-sm sm:text-base hover:bg-slate-100 dark:hover:bg-slate-800 transition"
- onClick={() => setIsEnquiryOpen(true)}
- >
- Customise Solution
- </button>
-
  </div>
 
  </div>
