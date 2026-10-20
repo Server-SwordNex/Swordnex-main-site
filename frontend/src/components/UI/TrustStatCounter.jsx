@@ -14,18 +14,26 @@ export const TrustStatCounter = ({
   target,
   targetValue,
   value,
+  displayValue,
   suffix = '',
   label = '',
   duration = 1600,
   className = '',
 }) => {
-  const finalTarget = Number(target ?? targetValue ?? value ?? 0);
-  const [count, setCount] = useState(0);
+  const rawTarget = target ?? targetValue;
+  const isNumeric = rawTarget !== undefined || (value !== undefined && !isNaN(Number(value)) && typeof value === 'number');
+  const finalTarget = isNumeric ? Number(rawTarget ?? value ?? 0) : null;
+  const [count, setCount] = useState(isNumeric ? 0 : (displayValue ?? value ?? ''));
   const [isLerping, setIsLerping] = useState(false);
   const containerRef = useRef(null);
   const animRef = useRef(null);
 
   useEffect(() => {
+    if (!isNumeric) {
+      setCount(displayValue ?? value ?? '');
+      return;
+    }
+
     const el = containerRef.current;
     if (!el) return;
 
@@ -107,7 +115,7 @@ export const TrustStatCounter = ({
         className={`stat-number ${isLerping ? 'is-lerping' : ''} text-lg sm:text-xl font-bold text-[#0d121b] dark:text-white`}
       >
         {count}
-        <span className="stat-suffix">{suffix}</span>
+        {suffix ? <span className="stat-suffix">{suffix}</span> : null}
       </span>
 
       {/* Subtext with letter-by-letter blue train shine */}

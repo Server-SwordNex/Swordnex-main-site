@@ -1,0 +1,91 @@
+/* ==========================================================================
+   Services Hero Live Screen Animation Styles
+   ========================================================================== */
+
+.services-hero-interactive {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  user-select: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Background Artwork */
+.services-hero-base-image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* Precision SVG Overlay */
+.services-hero-svg-overlay {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 5;
+}
+
+/* Cards inside Screen */
+.hero-screen-card {
+  transition: opacity 0.3s ease, filter 0.3s ease;
+}
+
+/* Subtle Laptop Terminal Glow */
+.hero-laptop-glow {
+  animation: heroLaptopGlowPulse 2.8s ease-in-out infinite alternate;
+}
+
+@keyframes heroLaptopGlowPulse {
+  0% {
+    opacity: 0.35;
+  }
+  100% {
+    opacity: 0.8;
+  }
+}
+
+/* Subtle Code Scanlines on Laptop Screen */
+.hero-code-stream-1 {
+  animation: heroCodeStream 1.8s linear infinite;
+}
+
+.hero-code-stream-2 {
+  animation: heroCodeStream 2.2s linear infinite 0.35s;
+}
+
+.hero-code-stream-3 {
+  animation: heroCodeStream 1.6s linear infinite 0.7s;
+}
+
+@keyframes heroCodeStream {
+  0% {
+    stroke-dashoffset: 36;
+    opacity: 0.2;
+  }
+  50% {
+    opacity: 0.85;
+  }
+  100% {
+    stroke-dashoffset: -36;
+    opacity: 0.2;
+  }
+}
+
+/* Reduced Motion Support */
+@media (prefers-reduced-motion: reduce) {
+  .hero-laptop-glow,
+  .hero-code-stream-1,
+  .hero-code-stream-2,
+  .hero-code-stream-3 {
+    animation: none !important;
+  }
+}

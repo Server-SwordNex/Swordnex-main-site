@@ -1,0 +1,1506 @@
+/* ServicesCards.css - Interactive animations for the 5 Core Overview service cards */
+
+.core-service-card-wrapper {
+  position: relative;
+  z-index: 1;
+  transition: z-index 0.35s ease;
+}
+
+.core-service-card-wrapper:hover,
+.core-service-card-wrapper:focus-within {
+  z-index: 30 !important;
+}
+
+.core-service-card {
+  position: relative;
+  border-radius: 1rem; /* rounded-2xl */
+  border-style: solid;
+  border-width: 1.5px !important;
+  border-color: #cbd5e1;
+  transform-origin: center center;
+  will-change: transform, box-shadow, border-color;
+  box-shadow: 0 1px 3px 0 rgba(15, 23, 42, 0.04);
+  transition:
+    transform 0.35s cubic-bezier(0.25, 1, 0.5, 1),
+    border-color 0.35s ease,
+    box-shadow 0.35s cubic-bezier(0.25, 1, 0.5, 1),
+    background-color 0.25s ease;
+}
+
+:is(.dark) .core-service-card {
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.25);
+  border-color: rgba(71, 85, 105, 0.55);
+}
+
+/* Base hover: Soft, visible shadow, slight lift, and smooth transition */
+.core-service-card:hover,
+.core-service-card:focus-visible {
+  transform: scale(1.025) translateY(-4px);
+  box-shadow:
+    0 14px 30px -4px rgba(15, 23, 42, 0.12),
+    0 4px 10px -2px rgba(15, 23, 42, 0.05) !important;
+}
+
+:is(.dark) .core-service-card:hover,
+:is(.dark) .core-service-card:focus-visible {
+  box-shadow:
+    0 14px 32px -4px rgba(0, 0, 0, 0.55),
+    0 4px 12px -2px rgba(0, 0, 0, 0.35) !important;
+}
+
+/* ==========================================================================
+   Smoothly Breathing and Blinking Glowing Border per Card Logo Color
+   - Strengthens border visibility on hover with smooth blinking animation
+   - Animates ONLY border-color so box-shadow transitions cleanly and visibly
+   ========================================================================== */
+
+/* 1. Blue Card (Web & App Development Services) */
+@keyframes coreServiceBorderBlinkBlue {
+  0%, 100% {
+    border-color: rgba(59, 130, 246, 0.65);
+  }
+  50% {
+    border-color: rgba(59, 130, 246, 0.28);
+  }
+}
+
+.core-service-card-blue:hover,
+.core-service-card-blue:focus-visible {
+  animation: coreServiceBorderBlinkBlue 2.4s ease-in-out infinite;
+}
+
+/* 2. Orange Card (Digital Media) */
+@keyframes borderBlinkOrange {
+  0%, 100% {
+    border-color: rgba(249, 115, 22, 0.65);
+  }
+  50% {
+    border-color: rgba(249, 115, 22, 0.28);
+  }
+}
+
+.core-service-card-orange:hover,
+.core-service-card-orange:focus-visible {
+  animation: borderBlinkOrange 2.4s ease-in-out infinite;
+}
+
+/* 3. Teal Card (IT Training & Skill Development) */
+@keyframes borderBlinkTeal {
+  0%, 100% {
+    border-color: rgba(13, 148, 136, 0.65);
+  }
+  50% {
+    border-color: rgba(13, 148, 136, 0.28);
+  }
+}
+
+.core-service-card-teal:hover,
+.core-service-card-teal:focus-visible {
+  animation: borderBlinkTeal 2.4s ease-in-out infinite;
+}
+
+/* 4. Indigo Card (IT Infrastructure) */
+@keyframes borderBlinkIndigo {
+  0%, 100% {
+    border-color: rgba(99, 102, 241, 0.65);
+  }
+  50% {
+    border-color: rgba(99, 102, 241, 0.28);
+  }
+}
+
+.core-service-card-indigo:hover,
+.core-service-card-indigo:focus-visible {
+  animation: borderBlinkIndigo 2.4s ease-in-out infinite;
+}
+
+/* 5. Pink Card (HR Consulting Services) */
+@keyframes borderBlinkPink {
+  0%, 100% {
+    border-color: rgba(236, 72, 153, 0.65);
+  }
+  50% {
+    border-color: rgba(236, 72, 153, 0.28);
+  }
+}
+
+.core-service-card-pink:hover,
+.core-service-card-pink:focus-visible {
+  animation: borderBlinkPink 2.4s ease-in-out infinite;
+}
+
+/* Ambient glowing light effect reveal on hover - clean and professional */
+.core-service-card:hover .core-service-card-glow,
+.core-service-card:focus-visible .core-service-card-glow {
+  opacity: 0.05;
+}
+
+.core-service-card:hover .core-service-card-glow-secondary,
+.core-service-card:focus-visible .core-service-card-glow-secondary {
+  opacity: 0.025;
+}
+
+/* ==========================================================================
+   Logo / Icon Presentation & Original Accent Colors on Hover
+   - On hover, changes the icon's background color to its corresponding
+     original logo/accent color, with the icon itself white for high contrast
+   - Smoothly restores original styling when mouse leaves
+   ========================================================================== */
+
+.core-service-icon-box {
+  transform-origin: center center;
+  will-change: transform, box-shadow, background-color;
+  transition:
+    transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow 0.35s ease,
+    background-color 0.32s ease;
+}
+
+.core-service-card:hover .core-service-icon-box,
+.core-service-card:focus-visible .core-service-icon-box {
+  transform: scale(1.05) translateY(-2px);
+}
+
+.core-service-icon-glyph {
+  display: inline-block;
+  transform-origin: center center;
+  will-change: transform, color;
+  transition:
+    transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1),
+    color 0.28s ease;
+}
+
+.core-service-card:hover .core-service-icon-glyph,
+.core-service-card:focus-visible .core-service-icon-glyph {
+  transform: scale(1.06);
+  color: #ffffff !important;
+}
+
+/* Resting original icon glyph colors */
+.core-service-card-blue .core-service-icon-glyph {
+  color: #3b82f6;
+}
+:is(.dark) .core-service-card-blue .core-service-icon-glyph {
+  color: #60a5fa;
+}
+
+.core-service-card-orange .core-service-icon-glyph {
+  color: #ea580c;
+}
+:is(.dark) .core-service-card-orange .core-service-icon-glyph {
+  color: #fb923c;
+}
+
+.core-service-card-teal .core-service-icon-glyph {
+  color: #0d9488;
+}
+:is(.dark) .core-service-card-teal .core-service-icon-glyph {
+  color: #2dd4bf;
+}
+
+.core-service-card-indigo .core-service-icon-glyph {
+  color: #4f46e5;
+}
+:is(.dark) .core-service-card-indigo .core-service-icon-glyph {
+  color: #818cf8;
+}
+
+.core-service-card-pink .core-service-icon-glyph {
+  color: #db2777;
+}
+:is(.dark) .core-service-card-pink .core-service-icon-glyph {
+  color: #f472b6;
+}
+
+/* On hover: Change icon box background to original accent color */
+.core-service-card-blue:hover .core-service-icon-box,
+.core-service-card-blue:focus-visible .core-service-icon-box {
+  background-color: #3b82f6 !important;
+  box-shadow: 0 3px 8px rgba(59, 130, 246, 0.06);
+}
+
+.core-service-card-orange:hover .core-service-icon-box,
+.core-service-card-orange:focus-visible .core-service-icon-box {
+  background-color: #ea580c !important;
+  box-shadow: 0 3px 8px rgba(234, 88, 12, 0.10);
+}
+
+.core-service-card-teal:hover .core-service-icon-box,
+.core-service-card-teal:focus-visible .core-service-icon-box {
+  background-color: #0d9488 !important;
+  box-shadow: 0 3px 8px rgba(13, 148, 136, 0.10);
+}
+
+.core-service-card-indigo:hover .core-service-icon-box,
+.core-service-card-indigo:focus-visible .core-service-icon-box {
+  background-color: #4f46e5 !important;
+  box-shadow: 0 3px 8px rgba(79, 70, 229, 0.10);
+}
+
+.core-service-card-pink:hover .core-service-icon-box,
+.core-service-card-pink:focus-visible .core-service-icon-box {
+  background-color: #db2777 !important;
+  box-shadow: 0 3px 8px rgba(219, 39, 119, 0.10);
+}
+
+/* ==========================================================================
+   Learn More Arrow Interaction with Letter-by-Letter Typing
+   - Shows ONLY the arrow by default (text hidden)
+   - On hover, reveals "Learn More" with a letter-by-letter typing animation
+     matching the "Chat with us" tooltip interaction
+   - Preserves existing arrow and click navigation
+   ========================================================================== */
+
+.service-learn-more-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end;
+  text-decoration: none;
+  cursor: pointer;
+  z-index: 10;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.service-learn-more-text {
+  display: inline-flex;
+  align-items: center;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.service-learn-more-arrow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  will-change: transform, color;
+  transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1), color 0.2s ease;
+}
+
+/* Accessibility: Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .service-learn-more-arrow,
+  .service-learn-more-text {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+/* ==========================================================================
+   Process Section ("How Our Services Work") Interactivity & Polish
+   ========================================================================== */
+
+/* Enhanced timeline base connecting line */
+.process-timeline-line {
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(37, 99, 235, 0.04) 15%,
+    rgba(37, 99, 235, 0.10) 50%,
+    rgba(37, 99, 235, 0.04) 85%,
+    transparent 100%
+  ) !important;
+}
+
+:is(.dark) .process-timeline-line {
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(59, 130, 246, 0.05) 15%,
+    rgba(59, 130, 246, 0.12) 50%,
+    rgba(59, 130, 246, 0.05) 85%,
+    transparent 100%
+  ) !important;
+}
+
+/* Step container card / icon box */
+.process-step-box {
+  transform-origin: center center;
+  will-change: transform, box-shadow, border-color;
+  box-shadow: 0 8px 20px -4px rgba(15, 23, 42, 0.06);
+  transition:
+    transform 0.35s cubic-bezier(0.25, 1, 0.5, 1),
+    box-shadow 0.35s cubic-bezier(0.25, 1, 0.5, 1),
+    border-color 0.28s ease;
+}
+
+:is(.dark) .process-step-box {
+  box-shadow: 0 6px 16px -4px rgba(0, 0, 0, 0.22);
+}
+
+/* Smooth zoom-in on icon container + soft blue glow & shadow */
+.group:hover .process-step-box,
+.group:focus-within .process-step-box {
+  transform: scale(1.08) translateY(-4px);
+  box-shadow:
+    0 12px 24px -4px rgba(15, 23, 42, 0.06),
+    0 0 6px rgba(37, 99, 235, 0.06);
+  border-color: rgba(37, 99, 235, 0.18);
+}
+
+:is(.dark) .group:hover .process-step-box,
+:is(.dark) .group:focus-within .process-step-box {
+  transform: scale(1.08) translateY(-4px);
+  box-shadow:
+    0 12px 24px -4px rgba(0, 0, 0, 0.35),
+    0 0 6px rgba(59, 130, 246, 0.08);
+  border-color: rgba(59, 130, 246, 0.22);
+}
+
+/* Step number badge polish */
+.process-step-badge {
+  transform-origin: center center;
+  will-change: transform, box-shadow;
+  box-shadow: 0 2px 4px rgba(37, 99, 235, 0.12);
+  transition:
+    transform 0.3s cubic-bezier(0.25, 1, 0.5, 1),
+    box-shadow 0.3s ease;
+}
+
+.group:hover .process-step-badge,
+.group:focus-within .process-step-badge {
+  transform: scale(1.08);
+  box-shadow: 0 2px 6px rgba(37, 99, 235, 0.16);
+}
+
+/* Icon-scale animation */
+.process-step-icon {
+  display: inline-block;
+  transform-origin: center center;
+  will-change: transform;
+  transition: transform 0.32s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.group:hover .process-step-icon,
+.group:focus-within .process-step-icon {
+  transform: scale(1.10);
+}
+
+/* Title: slightly enlarged & highlighted on hover */
+.process-step-title {
+  transform-origin: center center;
+  will-change: transform, color;
+  transition:
+    transform 0.32s cubic-bezier(0.25, 1, 0.5, 1),
+    color 0.28s ease;
+}
+
+.group:hover .process-step-title,
+.group:focus-within .process-step-title {
+  transform: scale(1.04);
+  color: #1d4ed8;
+}
+
+:is(.dark) .group:hover .process-step-title,
+:is(.dark) .group:focus-within .process-step-title {
+  color: #60a5fa;
+}
+
+/* Description: slightly enlarged & highlighted on hover */
+.process-step-desc {
+  transform-origin: center center;
+  will-change: transform, color;
+  transition:
+    transform 0.32s cubic-bezier(0.25, 1, 0.5, 1),
+    color 0.28s ease;
+}
+
+.group:hover .process-step-desc,
+.group:focus-within .process-step-desc {
+  transform: scale(1.025);
+  color: #1e293b;
+}
+
+:is(.dark) .group:hover .process-step-desc,
+:is(.dark) .group:focus-within .process-step-desc {
+  color: #f1f5f9;
+}
+
+/* ==========================================================================
+   Core Services Overview Heading Area Animations & Hover Effects
+   - Eyebrow: subtle blue light sheen on entrance + gentle blue glow on hover
+   - Main heading: sequential word reveal + elegant blue glow on hover
+   - Underline: subtle moving blue light sweep along the bar
+   ========================================================================== */
+
+/* 1. Eyebrow ("What We Do") */
+.core-heading-eyebrow {
+  display: inline-block;
+  cursor: default;
+  will-change: transform, text-shadow;
+  transition: text-shadow 0.4s ease, color 0.3s ease;
+  animation: eyebrowEntranceSheen 1.8s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@keyframes eyebrowEntranceSheen {
+  0% {
+    text-shadow: 0 0 0px rgba(37, 99, 235, 0);
+  }
+  45% {
+    text-shadow: 0 0 4px rgba(37, 99, 235, 0.12);
+  }
+  100% {
+    text-shadow: 0 0 0px rgba(37, 99, 235, 0);
+  }
+}
+
+:is(.dark) .core-heading-eyebrow {
+  animation-name: eyebrowEntranceSheenDark;
+}
+
+@keyframes eyebrowEntranceSheenDark {
+  0% {
+    text-shadow: 0 0 0px rgba(96, 165, 250, 0);
+  }
+  45% {
+    text-shadow: 0 0 4px rgba(96, 165, 250, 0.14);
+  }
+  100% {
+    text-shadow: 0 0 0px rgba(96, 165, 250, 0);
+  }
+}
+
+.core-heading-eyebrow:hover {
+  text-shadow: 0 0 4px rgba(37, 99, 235, 0.14);
+}
+
+:is(.dark) .core-heading-eyebrow:hover {
+  text-shadow: 0 0 4px rgba(96, 165, 250, 0.16);
+}
+
+/* 2. Main Heading ("Core Services Overview") */
+.core-heading-title {
+  cursor: default;
+}
+
+.core-heading-word {
+  display: inline-block;
+  white-space: nowrap;
+}
+
+.core-heading-letter-motion {
+  display: inline-block;
+  will-change: transform, opacity;
+}
+
+.core-heading-letter {
+  display: inline-block;
+  position: relative;
+  cursor: pointer;
+  user-select: text;
+  transform-origin: center bottom;
+  border-radius: 4px;
+  will-change: transform, color, text-shadow, background-color, box-shadow;
+  transition:
+    transform 0.45s cubic-bezier(0.25, 1, 0.5, 1),
+    color 0.45s ease,
+    text-shadow 0.45s ease,
+    background-color 0.45s ease,
+    box-shadow 0.45s ease;
+}
+
+/* Individual letter hover & mobile touch activation */
+.core-heading-letter:hover,
+.core-heading-letter.is-hovered {
+  transform: translateY(-4px) scale(1.15);
+  color: #2563eb !important;
+  text-shadow:
+    0 0 3px rgba(37, 99, 235, 0.16) !important;
+  background-color: rgba(37, 99, 235, 0.04);
+  box-shadow: none;
+  transition:
+    transform 0.12s cubic-bezier(0.34, 1.56, 0.64, 1),
+    color 0.12s ease,
+    text-shadow 0.12s ease,
+    background-color 0.12s ease;
+  z-index: 10;
+}
+
+:is(.dark) .core-heading-letter:hover,
+:is(.dark) .core-heading-letter.is-hovered {
+  color: #60a5fa !important;
+  text-shadow:
+    0 0 4px rgba(96, 165, 250, 0.20) !important;
+  background-color: rgba(96, 165, 250, 0.08);
+  box-shadow: none;
+}
+
+/* Ambient glow on letters when title is hovered */
+.core-heading-title:hover .core-heading-letter:not(:hover),
+.core-heading-title:focus-visible .core-heading-letter:not(:hover) {
+  text-shadow: 0 0 2px rgba(37, 99, 235, 0.08);
+}
+
+:is(.dark) .core-heading-title:hover .core-heading-letter:not(:hover),
+:is(.dark) .core-heading-title:focus-visible .core-heading-letter:not(:hover) {
+  text-shadow: 0 0 2px rgba(96, 165, 250, 0.10);
+}
+
+
+/* ==========================================================================
+   Industries We Serve & Why Choose Us Card Animations & Interactivity
+   ========================================================================== */
+
+/* Industries Cards Base - Borderless with soft natural shadow */
+.industry-card {
+  position: relative;
+  background-color: #ffffff;
+  border: none !important;
+  box-shadow:
+    0 1px 3px 0 rgba(15, 23, 42, 0.04),
+    0 6px 16px -2px rgba(15, 23, 42, 0.06),
+    0 12px 28px -4px rgba(15, 23, 42, 0.04);
+  transform-origin: center center;
+  will-change: transform, box-shadow, background-color;
+  transition:
+    background-color 0.35s ease,
+    box-shadow 0.38s cubic-bezier(0.25, 1, 0.5, 1),
+    transform 0.35s cubic-bezier(0.25, 1, 0.5, 1);
+  cursor: default;
+  -webkit-tap-highlight-color: transparent;
+}
+
+:is(.dark) .industry-card {
+  background-color: #1e2536;
+  border: none !important;
+  box-shadow:
+    0 1px 3px 0 rgba(0, 0, 0, 0.15),
+    0 6px 14px -3px rgba(0, 0, 0, 0.25),
+    0 12px 24px -6px rgba(0, 0, 0, 0.2);
+}
+
+/* Hover & Focus State: slightly lift each card and gently enhance its shadow */
+.industry-card:hover,
+.industry-card:focus-visible {
+  background-color: #ffffff !important;
+  border: none !important;
+  box-shadow:
+    0 4px 6px -2px rgba(15, 23, 42, 0.02),
+    0 10px 22px -4px rgba(15, 23, 42, 0.06),
+    0 18px 32px -8px rgba(15, 23, 42, 0.04),
+    0 0 6px var(--industry-glow-soft, rgba(37, 99, 235, 0.025));
+}
+
+:is(.dark) .industry-card:hover,
+:is(.dark) .industry-card:focus-visible {
+  background-color: #242d42 !important;
+  border: none !important;
+  box-shadow:
+    0 4px 6px -2px rgba(0, 0, 0, 0.15),
+    0 12px 24px -6px rgba(0, 0, 0, 0.3),
+    0 20px 36px -10px rgba(0, 0, 0, 0.25),
+    0 0 8px var(--industry-glow-soft, rgba(59, 130, 246, 0.035));
+}
+
+.industry-card:hover .industry-card-ambient,
+.industry-card:focus-visible .industry-card-ambient {
+  opacity: 0.18 !important;
+  transform: scale(1.05) !important;
+}
+
+/* Animated Subtle Light Sweep Along Card Edges */
+.industry-card-border-glow {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1.5px;
+  pointer-events: none;
+  z-index: 4;
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  overflow: hidden;
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+}
+
+.industry-card:hover .industry-card-border-glow,
+.industry-card:focus-visible .industry-card-border-glow {
+  opacity: 1;
+}
+
+.industry-card-border-glow-beam {
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: conic-gradient(
+    from 0deg,
+    transparent 0%,
+    transparent 75%,
+    var(--industry-accent, #2563eb) 90%,
+    rgba(255, 255, 255, 0.28) 96%,
+    var(--industry-accent, #2563eb) 100%
+  );
+  animation: industryBorderRotate 3.2s linear infinite;
+  border-radius: inherit;
+}
+
+:is(.dark) .industry-card-border-glow-beam {
+  background: conic-gradient(
+    from 0deg,
+    transparent 0%,
+    transparent 75%,
+    var(--industry-accent, #60a5fa) 90%,
+    rgba(255, 255, 255, 0.28) 96%,
+    var(--industry-accent, #60a5fa) 100%
+  );
+}
+
+@keyframes industryBorderRotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* Cursor-Responsive Spotlight Layer */
+.industry-card-spotlight {
+  z-index: 1;
+}
+
+/* Smooth Light Sweep Beam across Card Surface */
+.industry-card-sweep {
+  z-index: 2;
+}
+
+.industry-card-sweep-beam {
+  position: absolute;
+  top: -60%;
+  left: -60%;
+  width: 220%;
+  height: 220%;
+  background: linear-gradient(
+    115deg,
+    transparent 35%,
+    rgba(255, 255, 255, 0.06) 48%,
+    rgba(255, 255, 255, 0.14) 50%,
+    rgba(255, 255, 255, 0.06) 52%,
+    transparent 65%
+  );
+  transform: translateX(-120%) rotate(25deg);
+  opacity: 0;
+  pointer-events: none;
+}
+
+:is(.dark) .industry-card-sweep-beam {
+  background: linear-gradient(
+    115deg,
+    transparent 35%,
+    rgba(255, 255, 255, 0.03) 48%,
+    rgba(255, 255, 255, 0.08) 50%,
+    rgba(255, 255, 255, 0.03) 52%,
+    transparent 65%
+  );
+}
+
+.industry-card:hover .industry-card-sweep-beam {
+  animation: industrySweepShimmer 1.1s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+}
+
+@keyframes industrySweepShimmer {
+  0% {
+    transform: translateX(-120%) rotate(25deg);
+    opacity: 0;
+  }
+  15% {
+    opacity: 1;
+  }
+  85% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(120%) rotate(25deg);
+    opacity: 0;
+  }
+}
+
+/* Mobile Touch & Active Feedback without relying on hover */
+.industry-card:active {
+  transform: scale(0.985) translateY(-2px);
+  background-color: #f8fafc;
+  border: none !important;
+  box-shadow:
+    0 2px 6px -1px rgba(15, 23, 42, 0.06),
+    0 8px 18px -3px rgba(15, 23, 42, 0.08);
+  transition:
+    background-color 0.12s ease,
+    box-shadow 0.12s ease,
+    transform 0.12s ease;
+}
+
+:is(.dark) .industry-card:active {
+  background-color: #263047;
+  border: none !important;
+  box-shadow:
+    0 2px 6px -1px rgba(0, 0, 0, 0.3),
+    0 10px 22px -5px rgba(0, 0, 0, 0.5);
+}
+
+/* Industry Icon Box: soft borderless styling */
+.industry-icon-box {
+  background-color: #f1f5f9;
+  border: none !important;
+  box-shadow: 0 2px 8px -1px rgba(15, 23, 42, 0.06);
+  transform-origin: center center;
+  will-change: transform, box-shadow, background-color;
+  transition:
+    transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow 0.35s ease,
+    background-color 0.35s ease;
+}
+
+:is(.dark) .industry-icon-box {
+  background-color: #252e42;
+  border: none !important;
+  box-shadow: 0 2px 8px -1px rgba(0, 0, 0, 0.35);
+}
+
+/* Logo hover effect: smoothly change each card's logo background to a subtle shade of its existing logo color */
+.industry-card:hover .industry-icon-box,
+.industry-card:focus-visible .industry-icon-box {
+  transform: scale(1.06) translateY(-2px) !important;
+  background-color: var(--industry-icon-bg-hover, rgba(37, 99, 235, 0.12)) !important;
+  border: none !important;
+  box-shadow:
+    0 4px 10px -2px var(--industry-glow-soft, rgba(37, 99, 235, 0.06));
+}
+
+:is(.dark) .industry-card:hover .industry-icon-box,
+:is(.dark) .industry-card:focus-visible .industry-icon-box {
+  background-color: var(--industry-icon-bg-hover-dark, rgba(59, 130, 246, 0.22)) !important;
+  border: none !important;
+  box-shadow:
+    0 4px 10px -2px rgba(0, 0, 0, 0.25);
+}
+
+/* Mobile tap feedback on logo box */
+.industry-card:active .industry-icon-box {
+  transform: scale(1.04) translateY(-1px);
+  background-color: var(--industry-icon-bg-hover, rgba(37, 99, 235, 0.12)) !important;
+}
+
+:is(.dark) .industry-card:active .industry-icon-box {
+  background-color: var(--industry-icon-bg-hover-dark, rgba(59, 130, 246, 0.22)) !important;
+}
+
+/* Industry Icon Glyph: subtle responsive scaling and color */
+.industry-icon-glyph {
+  display: inline-block;
+  color: var(--industry-accent, #2563eb);
+  transform-origin: center center;
+  will-change: transform, color;
+  transition:
+    transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1),
+    color 0.3s ease;
+}
+
+.industry-card:hover .industry-icon-glyph,
+.industry-card:focus-visible .industry-icon-glyph {
+  transform: scale(1.06);
+  color: var(--industry-accent, #2563eb);
+}
+
+:is(.dark) .industry-card:hover .industry-icon-glyph,
+:is(.dark) .industry-card:focus-visible .industry-icon-glyph {
+  color: var(--industry-accent, #60a5fa);
+}
+
+/* Industry Title: subtle highlight */
+.industry-title {
+  transform-origin: center center;
+  will-change: color;
+  transition: color 0.3s ease;
+}
+
+.industry-card:hover .industry-title,
+.industry-card:focus-visible .industry-title {
+  color: var(--industry-accent, #1d4ed8);
+}
+
+:is(.dark) .industry-card:hover .industry-title,
+:is(.dark) .industry-card:focus-visible .industry-title {
+  color: var(--industry-accent, #60a5fa);
+}
+
+/* Industry Description */
+.industry-desc {
+  transition: color 0.3s ease;
+}
+
+.industry-card:hover .industry-desc,
+.industry-card:focus-visible .industry-desc {
+  color: #334155;
+}
+
+:is(.dark) .industry-card:hover .industry-desc,
+:is(.dark) .industry-card:focus-visible .industry-desc {
+  color: #cbd5e1;
+}
+
+/* Why Choose Us Cards Interactive Expansion, Colored Logo & Glowing Sweep */
+.why-choose-card {
+  position: relative;
+  overflow: hidden;
+  transition:
+    box-shadow 0.35s cubic-bezier(0.25, 1, 0.5, 1),
+    border-color 0.35s ease,
+    background-color 0.3s ease;
+  will-change: transform, box-shadow, border-color;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Subtle blinking/pulsing light along border while hovering or active */
+@keyframes whyChooseBorderBlink {
+  0%, 100% {
+    border-color: rgba(37, 99, 235, 0.22);
+    box-shadow:
+      0 6px 16px -8px rgba(37, 99, 235, 0.05),
+      0 0 3px rgba(37, 99, 235, 0.05);
+  }
+  50% {
+    border-color: rgba(37, 99, 235, 0.08);
+    box-shadow:
+      0 4px 12px -8px rgba(37, 99, 235, 0.02);
+  }
+}
+
+@keyframes whyChooseBorderBlinkDark {
+  0%, 100% {
+    border-color: rgba(96, 165, 250, 0.24);
+    box-shadow:
+      0 8px 20px -10px rgba(0, 0, 0, 0.25),
+      0 0 4px rgba(59, 130, 246, 0.06);
+  }
+  50% {
+    border-color: rgba(96, 165, 250, 0.08);
+    box-shadow:
+      0 6px 14px -10px rgba(0, 0, 0, 0.18);
+  }
+}
+
+/* Base elements and transitions */
+.why-choose-border-sweep {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 60%;
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(96, 165, 250, 0.18) 50%,
+    transparent 100%
+  );
+  opacity: 0;
+  transform: translateX(-120%);
+  pointer-events: none;
+  z-index: 5;
+}
+
+:is(.dark) .why-choose-border-sweep {
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(147, 197, 253, 0.18) 50%,
+    transparent 100%
+  );
+}
+
+@keyframes whyChooseSweep {
+  0% {
+    transform: translateX(-120%);
+    opacity: 0;
+  }
+  15% {
+    opacity: 1;
+  }
+  65% {
+    transform: translateX(200%);
+    opacity: 1;
+  }
+  75%, 100% {
+    transform: translateX(200%);
+    opacity: 0;
+  }
+}
+
+/* Logo / Icon container: resting subtle background */
+.why-choose-icon-box {
+  background-color: rgba(37, 99, 235, 0.08);
+  border: 1px solid rgba(37, 99, 235, 0.12);
+  transform-origin: center center;
+  will-change: transform, background-color, box-shadow;
+  transition:
+    background-color 0.35s ease,
+    border-color 0.35s ease,
+    box-shadow 0.35s ease,
+    transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+:is(.dark) .why-choose-icon-box {
+  background-color: rgba(59, 130, 246, 0.12);
+  border-color: rgba(59, 130, 246, 0.2);
+}
+
+.why-choose-icon-box .why-choose-icon {
+  color: #2563eb;
+  transition: color 0.3s ease, transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+:is(.dark) .why-choose-icon-box .why-choose-icon {
+  color: #60a5fa;
+}
+
+/* Small clear ^ indicator to show more content is available */
+.why-choose-indicator {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 9999px;
+  background-color: rgba(148, 163, 184, 0.1);
+  color: #64748b;
+  border: 1px solid rgba(226, 232, 240, 0.85);
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease,
+    border-color 0.3s ease;
+}
+
+:is(.dark) .why-choose-indicator {
+  background-color: rgba(148, 163, 184, 0.08);
+  color: #94a3b8;
+  border-color: rgba(51, 65, 85, 0.6);
+}
+
+.why-choose-indicator-icon {
+  width: 15px;
+  height: 15px;
+  transition: transform 0.38s cubic-bezier(0.25, 1, 0.5, 1);
+  will-change: transform;
+}
+
+/* Title subtle highlight transition */
+.why-choose-title {
+  transition: color 0.28s ease;
+}
+
+/* Smooth Description Expansion */
+.why-choose-desc-wrapper {
+  display: grid;
+  grid-template-rows: 0fr;
+  opacity: 0;
+  transition:
+    grid-template-rows 0.38s cubic-bezier(0.25, 1, 0.5, 1),
+    opacity 0.32s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.why-choose-desc-inner {
+  overflow: hidden;
+}
+
+/* ========================================================
+   Desktop (>= 1024px): Exact original hover behavior.
+   Hover expands description & animates icon, badge, border sweep.
+   Mouse leave collapses. No click expand/collapse on desktop.
+   ======================================================== */
+@media (min-width: 1024px) {
+  .why-choose-card:hover {
+    animation: whyChooseBorderBlink 2.2s ease-in-out infinite;
+  }
+
+  :is(.dark) .why-choose-card:hover {
+    animation: whyChooseBorderBlinkDark 2.2s ease-in-out infinite;
+  }
+
+  .why-choose-card:hover .why-choose-border-sweep {
+    opacity: 1;
+    animation: whyChooseSweep 2.2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  }
+
+  .why-choose-card:hover .why-choose-icon-box {
+    background-color: #2563eb !important;
+    border-color: #2563eb !important;
+    transform: scale(1.08) translateY(-2px) !important;
+    box-shadow:
+      0 3px 8px rgba(37, 99, 235, 0.10);
+  }
+
+  :is(.dark) .why-choose-card:hover .why-choose-icon-box {
+    background-color: #3b82f6 !important;
+    border-color: #3b82f6 !important;
+    box-shadow:
+      0 3px 8px rgba(59, 130, 246, 0.12);
+  }
+
+  .why-choose-card:hover .why-choose-icon-box .why-choose-icon {
+    color: #ffffff !important;
+  }
+
+  .why-choose-card:hover .why-choose-indicator {
+    background-color: rgba(37, 99, 235, 0.12);
+    border-color: rgba(37, 99, 235, 0.25);
+    color: #2563eb;
+  }
+
+  :is(.dark) .why-choose-card:hover .why-choose-indicator {
+    background-color: rgba(59, 130, 246, 0.2);
+    border-color: rgba(59, 130, 246, 0.35);
+    color: #60a5fa;
+  }
+
+  .why-choose-card:hover .why-choose-indicator-icon {
+    transform: rotate(180deg);
+  }
+
+  .why-choose-card:hover .why-choose-title {
+    color: #2563eb;
+  }
+
+  :is(.dark) .why-choose-card:hover .why-choose-title {
+    color: #93c5fd;
+  }
+
+  .why-choose-card:hover .why-choose-desc-wrapper {
+    grid-template-rows: 1fr;
+    opacity: 1;
+  }
+}
+
+/* ========================================================
+   Mobile & Tablet (< 1024px): Tap-to-expand / Tap-to-collapse.
+   Only .is-expanded controls expansion on mobile.
+   NO :hover rules here so touch devices never get stuck.
+   Repeated taps reliably expand and collapse the same item.
+   ======================================================== */
+@media (max-width: 1023px) {
+  .why-choose-card.is-expanded {
+    animation: whyChooseBorderBlink 2.2s ease-in-out infinite;
+  }
+
+  :is(.dark) .why-choose-card.is-expanded {
+    animation: whyChooseBorderBlinkDark 2.2s ease-in-out infinite;
+  }
+
+  .why-choose-card.is-expanded .why-choose-border-sweep {
+    opacity: 1;
+    animation: whyChooseSweep 2.2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  }
+
+  .why-choose-card.is-expanded .why-choose-icon-box {
+    background-color: #2563eb !important;
+    border-color: #2563eb !important;
+    transform: scale(1.08) translateY(-2px) !important;
+    box-shadow:
+      0 3px 8px rgba(37, 99, 235, 0.10);
+  }
+
+  :is(.dark) .why-choose-card.is-expanded .why-choose-icon-box {
+    background-color: #3b82f6 !important;
+    border-color: #3b82f6 !important;
+    box-shadow:
+      0 3px 8px rgba(59, 130, 246, 0.12);
+  }
+
+  .why-choose-card.is-expanded .why-choose-icon-box .why-choose-icon {
+    color: #ffffff !important;
+  }
+
+  .why-choose-card.is-expanded .why-choose-indicator {
+    background-color: rgba(37, 99, 235, 0.12);
+    border-color: rgba(37, 99, 235, 0.25);
+    color: #2563eb;
+  }
+
+  :is(.dark) .why-choose-card.is-expanded .why-choose-indicator {
+    background-color: rgba(59, 130, 246, 0.2);
+    border-color: rgba(59, 130, 246, 0.35);
+    color: #60a5fa;
+  }
+
+  .why-choose-card.is-expanded .why-choose-indicator-icon {
+    transform: rotate(180deg);
+  }
+
+  .why-choose-card.is-expanded .why-choose-title {
+    color: #2563eb;
+  }
+
+  :is(.dark) .why-choose-card.is-expanded .why-choose-title {
+    color: #93c5fd;
+  }
+
+  .why-choose-card.is-expanded .why-choose-desc-wrapper {
+    grid-template-rows: 1fr;
+    opacity: 1;
+  }
+}
+
+/* Reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  .core-service-card,
+  .core-service-icon-box,
+  .core-service-icon-glyph,
+  .service-learn-more-text,
+  .service-learn-more-arrow,
+  .process-step-box,
+  .process-step-badge,
+  .process-step-icon,
+  .process-step-title,
+  .process-step-desc,
+  .core-heading-eyebrow,
+  .core-heading-word,
+  .core-heading-letter,
+  .core-heading-letter-motion,
+  .industry-card,
+  .industry-icon-box,
+  .industry-icon-glyph,
+  .industry-title,
+  .industry-desc,
+  .industry-card-ambient,
+  .industry-card-spotlight,
+  .industry-card-sweep,
+  .industry-card-sweep-beam,
+  .industry-card-border-glow,
+  .industry-card-border-glow-beam,
+  .why-choose-card,
+  .why-choose-icon-box,
+  .why-choose-icon,
+  .why-choose-indicator,
+  .why-choose-indicator-icon,
+  .why-choose-border-sweep,
+  .why-choose-desc-wrapper {
+    transition: none !important;
+    transform: none !important;
+    animation: none !important;
+  }
+  .core-heading-letter:hover,
+  .core-heading-letter.is-hovered,
+  .industry-card:hover,
+  .industry-card:hover .industry-icon-box,
+  .industry-card:hover .industry-icon-glyph,
+  .industry-card:active,
+  .why-choose-card:hover,
+  .why-choose-card:hover .why-choose-icon-box,
+  .why-choose-card:hover .why-choose-indicator-icon {
+    transform: none !important;
+    transition: none !important;
+  }
+  .why-choose-desc-wrapper {
+    grid-template-rows: 1fr !important;
+    opacity: 1 !important;
+  }
+  .core-service-card:hover,
+  .core-service-card:focus-visible {
+    transform: none !important;
+    animation: none !important;
+  }
+  .service-learn-more-btn:hover .service-learn-more-arrow,
+  .service-learn-more-btn:focus-visible .service-learn-more-arrow,
+  .group:hover .process-step-box,
+  .group:focus-within .process-step-box,
+  .group:hover .process-step-badge,
+  .group:focus-within .process-step-badge,
+  .group:hover .process-step-icon,
+  .group:focus-within .process-step-icon,
+  .group:hover .process-step-title,
+  .group:focus-within .process-step-title,
+  .group:hover .process-step-desc,
+  .group:focus-within .process-step-desc {
+    transform: none !important;
+  }
+  .core-service-card:hover .core-service-icon-box,
+  .core-service-card:focus-visible .core-service-icon-box,
+  .core-service-card:hover .core-service-icon-glyph,
+  .core-service-card:focus-visible .core-service-icon-glyph {
+    transform: none !important;
+  }
+  .faq-answer-wrapper {
+    transition: none !important;
+  }
+}
+
+/* FAQ Accordion Smooth Expand/Collapse */
+.faq-answer-wrapper {
+  display: grid;
+  grid-template-rows: 0fr;
+  opacity: 0;
+  transition:
+    grid-template-rows 0.35s cubic-bezier(0.25, 1, 0.5, 1),
+    opacity 0.28s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.faq-answer-inner {
+  overflow: hidden;
+}
+
+.faq-answer-wrapper.is-open {
+  grid-template-rows: 1fr;
+  opacity: 1;
+}
+
+/* ==========================================================================
+   Blue Call-To-Action (CTA) Section Enhancements
+   ========================================================================== */
+
+/* 1. Animated Background Light Sweep */
+.cta-light-sweep {
+  position: absolute;
+  top: -60%;
+  left: -60%;
+  width: 220%;
+  height: 220%;
+  background: linear-gradient(
+    115deg,
+    transparent 20%,
+    rgba(255, 255, 255, 0.015) 42%,
+    rgba(255, 255, 255, 0.05) 50%,
+    rgba(255, 255, 255, 0.015) 58%,
+    transparent 80%
+  );
+  transform: rotate(-15deg);
+  animation: ctaLightSweepMotion 10s ease-in-out infinite alternate;
+  pointer-events: none;
+  z-index: 1;
+}
+
+@keyframes ctaLightSweepMotion {
+  0% {
+    transform: translate(-30%, -10%) rotate(-15deg);
+  }
+  100% {
+    transform: translate(30%, 10%) rotate(-15deg);
+  }
+}
+
+/* 2. Floating Light Particles */
+.cta-particles-container {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.cta-particle-dot {
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.5) 0%, rgba(191, 219, 254, 0.2) 60%, transparent 100%);
+  pointer-events: none;
+  opacity: 0.10;
+  box-shadow: 0 0 2px rgba(255, 255, 255, 0.18);
+  animation: ctaParticleDrift var(--particle-duration, 14s) ease-in-out infinite alternate;
+  animation-delay: var(--particle-delay, 0s);
+}
+
+@keyframes ctaParticleDrift {
+  0% {
+    transform: translate(0, 0) scale(0.85);
+    opacity: 0.08;
+  }
+  50% {
+    transform: translate(var(--drift-x, 18px), var(--drift-y, -20px)) scale(1.15);
+    opacity: 0.14;
+  }
+  100% {
+    transform: translate(calc(var(--drift-x, 18px) * -0.75), calc(var(--drift-y, -20px) * 0.85)) scale(0.9);
+    opacity: 0.09;
+  }
+}
+
+/* 3. Cursor-Responsive Radial Glow Overlay */
+.cta-cursor-glow {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.4s ease-out;
+  background: radial-gradient(
+    circle 260px at var(--cta-mouse-x, 50%) var(--cta-mouse-y, 50%),
+    rgba(255, 255, 255, 0.04) 0%,
+    rgba(191, 219, 254, 0.015) 45%,
+    transparent 70%
+  );
+  z-index: 3;
+  border-radius: inherit;
+}
+
+.group\/cta:hover .cta-cursor-glow,
+.cta-card-container:hover .cta-cursor-glow {
+  opacity: 1;
+}
+
+/* 4. Secondary: Call Now Button subtle lift & soft blue-white border glow */
+.cta-btn-call-glow {
+  transition:
+    transform 0.28s cubic-bezier(0.25, 1, 0.5, 1),
+    box-shadow 0.28s cubic-bezier(0.25, 1, 0.5, 1),
+    border-color 0.28s ease,
+    background-color 0.28s ease !important;
+}
+
+.cta-btn-call-glow:hover {
+  transform: translateY(-3px) scale(1.02) !important;
+  border-color: rgba(255, 255, 255, 0.60) !important;
+  background-color: rgba(255, 255, 255, 0.05) !important;
+  box-shadow:
+    0 0 4px rgba(255, 255, 255, 0.15),
+    0 4px 12px -3px rgba(0, 0, 0, 0.15) !important;
+}
+
+.cta-btn-call-glow:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.35), 0 0 4px rgba(255, 255, 255, 0.15) !important;
+}
+
+.cta-btn-call-glow:active {
+  transform: translateY(-1px) scale(0.985) !important;
+  box-shadow: 0 2px 6px -2px rgba(0, 0, 0, 0.12) !important;
+}
+
+/* 5. Benefits Line Subtle Hover Highlight */
+.cta-benefits-line {
+  user-select: none;
+  transition: color 0.3s ease;
+}
+
+.cta-benefit-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 8px;
+  border-radius: 9999px;
+  transition:
+    background-color 0.25s ease,
+    color 0.25s ease,
+    transform 0.25s cubic-bezier(0.25, 1, 0.5, 1),
+    box-shadow 0.25s ease;
+  cursor: default;
+}
+
+.cta-benefit-pill:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+  color: #ffffff;
+  transform: translateY(-1px);
+  box-shadow: none;
+}
+
+/* Reduced Motion Override */
+@media (prefers-reduced-motion: reduce) {
+  .cta-light-sweep,
+  .cta-particle-dot,
+  .cta-cursor-glow {
+    animation: none !important;
+    transition: none !important;
+  }
+  .cta-btn-call-glow,
+  .cta-benefit-pill {
+    transition: none !important;
+    transform: none !important;
+  }
+}
+
+/* ==========================================================================
+   Services Page Scoped Glow Restraints (Professional & Subtle)
+   - Overrides shared component glows specifically within the Services page
+   - Applies soft, minimal blue illumination to buttons, text, and counters
+   ========================================================================== */
+
+/* 1. BorderRunnerButton on Services Page */
+.services-page .border-runner-btn.is-primary::before,
+.services-page .border-runner-btn.is-outline-white::before,
+.services-page .border-runner-btn.is-white-runner::before {
+  filter: drop-shadow(0 0 2px rgba(255, 255, 255, 0.35));
+}
+
+.services-page .border-runner-btn.is-secondary::before,
+.services-page .border-runner-btn.is-outline::before,
+.services-page .border-runner-btn.is-blue::before,
+.services-page .border-runner-btn.is-white::before,
+.services-page .border-runner-btn.is-blue-runner::before {
+  filter: drop-shadow(0 0 2px rgba(37, 99, 235, 0.25));
+}
+
+:is(.dark) .services-page .border-runner-btn.is-secondary::before,
+:is(.dark) .services-page .border-runner-btn.is-outline::before,
+:is(.dark) .services-page .border-runner-btn.is-blue::before {
+  filter: drop-shadow(0 0 2px rgba(56, 189, 248, 0.25));
+}
+
+.services-page .border-runner-btn.is-primary:hover {
+  box-shadow: 0 6px 14px -4px rgba(37, 99, 235, 0.2);
+}
+
+.services-page .border-runner-btn.is-secondary:hover,
+.services-page .border-runner-btn.is-outline:hover,
+.services-page .border-runner-btn.is-blue:hover {
+  box-shadow: 0 4px 12px -4px rgba(37, 99, 235, 0.14);
+}
+
+.services-page .border-runner-btn.is-white:hover {
+  box-shadow: 0 6px 14px -4px rgba(0, 0, 0, 0.15);
+}
+
+/* 2. InteractiveLetters on Services Page */
+.services-page .interactive-letter.theme-primary.is-hovered {
+  text-shadow: 0 0 3px rgba(37, 99, 235, 0.16) !important;
+  box-shadow: none !important;
+}
+
+:is(.dark) .services-page .interactive-letter.theme-primary.is-hovered {
+  text-shadow: 0 0 4px rgba(96, 165, 250, 0.20) !important;
+  box-shadow: none !important;
+}
+
+/* 3. MagnifyingText on Services Page */
+.services-page .hero-magnify-container {
+  --theme-glow: rgba(37, 99, 235, 0.06) !important;
+  --theme-lens: rgba(37, 99, 235, 0.015) !important;
+}
+
+:is(.dark) .services-page .hero-magnify-container {
+  --theme-glow: rgba(96, 165, 250, 0.08) !important;
+  --theme-lens: rgba(96, 165, 250, 0.02) !important;
+}
+
+/* 4. InteractiveDescription on Services Page */
+.services-page .interactive-desc-container {
+  --theme-glow: rgba(37, 99, 235, 0.06) !important;
+}
+
+:is(.dark) .services-page .interactive-desc-container {
+  --theme-glow: rgba(96, 165, 250, 0.08) !important;
+}
+
+/* 5. TrustStatCounter on Services Page */
+.services-page .trust-stat-interactive:hover .trust-stat-number,
+.services-page .trust-stat-interactive.is-hovered .trust-stat-number {
+  text-shadow: 0 0 3px rgba(37, 99, 235, 0.10) !important;
+}
+
+:is(.dark) .services-page .trust-stat-interactive:hover .trust-stat-number,
+:is(.dark) .services-page .trust-stat-interactive.is-hovered .trust-stat-number {
+  text-shadow: 0 0 3px rgba(56, 189, 248, 0.12) !important;
+}
+
+.services-page .trust-stat-interactive.is-hovered .trust-stat-runner-char {
+  text-shadow: 0 0 2px rgba(37, 99, 235, 0.20) !important;
+}
+
+:is(.dark) .services-page .trust-stat-interactive.is-hovered .trust-stat-runner-char {
+  text-shadow: 0 0 2px rgba(96, 165, 250, 0.22) !important;
+}
+
+/* 6. Laptop Terminal Glow on Services Page */
+.services-page .hero-laptop-glow {
+  opacity: 0.08 !important;
+}
+
+

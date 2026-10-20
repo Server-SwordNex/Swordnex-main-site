@@ -42,6 +42,7 @@
 .trust-indicator-card:hover .stat-number,
 .trust-indicator-card:focus-visible .stat-number {
   color: #2563eb;
+  text-shadow: 0 0 12px rgba(37, 99, 235, 0.35);
   animation: statNumShake 0.65s ease-in-out infinite;
 }
 

@@ -57,6 +57,27 @@
   box-shadow: 0 8px 24px -4px rgba(37, 99, 235, 0.35), 0 0 16px -2px rgba(37, 99, 235, 0.4);
 }
 
+/* White Button Variant (white background, royal blue text) */
+.border-runner-btn.is-white {
+  background-color: #cbd5e1;
+  box-shadow: 0 4px 14px -2px rgba(0, 0, 0, 0.15);
+}
+
+.border-runner-btn.is-white:hover {
+  box-shadow: 0 10px 25px -4px rgba(0, 0, 0, 0.25), 0 0 16px -2px rgba(255, 255, 255, 0.5);
+}
+
+/* Outline White Variant (transparent on blue/dark card, white text) */
+.border-runner-btn.is-outline-white {
+  background-color: rgba(255, 255, 255, 0.4);
+  box-shadow: 0 2px 8px -2px rgba(0, 0, 0, 0.12);
+}
+
+.border-runner-btn.is-outline-white:hover {
+  background-color: rgba(255, 255, 255, 0.6);
+  box-shadow: 0 8px 24px -4px rgba(0, 0, 0, 0.25), 0 0 16px -2px rgba(255, 255, 255, 0.5);
+}
+
 /* The Running Bar (Sweeping Centered Conic Beam) */
 .border-runner-btn::before {
   content: '';
@@ -74,8 +95,10 @@
   z-index: 1;
 }
 
-/* Primary: White running bar */
-.border-runner-btn.is-primary::before {
+/* White running bar: Primary & Outline-White */
+.border-runner-btn.is-primary::before,
+.border-runner-btn.is-outline-white::before,
+.border-runner-btn.is-white-runner::before {
   background: conic-gradient(
     from 0deg,
     transparent 0deg,
@@ -89,10 +112,12 @@
   filter: drop-shadow(0 0 8px #ffffff);
 }
 
-/* Secondary / Outline: Electric Blue running bar */
+/* Electric Blue running bar: Secondary, Blue, & White Variant */
 .border-runner-btn.is-secondary::before,
 .border-runner-btn.is-outline::before,
-.border-runner-btn.is-blue::before {
+.border-runner-btn.is-blue::before,
+.border-runner-btn.is-white::before,
+.border-runner-btn.is-blue-runner::before {
   background: conic-gradient(
     from 0deg,
     transparent 0deg,
@@ -193,6 +218,46 @@
   color: #60a5fa;
 }
 
+/* White Variant Inner */
+.border-runner-btn.is-white .border-runner-inner {
+  background-color: #ffffff;
+  color: #2563eb;
+}
+
+.border-runner-btn.is-white:hover .border-runner-inner {
+  background-color: #f8fafc;
+  color: #1d4ed8;
+}
+
+/* Outline White Variant Inner (Opaque #2563eb masks center so light-line runs strictly on border track) */
+.border-runner-btn.is-outline-white .border-runner-inner {
+  background-color: #2563eb;
+  color: #ffffff;
+}
+
+.border-runner-btn.is-outline-white:hover .border-runner-inner {
+  background-color: #1d4ed8;
+  color: #ffffff;
+}
+
+/* Concentric border-radius support for rounded-xl */
+.border-runner-btn.rounded-xl,
+.border-runner-btn[class*="rounded-xl"] {
+  border-radius: 0.75rem;
+}
+
+.border-runner-btn.rounded-xl .border-runner-inner,
+.border-runner-btn[class*="rounded-xl"] .border-runner-inner {
+  border-radius: calc(0.75rem - 2.5px);
+}
+
+@media (min-width: 640px) {
+  .border-runner-btn[class*="sm:px-8"] .border-runner-inner {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+}
+
 /* Blinking Size Text & Content (small and big slightly) */
 .border-runner-content {
   display: inline-flex;
@@ -216,5 +281,27 @@
   }
   65% {
     transform: scale(1.07);
+  }
+}
+
+/* Arrow / Icon subtle forward movement on hover */
+.border-runner-content .material-symbols-outlined {
+  transition: transform 0.25s cubic-bezier(0.25, 1, 0.5, 1);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.border-runner-btn:hover .border-runner-content .material-symbols-outlined {
+  transform: translateX(4px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .border-runner-btn,
+  .border-runner-btn::before,
+  .border-runner-content {
+    animation: none !important;
+    transition: none !important;
+    transform: none !important;
   }
 }
