@@ -3,6 +3,11 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion'; // Import motion
 import ConsultationModal from '../components/ConsultationModal';
 import ServiceEnquiryModal from '../components/ServiceEnquiryModal';
+import { AnimatedStatNumber } from '../components/UI/TrustStatCounter';
+import { CtaInteractiveOverlay, ctaSectionContainerVariants, ctaSectionItemVariants, handleCtaMouseMove } from '../components/UI/CtaInteractiveOverlay';
+import { heroHeadingContainerVariants, heroHeadingPrimaryVariants, heroHeadingHighlightVariants } from '../components/UI/ServiceHeroAnimation';
+import { useWhyChooseInteractive, WhyChooseIndicator, WhyChooseDescWrapper } from '../components/UI/WhyChooseSectionAnimation';
+import LetterRevealHeading from '../components/UI/LetterRevealHeading';
 
 // Animation Variants - Reusable patterns
 const fadeInUp = {
@@ -35,34 +40,18 @@ const scaleIn = {
 
 // SectionTitle component now uses motion elements internally
 const SectionTitle = ({ eyebrow, title, highlight, subtitle }) => (
- <motion.div
- initial="hidden"
- whileInView="visible"
- viewport={{ once: true, amount: 0.3 }} // Trigger when 30% of element is in view
- variants={staggerContainer} // Stagger animations for its children
- className="mx-auto max-w-4xl text-center"
- >
- {eyebrow && (
- <motion.p variants={fadeInUp} className="text-sm md:text-base uppercase tracking-wider text-indigo-600 font-semibold">
- {eyebrow}
- </motion.p>
- )}
-
- <motion.h2 variants={fadeInUp} className="mt-4 text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight text-slate-900">
- {title}{" "}
- {highlight && (
- <span className="bg-gradient-to-r from-indigo-600 via-blue-600 to-cyan-600 bg-clip-text text-transparent">
- {highlight}
- </span>
- )}
- </motion.h2>
-
- {subtitle && (
- <motion.p variants={fadeInUp} className="mt-6 text-lg md:text-xl text-slate-600 leading-relaxed max-w-3xl mx-auto">
- {subtitle}
- </motion.p>
- )}
- </motion.div>
+  <LetterRevealHeading
+    eyebrow={eyebrow}
+    eyebrowClass="text-sm md:text-base uppercase tracking-wider text-indigo-600 font-semibold"
+    title={title}
+    highlight={highlight}
+    highlightClass="bg-gradient-to-r from-indigo-600 via-blue-600 to-cyan-600 bg-clip-text text-transparent"
+    headingTag="h2"
+    headingClass="mt-4 text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight text-slate-900"
+    subtitle={subtitle}
+    subtitleClass="mt-6 text-lg md:text-xl text-slate-600 leading-relaxed max-w-3xl mx-auto"
+    className="mx-auto max-w-4xl text-center"
+  />
 );
 
 // Card component now uses motion.div
@@ -103,6 +92,12 @@ const Step = ({ index, title, desc }) => (
 export default function HRConsulting() {
  const [isModalOpen, setIsModalOpen] = useState(false);
  const [isEnquiryOpen, setIsEnquiryOpen] = useState(false);
+ const {
+  expandedCards: whyUsExpanded,
+  isDesktop,
+  handleViewportEnter: handleWhyUsViewportEnter,
+  handleCardToggle: handleWhyUsCardToggle,
+ } = useWhyChooseInteractive(3);
 
  const services = [
  {
@@ -253,7 +248,7 @@ export default function HRConsulting() {
  return (
  <main className="relative min-h-screen bg-white overflow-hidden"> {/* Added overflow-hidden */}
  {/* HERO - Blue Gradient Background */}
- <section className="relative overflow-hidden bg-gradient-to-br from-indigo-700 via-blue-700 to-cyan-700 px-6 py-12">
+ <section className="relative overflow-hidden bg-gradient-to-br from-indigo-700 via-blue-700 to-cyan-700 px-6 py-12 service-hero-gradient-ambient">
  {/* Subtle pattern overlay */}
  <div className="absolute inset-0 opacity-10">
  <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_50%,rgba(255,255,255,0.4),transparent_50%)]" />
@@ -270,9 +265,13 @@ export default function HRConsulting() {
  HR Consulting | Talent Management | People Strategy
  </motion.p>
 
- <motion.h1 variants={fadeInUp} className="mt-5 text-4xl sm:text-6xl md:text-7xl font-extrabold leading-tight text-white">
+ <motion.h1 variants={heroHeadingContainerVariants} className="mt-5 text-4xl sm:text-6xl md:text-7xl font-extrabold leading-tight text-white">
+ <motion.span variants={heroHeadingPrimaryVariants} className="inline-block">
  People. Performance.<br className="hidden md:block" />
- <span className="text-cyan-200">Profit.</span>
+ </motion.span>
+ <motion.span variants={heroHeadingHighlightVariants} className="inline-block text-cyan-200">
+ Profit.
+ </motion.span>
  </motion.h1>
 
  <motion.p variants={fadeInUp} className="mt-6 text-xl text-white/90 max-w-4xl mx-auto leading-relaxed">
@@ -283,13 +282,13 @@ export default function HRConsulting() {
  <motion.div variants={fadeInUp} className="mt-10 flex flex-wrap gap-5 justify-center">
  <button
  onClick={() => setIsEnquiryOpen(true)}
- className="rounded-xl bg-white text-indigo-700 px-10 py-5 font-bold shadow-xl hover:bg-indigo-50 transition-all hover:scale-[1.02]"
+ className="rounded-xl bg-white text-indigo-700 px-10 py-5 font-bold shadow-xl hover:bg-indigo-50 transition-all service-hero-btn-primary"
  >
  Start HR Transformation →
  </button>
  <button
  onClick={() => setIsModalOpen(true)}
- className="rounded-xl border-2 border-white bg-transparent text-white px-10 py-5 font-semibold transition-all"
+ className="rounded-xl border-2 border-white bg-transparent text-white px-10 py-5 font-semibold transition-all service-hero-btn-secondary"
  >
  Get Free Consultation
  </button>
@@ -358,36 +357,68 @@ export default function HRConsulting() {
  initial="hidden"
  whileInView="visible"
  viewport={{ once: true, amount: 0.3 }}
+ onViewportEnter={handleWhyUsViewportEnter}
  variants={staggerContainer}
- className="mt-12 grid md:grid-cols-3 gap-8"
+ className="mt-12 grid md:grid-cols-3 gap-8 items-start"
  >
- {whyUs.map(([title, desc]) => (
- <Card key={title} title={title} desc={desc} />
- ))}
+ {whyUs.map(([title, desc], idx) => {
+  const isCardExpanded = Boolean(whyUsExpanded[idx]);
+  return (
+   <motion.div
+    key={title}
+    variants={scaleIn}
+    onClick={() => handleWhyUsCardToggle(idx)}
+    role={isDesktop ? undefined : 'button'}
+    tabIndex={isDesktop ? undefined : 0}
+    aria-expanded={isDesktop ? undefined : isCardExpanded}
+    onKeyDown={(e) => {
+     if (!isDesktop && (e.key === 'Enter' || e.key === ' ')) {
+      e.preventDefault();
+      handleWhyUsCardToggle(idx);
+     }
+    }}
+    className={`group relative rounded-3xl border-2 border-slate-200 bg-white p-6 sm:p-8 transition-all duration-300 hover:border-indigo-500 hover:shadow-2xl hover:shadow-indigo-500/10 cursor-pointer select-none why-choose-expand-card ${
+     !isDesktop && isCardExpanded ? 'is-expanded' : ''
+    }`}
+   >
+    <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-br from-indigo-50 to-blue-50/50 rounded-3xl pointer-events-none" />
+    <div className="relative z-10">
+     <div className="why-choose-header flex items-center justify-between gap-3">
+      <h3 className="text-base sm:text-lg lg:text-[17px] xl:text-lg font-bold text-slate-900 why-choose-card-title">{title}</h3>
+      <WhyChooseIndicator />
+     </div>
+     <WhyChooseDescWrapper>
+      <div className="text-slate-600 leading-relaxed pt-3">
+       {desc}
+      </div>
+     </WhyChooseDescWrapper>
+    </div>
+   </motion.div>
+  );
+ })}
  </motion.div>
  </section>
 
  {/* Stats Section (Why Leading Companies Trust) */}
  <section className="py-1 lg:py-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
- <motion.div
- initial="hidden"
- whileInView="visible"
- viewport={{ once: true, amount: 0.3 }}
- variants={staggerContainer}
- className="text-center mb-16"
- >
- <motion.h2 variants={fadeInUp} className="text-3xl lg:text-4xl font-display font-bold text-gray-900 dark:text-white mb-4">
- Why Leading Companies Trust <span className="text-primary">Our HR Solutions</span>
- </motion.h2>
- <motion.div variants={fadeInUp} className="h-1.5 w-24 bg-primary mx-auto rounded-full flex gap-2 justify-center items-center">
- <div className="w-1.5 h-1.5 bg-white rounded-full"></div>
- <div className="w-1.5 h-1.5 bg-white rounded-full"></div>
- <div className="w-1.5 h-1.5 bg-white rounded-full"></div>
- </motion.div>
- <motion.p variants={fadeInUp} className="mt-6 text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
- Delivering scalable HR strategies, talent management solutions, and measurable workforce results for businesses across industries.
- </motion.p>
- </motion.div>
+ <LetterRevealHeading
+  segments={[
+   { text: "Why Leading Companies Trust" },
+   { text: "Our HR Solutions", className: "text-primary" }
+  ]}
+  headingTag="h2"
+  headingClass="text-3xl lg:text-4xl font-display font-bold text-gray-900 dark:text-white mb-4 leading-tight"
+  divider={
+   <div className="h-1.5 w-24 bg-primary mx-auto rounded-full flex gap-2 justify-center items-center">
+    <div className="w-1.5 h-1.5 bg-white rounded-full"></div>
+    <div className="w-1.5 h-1.5 bg-white rounded-full"></div>
+    <div className="w-1.5 h-1.5 bg-white rounded-full"></div>
+   </div>
+  }
+  subtitle="Delivering scalable HR strategies, talent management solutions, and measurable workforce results for businesses across industries."
+  subtitleClass="mt-6 text-gray-600 dark:text-gray-400 max-w-2xl mx-auto leading-relaxed"
+  className="text-center mb-16"
+ />
 
  <motion.div
  initial="hidden"
@@ -405,12 +436,14 @@ export default function HRConsulting() {
  <motion.div
  key={idx}
  variants={scaleIn}
- className="bg-white dark:bg-card-dark p-8 rounded-2xl shadow-lg hover:shadow-xl transition-shadow border border-gray-100 dark:border-gray-700 text-center"
+ className="bg-white dark:bg-card-dark p-8 rounded-2xl shadow-lg hover:shadow-xl transition-shadow border border-gray-100 dark:border-gray-700 text-center group stat-card-interactive"
  >
  <div className={`inline-flex items-center justify-center w-16 h-16 rounded-full bg-${stat.bgColor}-50 dark:bg-${stat.bgColor}-900/30 text-${stat.textColor} mb-6`}>
  <span className="material-icons-round text-3xl">{stat.icon}</span>
  </div>
- <h3 className="text-4xl font-display font-bold text-gray-900 dark:text-white mb-2">{stat.count}</h3>
+ <h3 className="text-4xl font-display font-bold text-gray-900 dark:text-white mb-2">
+ <AnimatedStatNumber value={stat.count} />
+ </h3>
  <p className="text-gray-600 dark:text-gray-400 font-medium">{stat.text}</p>
  {stat.subtext && <p className="text-xs text-gray-400 mt-1">{stat.subtext}</p>}
  </motion.div>
@@ -420,21 +453,29 @@ export default function HRConsulting() {
 
  {/* CTA - Blue Gradient Background */}
  <section className="px-6 py-6 bg-gradient-to-b from-white to-blue-50">
+ <div
+ className="relative mx-auto max-w-6xl overflow-hidden rounded-3xl bg-gradient-to-br from-blue-600 to-cyan-600 p-12 text-center shadow-2xl cta-card-container group/cta"
+ onMouseMove={handleCtaMouseMove}
+ >
+ {/* Background Interactive Effects */}
+ <CtaInteractiveOverlay />
+
+ {/* Scroll-Triggered Content Reveal */}
  <motion.div
  initial="hidden"
  whileInView="visible"
- viewport={{ once: true, amount: 0.3 }}
- variants={staggerContainer}
- className="mx-auto max-w-6xl rounded-3xl bg-gradient-to-br from-blue-600 to-cyan-600 p-12 text-center shadow-2xl"
+ viewport={{ once: false, amount: 0.25 }}
+ variants={ctaSectionContainerVariants}
+ className="relative z-10 flex flex-col items-center text-center"
  >
- <motion.h2 variants={fadeInUp} className="text-3xl md:text-5xl font-bold text-white">
+ <motion.h2 variants={ctaSectionItemVariants} className="text-3xl md:text-5xl font-bold text-white">
  Build a Strong Workforce with HR Experts
  </motion.h2>
- <motion.p variants={fadeInUp} className="mt-6 text-xl text-white/90 max-w-4xl mx-auto">
+ <motion.p variants={ctaSectionItemVariants} className="mt-6 text-xl text-white/90 max-w-4xl mx-auto">
  Partner with expert HR consultants to boost talent acquisition, employee engagement, and workforce performance for measurable business growth.
  </motion.p>
 
- <motion.div variants={fadeInUp} className="mt-10 flex flex-wrap gap-6 justify-center">
+ <motion.div variants={ctaSectionItemVariants} className="mt-10 flex flex-wrap gap-6 justify-center">
  <button
  onClick={() => setIsEnquiryOpen(true)}
  className="rounded-xl bg-white text-blue-600 px-10 py-4 font-bold text-lg shadow-xl transition-all hover:scale-[1.02]"
@@ -443,6 +484,7 @@ export default function HRConsulting() {
  </button>
  </motion.div>
  </motion.div>
+ </div>
  </section>
 
 
@@ -460,17 +502,20 @@ export default function HRConsulting() {
  >
 
  {/* HEADER for other services */}
- <div className="text-center max-w-3xl mx-auto">
- <motion.span variants={fadeInUp} className="inline-block px-4 py-1.5 rounded-full bg-primary/10 text-primary text-xs font-bold uppercase tracking-wider">
- Other Services
- </motion.span>
- <motion.h2 variants={fadeInUp} className="mt-4 text-3xl md:text-4xl font-extrabold text-gray-900">
- Beyond Software, We Support Your Growth
- </motion.h2>
- <motion.p variants={fadeInUp} className="mt-4 text-gray-600 leading-relaxed">
- For startups, businesses, or internal systems, we offer complete end-to-end support for sustainable growth.
- </motion.p>
- </div>
+ <LetterRevealHeading
+  eyebrow="Other Services"
+  eyebrowContainer={(label) => (
+   <span className="inline-block px-4 py-1.5 rounded-full bg-primary/10 text-primary text-xs font-bold uppercase tracking-wider">
+    {label}
+   </span>
+  )}
+  title="Beyond Software, We Support Your Growth"
+  headingTag="h2"
+  headingClass="mt-4 text-3xl md:text-4xl font-extrabold text-gray-900"
+  subtitle="For startups, businesses, or internal systems, we offer complete end-to-end support for sustainable growth."
+  subtitleClass="mt-4 text-gray-600 leading-relaxed"
+  className="text-center max-w-3xl mx-auto"
+ />
 
  {/* SERVICE CARDS */}
  <motion.div

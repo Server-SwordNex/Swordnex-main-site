@@ -1,5 +1,10 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
+import { AnimatedStatNumber } from "../components/UI/TrustStatCounter";
+import { CtaInteractiveOverlay, ctaSectionContainerVariants, ctaSectionItemVariants, handleCtaMouseMove } from "../components/UI/CtaInteractiveOverlay";
+import { useWhyChooseInteractive, WhyChooseIndicator, WhyChooseDescWrapper } from "../components/UI/WhyChooseSectionAnimation";
+import LetterRevealHeading from "../components/UI/LetterRevealHeading";
 
 const ASSETS = {
  logo: "/assets/swordnex-logo.png",
@@ -232,33 +237,55 @@ const PLACEMENT_PROCESS = [
  "Offer Negotiation Support",
 ];
 
-function SectionTitle({ kicker, title, subtitle, light = false }) {
- return (
- <div className="text-center mb-12">
- {kicker && (
- <span
- className={`inline-block px-4 py-1 rounded-full text-sm font-semibold tracking-wide uppercase mb-4 ${light ? "bg-blue-100 text-blue-800" : "bg-blue-600 text-white"
- }`}
- >
- {kicker}
- </span>
- )}
- <h2
- className={`text-3xl md:text-4xl font-bold mb-4 ${light ? "text-white" : "text-slate-900"
- }`}
- >
- {title}
- </h2>
- {subtitle && (
- <p
- className={`max-w-2xl mx-auto text-lg ${light ? "text-blue-100" : "text-slate-600"
- }`}
- >
- {subtitle}
- </p>
- )}
- </div>
- );
+function SectionTitle({ kicker, title, subtitle, light = false, animate = true }) {
+  if (animate && !light) {
+    return (
+      <LetterRevealHeading
+        eyebrow={kicker}
+        eyebrowContainer={(label) => (
+          <span className="inline-block px-4 py-1 rounded-full text-sm font-semibold tracking-wide uppercase mb-4 bg-blue-600 text-white">
+            {label}
+          </span>
+        )}
+        title={title}
+        headingTag="h2"
+        headingClass="text-3xl md:text-4xl font-bold mb-4 text-slate-900"
+        subtitle={subtitle}
+        subtitleClass="max-w-2xl mx-auto text-lg text-slate-600 leading-relaxed"
+        className="text-center mb-12"
+      />
+    );
+  }
+
+  return (
+    <div className="text-center mb-12">
+      {kicker && (
+        <span
+          className={`inline-block px-4 py-1 rounded-full text-sm font-semibold tracking-wide uppercase mb-4 ${
+            light ? "bg-blue-100 text-blue-800" : "bg-blue-600 text-white"
+          }`}
+        >
+          {kicker}
+        </span>
+      )}
+      <h2
+        className={`text-3xl md:text-4xl font-bold mb-4 ${
+          light ? "text-white" : "text-slate-900"
+        }`}
+      >
+        {title}
+      </h2>
+      {subtitle && (
+        <p
+          className={`max-w-2xl mx-auto text-lg ${
+            light ? "text-blue-100" : "text-slate-600"
+          }`}
+        >
+          {subtitle}
+        </p>
+      )}
+    </div>
+  );
 }
 
 function TrackCard({ track }) {
@@ -308,23 +335,49 @@ function TrackCard({ track }) {
  );
 }
 
-function WhyChooseCard({ item, index }) {
+function WhyChooseCard({ item, index, isExpanded, isDesktop, onToggle }) {
  return (
- <div className="bg-white rounded-xl p-6 shadow-md hover:shadow-lg transition-shadow duration-300 border-l-4 border-blue-600">
- <div className="w-12 h-12 bg-blue-50 rounded-lg flex items-center justify-center mb-4">
- <span className="text-2xl font-bold text-blue-600">
- 0{index + 1}
- </span>
- </div>
- <h3 className="text-lg font-bold text-slate-900 mb-2">{item.title}</h3>
- <p className="text-slate-600 text-sm leading-relaxed">{item.desc}</p>
- </div>
+  <div
+   onClick={onToggle}
+   role={isDesktop ? undefined : 'button'}
+   tabIndex={isDesktop ? undefined : 0}
+   aria-expanded={isDesktop ? undefined : isExpanded}
+   onKeyDown={(e) => {
+    if (!isDesktop && (e.key === 'Enter' || e.key === ' ')) {
+     e.preventDefault();
+     onToggle();
+    }
+   }}
+   className={`bg-white rounded-xl p-6 shadow-md hover:shadow-lg transition-shadow duration-300 border-l-4 border-blue-600 why-choose-expand-card select-none cursor-pointer ${
+    !isDesktop && isExpanded ? 'is-expanded' : ''
+   }`}
+  >
+   <div className="flex items-center justify-between mb-4">
+    <div className="w-12 h-12 bg-blue-50 rounded-lg flex items-center justify-center">
+     <span className="text-2xl font-bold text-blue-600">
+      0{index + 1}
+     </span>
+    </div>
+    <WhyChooseIndicator />
+   </div>
+   <h3 className="text-base sm:text-lg font-bold text-slate-900 mb-2 why-choose-card-title">{item.title}</h3>
+   <WhyChooseDescWrapper>
+    <p className="text-slate-600 text-sm leading-relaxed pt-1">{item.desc}</p>
+   </WhyChooseDescWrapper>
+  </div>
  );
 }
 
 export { COURSE_TRACKS };
 
 export default function ProfessionalDevelopment() {
+ const {
+  expandedCards: whyUsExpanded,
+  isDesktop,
+  handleViewportEnter: handleWhyUsViewportEnter,
+  handleCardToggle: handleWhyUsCardToggle,
+ } = useWhyChooseInteractive(WHY_CHOOSE.length);
+
  const structuredData = {
  "@context": "https://schema.org",
  "@type": "EducationalOrganization",
@@ -411,7 +464,9 @@ export default function ProfessionalDevelopment() {
  <span className="text-2xl">🎓</span>
  </div>
  <div>
- <div className="font-bold text-slate-900">180+</div>
+ <div className="font-bold text-slate-900 group stat-card-interactive">
+ <AnimatedStatNumber target={180} suffix="+" />
+ </div>
  <div className="text-sm text-slate-500">
  Students Trained
  </div>
@@ -468,21 +523,25 @@ export default function ProfessionalDevelopment() {
  </p>
  </div>
  <div className="grid grid-cols-3 gap-6 mt-8">
- <div className="text-center">
- <div className="text-3xl font-bold text-blue-600">50+</div>
+ <div className="text-center group stat-card-interactive">
+ <div className="text-3xl font-bold text-blue-600">
+ <AnimatedStatNumber target={50} suffix="+" />
+ </div>
  <div className="text-sm text-slate-500">
  Hiring Partners
  </div>
  </div>
- <div className="text-center">
- <div className="text-3xl font-bold text-blue-600">85%</div>
+ <div className="text-center group stat-card-interactive">
+ <div className="text-3xl font-bold text-blue-600">
+ <AnimatedStatNumber target={85} suffix="%" />
+ </div>
  <div className="text-sm text-slate-500">
  Placement Rate
  </div>
  </div>
- <div className="text-center">
+ <div className="text-center group stat-card-interactive">
  <div className="text-3xl font-bold text-blue-600">
- 4.9/5
+ <AnimatedStatNumber target={4.9} suffix="/5" />
  </div>
  <div className="text-sm text-slate-500">
  Student Rating
@@ -510,11 +569,24 @@ export default function ProfessionalDevelopment() {
  subtitle="We go beyond traditional teaching to ensure you are truly prepared for the tech industry."
  />
 
- <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
- {WHY_CHOOSE.map((item, index) => (
- <WhyChooseCard key={item.title} item={item} index={index} />
- ))}
- </div>
+ <motion.div
+  initial="hidden"
+  whileInView="visible"
+  viewport={{ once: true, amount: 0.2 }}
+  onViewportEnter={handleWhyUsViewportEnter}
+  className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 items-start"
+ >
+  {WHY_CHOOSE.map((item, index) => (
+   <WhyChooseCard
+    key={item.title}
+    item={item}
+    index={index}
+    isExpanded={Boolean(whyUsExpanded[index])}
+    isDesktop={isDesktop}
+    onToggle={() => handleWhyUsCardToggle(index)}
+   />
+  ))}
+ </motion.div>
  </div>
  </section>
 
@@ -574,23 +646,43 @@ export default function ProfessionalDevelopment() {
  {/* CTA */}
  <section
  id="contact"
- className="py-12 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 relative overflow-hidden"
+ className="py-12 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 relative overflow-hidden cta-card-container group/cta"
+ onMouseMove={handleCtaMouseMove}
  >
- <div className="absolute -top-40 -left-40 w-96 h-96 bg-blue-600/20 rounded-full blur-3xl"></div>
- <div className="absolute -bottom-40 -right-40 w-96 h-96 bg-cyan-500/20 rounded-full blur-3xl"></div>
+ <div className="absolute -top-40 -left-40 w-96 h-96 bg-blue-600/20 rounded-full blur-3xl pointer-events-none"></div>
+ <div className="absolute -bottom-40 -right-40 w-96 h-96 bg-cyan-500/20 rounded-full blur-3xl pointer-events-none"></div>
 
- <div className="relative max-w-5xl mx-auto px-6 text-center">
- <h2 className="text-4xl md:text-5xl font-bold text-white leading-tight">
+ {/* Background Interactive Effects */}
+ <CtaInteractiveOverlay />
+
+ {/* Scroll-Triggered Content Reveal */}
+ <motion.div
+ initial="hidden"
+ whileInView="visible"
+ viewport={{ once: false, amount: 0.25 }}
+ variants={ctaSectionContainerVariants}
+ className="relative z-10 max-w-5xl mx-auto px-6 text-center"
+ >
+ <motion.h2
+ variants={ctaSectionItemVariants}
+ className="text-4xl md:text-5xl font-bold text-white leading-tight"
+ >
  Ready to Launch Your{" "}
  <span className="text-blue-500">Tech Career?</span>
- </h2>
+ </motion.h2>
 
- <p className="mt-6 text-slate-400 text-lg max-w-2xl mx-auto">
+ <motion.p
+ variants={ctaSectionItemVariants}
+ className="mt-6 text-slate-400 text-lg max-w-2xl mx-auto"
+ >
  Speak directly with our career mentors and get clarity on the
  right course, internship opportunities, and placement roadmap.
- </p>
+ </motion.p>
 
- <div className="mt-12 flex flex-col sm:flex-row gap-6 justify-center">
+ <motion.div
+ variants={ctaSectionItemVariants}
+ className="mt-12 flex flex-col sm:flex-row gap-6 justify-center"
+ >
  <Link
  to="/course/enquiry"
  className="px-8 py-4 bg-gradient-to-r from-blue-600 to-cyan-500 text-white font-semibold rounded-xl shadow-lg hover:scale-105 transition-all duration-300 flex items-center justify-center gap-3 no-underline"
@@ -606,9 +698,12 @@ export default function ProfessionalDevelopment() {
  >
  💬 Chat on WhatsApp
  </a>
- </div>
+ </motion.div>
 
- <div className="mt-16 bg-slate-800/60 backdrop-blur-lg border border-slate-700 rounded-2xl p-8 flex flex-col sm:flex-row justify-center items-center gap-6 text-slate-300">
+ <motion.div
+ variants={ctaSectionItemVariants}
+ className="mt-16 bg-slate-800/60 backdrop-blur-lg border border-slate-700 rounded-2xl p-8 flex flex-col sm:flex-row justify-center items-center gap-6 text-slate-300"
+ >
  <a
  href="mailto:support@swordnex.com"
  className="hover:text-white transition-colors no-underline text-slate-300"
@@ -628,8 +723,8 @@ export default function ProfessionalDevelopment() {
  <span className="hidden sm:block text-slate-600">|</span>
 
  <span>🕒 Mon–Sat: 9AM – 7PM</span>
- </div>
- </div>
+ </motion.div>
+ </motion.div>
  </section>
  </main>
  </div>

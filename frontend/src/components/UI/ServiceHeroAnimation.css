@@ -1,0 +1,76 @@
+/* ServiceHeroAnimation.css
+ * Subtle, minimal hero animations for Core Services detail pages:
+ * 1. Ultra-slow ambient gradient movement without altering color palette
+ * 2. Subtle hover lift and soft shadow for primary and secondary hero buttons
+ * 3. Full compliance with prefers-reduced-motion
+ */
+
+/* 1. Very slow, minimal ambient shift for the existing hero gradient */
+.service-hero-gradient-ambient {
+  background-size: 130% 130%;
+  animation: serviceHeroGradientSlow 18s ease-in-out infinite alternate;
+}
+
+@keyframes serviceHeroGradientSlow {
+  0% {
+    background-position: 0% 0%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 100%;
+  }
+}
+
+/* 2. Primary Hero Button subtle lift and soft depth shadow */
+.service-hero-btn-primary {
+  transition: transform 0.28s cubic-bezier(0.25, 1, 0.5, 1),
+              box-shadow 0.28s cubic-bezier(0.25, 1, 0.5, 1),
+              background-color 0.25s ease !important;
+}
+
+.service-hero-btn-primary:hover {
+  transform: translateY(-2.5px) scale(1.015) !important;
+  box-shadow: 0 10px 24px -6px rgba(0, 0, 0, 0.24),
+              0 0 10px rgba(255, 255, 255, 0.22) !important;
+}
+
+.service-hero-btn-primary:active {
+  transform: translateY(-0.5px) scale(0.99) !important;
+  box-shadow: 0 4px 12px -3px rgba(0, 0, 0, 0.18) !important;
+}
+
+/* 3. Secondary Hero Button subtle lift, soft border glow & shadow */
+.service-hero-btn-secondary {
+  transition: transform 0.28s cubic-bezier(0.25, 1, 0.5, 1),
+              box-shadow 0.28s cubic-bezier(0.25, 1, 0.5, 1),
+              border-color 0.25s ease,
+              background-color 0.25s ease !important;
+}
+
+.service-hero-btn-secondary:hover {
+  transform: translateY(-2.5px) scale(1.015) !important;
+  border-color: rgba(255, 255, 255, 0.95) !important;
+  background-color: rgba(255, 255, 255, 0.08) !important;
+  box-shadow: 0 8px 20px -6px rgba(0, 0, 0, 0.2),
+              0 0 8px rgba(255, 255, 255, 0.15) !important;
+}
+
+.service-hero-btn-secondary:active {
+  transform: translateY(-0.5px) scale(0.99) !important;
+  box-shadow: 0 4px 10px -3px rgba(0, 0, 0, 0.14) !important;
+}
+
+/* 4. Reduced Motion Preferences */
+@media (prefers-reduced-motion: reduce) {
+  .service-hero-gradient-ambient {
+    animation: none !important;
+    background-position: 0% 0% !important;
+  }
+  .service-hero-btn-primary,
+  .service-hero-btn-secondary {
+    transition: none !important;
+    transform: none !important;
+  }
+}
