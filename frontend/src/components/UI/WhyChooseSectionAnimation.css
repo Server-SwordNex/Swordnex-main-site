@@ -1,0 +1,163 @@
+/* WhyChooseSectionAnimation.css
+ * Interactive expand/collapse behavior matching Services reference section:
+ * - Desktop: hover over card/header smoothly expands content, mouse leave collapses.
+ * - Mobile: tap card or indicator toggles expand/collapse; scroll-triggered reveal.
+ * - Preserves all existing card colors, borders, typography, and dimensions.
+ */
+
+/* Expandable Card Base */
+.why-choose-expand-card {
+  position: relative;
+  cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    box-shadow 0.35s cubic-bezier(0.25, 1, 0.5, 1),
+    border-color 0.35s ease,
+    background-color 0.3s ease;
+}
+
+/* Small clear ^ indicator matching Services reference section */
+.why-choose-indicator {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  min-width: 28px;
+  max-width: 28px;
+  border-radius: 9999px;
+  background-color: rgba(148, 163, 184, 0.12);
+  color: #64748b;
+  border: 1px solid rgba(226, 232, 240, 0.85);
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease,
+    border-color 0.3s ease;
+  flex-shrink: 0;
+  margin-left: auto;
+}
+
+:is(.dark) .why-choose-indicator {
+  background-color: rgba(148, 163, 184, 0.08);
+  color: #94a3b8;
+  border-color: rgba(51, 65, 85, 0.6);
+}
+
+.why-choose-indicator-icon {
+  width: 15px;
+  height: 15px;
+  transition: transform 0.38s cubic-bezier(0.25, 1, 0.5, 1);
+  will-change: transform;
+}
+
+/* Smooth Description Expansion Grid */
+.why-choose-desc-wrapper {
+  display: grid;
+  grid-template-rows: 0fr;
+  opacity: 0;
+  transition:
+    grid-template-rows 0.38s cubic-bezier(0.25, 1, 0.5, 1),
+    opacity 0.32s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.why-choose-desc-inner {
+  overflow: hidden;
+}
+
+/* ========================================================
+   Desktop (>= 1024px): Hover expands description & rotates icon.
+   Mouse leave collapses. No click expand/collapse lock.
+   ======================================================== */
+@media (min-width: 1024px) {
+  .why-choose-expand-card:hover .why-choose-indicator {
+    background-color: rgba(37, 99, 235, 0.12);
+    border-color: rgba(37, 99, 235, 0.25);
+    color: #2563eb;
+  }
+
+  :is(.dark) .why-choose-expand-card:hover .why-choose-indicator {
+    background-color: rgba(59, 130, 246, 0.2);
+    border-color: rgba(59, 130, 246, 0.35);
+    color: #60a5fa;
+  }
+
+  .why-choose-expand-card:hover .why-choose-indicator-icon {
+    transform: rotate(180deg);
+  }
+
+  .why-choose-expand-card:hover .why-choose-desc-wrapper {
+    grid-template-rows: 1fr;
+    opacity: 1;
+  }
+}
+
+/* ========================================================
+   Mobile & Tablet (< 1024px): Tap-to-expand / Tap-to-collapse.
+   Only .is-expanded controls expansion on mobile.
+   NO :hover rules here so touch devices never get stuck.
+   Repeated taps reliably expand and collapse the same item.
+   ======================================================== */
+@media (max-width: 1023px) {
+  .why-choose-expand-card.is-expanded .why-choose-indicator {
+    background-color: rgba(37, 99, 235, 0.12);
+    border-color: rgba(37, 99, 235, 0.25);
+    color: #2563eb;
+  }
+
+  :is(.dark) .why-choose-expand-card.is-expanded .why-choose-indicator {
+    background-color: rgba(59, 130, 246, 0.2);
+    border-color: rgba(59, 130, 246, 0.35);
+    color: #60a5fa;
+  }
+
+  .why-choose-expand-card.is-expanded .why-choose-indicator-icon {
+    transform: rotate(180deg);
+  }
+
+  .why-choose-expand-card.is-expanded .why-choose-desc-wrapper {
+    grid-template-rows: 1fr;
+    opacity: 1;
+  }
+}
+
+/* Header container: flex row with guaranteed reserved space for indicator */
+.why-choose-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+}
+
+/* Card Title:
+ * - Stays on a single line wherever space permits
+ * - Strictly bounded with max-width: calc(100% - 40px) so it never overlaps the icon
+ * - Allows clean, readable wrap on narrower screens rather than overlapping
+ * - Never truncates, clips, or hides text
+ */
+.why-choose-card-title {
+  flex: 1 1 auto;
+  min-width: 0;
+  max-width: calc(100% - 40px);
+  letter-spacing: -0.015em;
+  line-height: 1.35;
+  margin: 0;
+  word-break: normal;
+  overflow-wrap: break-word;
+}
+
+@media (min-width: 1280px) {
+  .why-choose-card-title {
+    white-space: nowrap;
+  }
+}
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  .why-choose-desc-wrapper,
+  .why-choose-indicator-icon,
+  .why-choose-expand-card {
+    transition: none !important;
+  }
+}

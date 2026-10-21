@@ -6,6 +6,11 @@ import { motion, useScroll, useTransform, useAnimation } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { useEffect } from 'react';
 import { Helmet } from "react-helmet-async";
+import { AnimatedStatNumber } from '../components/UI/TrustStatCounter';
+import { CtaInteractiveOverlay, ctaSectionContainerVariants, ctaSectionItemVariants, handleCtaMouseMove } from '../components/UI/CtaInteractiveOverlay';
+import { heroHeadingContainerVariants, heroHeadingPrimaryVariants, heroHeadingHighlightVariants } from '../components/UI/ServiceHeroAnimation';
+import { useWhyChooseInteractive, WhyChooseIndicator, WhyChooseDescWrapper } from '../components/UI/WhyChooseSectionAnimation';
+import LetterRevealHeading from '../components/UI/LetterRevealHeading';
 
 <Helmet>
  <title>
@@ -56,61 +61,31 @@ import { Helmet } from "react-helmet-async";
  <meta name="twitter:image" content="https://yourwebsite.com/og-image.jpg" />
 </Helmet>
 
-const SectionTitle = ({ eyebrow, title, highlight, subtitle, animationDelay = 0 }) => {
- const controls = useAnimation();
- const [ref, inView] = useInView({
- triggerOnce: true,
- threshold: 0.1,
- });
-
- useEffect(() => {
- if (inView) {
- controls.start('visible');
- }
- }, [controls, inView]);
-
- return (
- <motion.div
- ref={ref}
- initial="hidden"
- animate={controls}
- variants={{
- hidden: { opacity: 0, y: 20 },
- visible: {
- opacity: 1,
- y: 0,
- transition: {
- duration: 0.6,
- delay: animationDelay,
- ease: [0.4, 0, 0.2, 1]
- }
- }
- }}
- className="mx-auto max-w-3xl text-center"
- >
- {eyebrow && (
- <p className="text-sm uppercase tracking-[0.2em] text-blue-600 font-semibold">
- {eyebrow}
- </p>
- )}
-
- <h2 className="mt-3 text-4xl md:text-5xl font-extrabold text-slate-900 leading-tight">
- {title}{" "}
- {highlight && (
- <span className="bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent">
- {highlight}
- </span>
- )}
- </h2>
-
- {subtitle && (
- <p className="mt-5 text-lg text-slate-600 leading-relaxed max-w-2xl mx-auto">
- {subtitle}
- </p>
- )}
- </motion.div>
- );
-};
+const SectionTitle = ({
+  eyebrow,
+  title,
+  highlight,
+  supportingHeading,
+  supportingHeadingClass,
+  subtitle,
+  subtitleClass,
+  className = "mx-auto max-w-3xl text-center",
+}) => (
+  <LetterRevealHeading
+    eyebrow={eyebrow}
+    eyebrowClass="text-sm uppercase tracking-[0.2em] text-blue-600 font-semibold"
+    title={title}
+    highlight={highlight}
+    highlightClass="bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent"
+    headingTag="h2"
+    headingClass="mt-3 text-4xl md:text-5xl font-extrabold text-slate-900 leading-tight"
+    supportingHeading={supportingHeading}
+    supportingHeadingClass={supportingHeadingClass || "mt-4 text-lg md:text-xl font-bold text-slate-800 leading-relaxed max-w-2xl mx-auto"}
+    subtitle={subtitle}
+    subtitleClass={subtitleClass || (supportingHeading ? "mt-3 text-base md:text-lg text-slate-600 leading-relaxed max-w-2xl mx-auto" : "mt-5 text-lg text-slate-600 leading-relaxed max-w-2xl mx-auto")}
+    className={className}
+  />
+);
 
 const Card = ({ title, desc, icon, index }) => {
  const controls = useAnimation();
@@ -240,11 +215,13 @@ const FadeInWhenVisible = ({ children, delay = 0 }) => {
 const StatCard = ({ value, label, icon, color, delay }) => {
  return (
  <FadeInWhenVisible delay={delay}>
- <div className="bg-white dark:bg-card-dark p-8 rounded-2xl shadow-lg hover:shadow-xl transition-shadow border border-gray-100 dark:border-gray-700 text-center">
+ <div className="bg-white dark:bg-card-dark p-8 rounded-2xl shadow-lg hover:shadow-xl transition-shadow border border-gray-100 dark:border-gray-700 text-center group stat-card-interactive">
  <div className={`inline-flex items-center justify-center w-16 h-16 rounded-full bg-${color}-50 dark:bg-${color}-900/30 text-${color}-600 mb-6`}>
  <span className="material-icons-round text-3xl">{icon}</span>
  </div>
- <h3 className="text-4xl font-display font-bold text-gray-900 dark:text-white mb-2">{value}</h3>
+ <h3 className="text-4xl font-display font-bold text-gray-900 dark:text-white mb-2">
+ <AnimatedStatNumber value={value} />
+ </h3>
  <p className="text-gray-600 dark:text-gray-400 font-medium">{label}</p>
  </div>
  </FadeInWhenVisible>
@@ -274,6 +251,12 @@ const ServiceCard = ({ title, description, icon, color, link, delay }) => {
 export default function DigitalMedia() {
  const [isModalOpen, setIsModalOpen] = useState(false);
  const [isEnquiryOpen, setIsEnquiryOpen] = useState(false);
+ const {
+  expandedCards: whyUsExpanded,
+  isDesktop,
+  handleViewportEnter: handleWhyUsViewportEnter,
+  handleCardToggle: handleWhyUsCardToggle,
+ } = useWhyChooseInteractive(3);
 
  // Hero section scroll effects
  const { scrollYProgress } = useScroll();
@@ -432,7 +415,7 @@ export default function DigitalMedia() {
  {/* HERO - Blue Background */}
  <motion.section
  style={{ opacity: heroOpacity, scale: heroScale }}
- className="relative overflow-hidden bg-gradient-to-br from-blue-600 via-blue-700 to-cyan-600 px-6 py-12"
+ className="relative overflow-hidden bg-gradient-to-br from-blue-600 via-blue-700 to-cyan-600 px-6 py-12 service-hero-gradient-ambient"
  >
  {/* Background */}
  <div className="absolute inset-0 opacity-10">
@@ -450,26 +433,27 @@ export default function DigitalMedia() {
  </FadeInWhenVisible>
 
  {/* 🔥 MAIN SEO H1 */}
- <FadeInWhenVisible delay={0.2}>
- <h1 className="mt-5 font-extrabold leading-tight text-white">
-
+ <motion.h1
+ initial="hidden"
+ animate="visible"
+ variants={heroHeadingContainerVariants}
+ className="mt-5 font-extrabold leading-tight text-white"
+ >
  {/* Line 1 - smaller, clean */}
- <span className="block text-2xl sm:text-3xl md:text-4xl">
+ <motion.span variants={heroHeadingPrimaryVariants} className="block text-2xl sm:text-3xl md:text-4xl">
  Digital Marketing Services in
- </span>
+ </motion.span>
 
  {/* Line 2 - highlight */}
- <span className="block text-3xl sm:text-4xl md:text-5xl text-cyan-200 mt-1">
+ <motion.span variants={heroHeadingHighlightVariants} className="block text-3xl sm:text-4xl md:text-5xl text-cyan-200 mt-1">
  Kumbakonam
- </span>
+ </motion.span>
 
  {/* Line 3 - supporting */}
- <span className="block text-base sm:text-lg text-white/80 mt-1 uppercase tracking-wide">
+ <motion.span variants={heroHeadingHighlightVariants} className="block text-base sm:text-lg text-white/80 mt-1 uppercase tracking-wide">
  #1 Digital Marketing Company
- </span>
-
- </h1>
- </FadeInWhenVisible>
+ </motion.span>
+ </motion.h1>
 
  {/* 🔥 HIGH-CONVERSION SUBTEXT */}
  <FadeInWhenVisible delay={0.4}>
@@ -483,14 +467,14 @@ export default function DigitalMedia() {
  <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
  <button
  onClick={() => setIsEnquiryOpen(true)}
- className="rounded-xl bg-white text-blue-700 px-10 py-4 font-bold shadow-xl transition-all hover:scale-[1.05]"
+ className="rounded-xl bg-white text-blue-700 px-10 py-4 font-bold shadow-xl transition-all service-hero-btn-primary"
  >
  Get Free Leads Strategy →
  </button>
 
  <button
  onClick={() => setIsModalOpen(true)}
- className="rounded-xl border-2 border-white bg-transparent text-white px-10 py-4 font-semibold transition-all"
+ className="rounded-xl border-2 border-white bg-transparent text-white px-10 py-4 font-semibold transition-all service-hero-btn-secondary"
  >
  Book Free Consultation
  </button>
@@ -563,34 +547,70 @@ export default function DigitalMedia() {
  subtitle="We build systems that bring consistent attention, engagement & revenue."
  />
 
- <div className="mt-12 grid md:grid-cols-3 gap-8">
- {whyUs.map(([title, desc], index) => (
- <Card key={title} title={title} desc={desc} index={index} />
- ))}
- </div>
+ <motion.div
+  initial="hidden"
+  whileInView="visible"
+  viewport={{ once: true, amount: 0.3 }}
+  onViewportEnter={handleWhyUsViewportEnter}
+  className="mt-12 grid md:grid-cols-3 gap-8 items-start"
+ >
+  {whyUs.map(([title, desc], index) => {
+   const isCardExpanded = Boolean(whyUsExpanded[index]);
+   return (
+    <motion.div
+     key={title}
+     onClick={() => handleWhyUsCardToggle(index)}
+     role={isDesktop ? undefined : 'button'}
+     tabIndex={isDesktop ? undefined : 0}
+     aria-expanded={isDesktop ? undefined : isCardExpanded}
+     onKeyDown={(e) => {
+      if (!isDesktop && (e.key === 'Enter' || e.key === ' ')) {
+       e.preventDefault();
+       handleWhyUsCardToggle(index);
+      }
+     }}
+     className={`group relative rounded-3xl border-2 border-slate-200 bg-white p-6 sm:p-8 transition-all duration-300 hover:border-blue-500 hover:shadow-2xl hover:shadow-blue-500/10 cursor-pointer select-none why-choose-expand-card ${
+      !isDesktop && isCardExpanded ? 'is-expanded' : ''
+     }`}
+    >
+     <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-br from-blue-50 to-cyan-50/50 rounded-3xl pointer-events-none" />
+     <div className="relative z-10">
+      <div className="why-choose-header flex items-center justify-between gap-3">
+       <h3 className="text-base sm:text-lg lg:text-[17px] xl:text-lg font-bold text-slate-900 why-choose-card-title">{title}</h3>
+       <WhyChooseIndicator />
+      </div>
+      <WhyChooseDescWrapper>
+       <div className="text-slate-600 leading-relaxed pt-3">
+        {desc}
+       </div>
+      </WhyChooseDescWrapper>
+     </div>
+    </motion.div>
+   );
+  })}
+ </motion.div>
  </section>
 
  {/* STATS SECTION */}
  <section className="py-1 lg:py-15 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
- <div className="text-center mb-16">
- <FadeInWhenVisible>
- <h2 className="text-3xl lg:text-4xl font-display font-bold text-gray-900 dark:text-white mb-4">
- Why Top Brands Choose <span className="text-primary">SwordNex Digital Media</span>
- </h2>
- </FadeInWhenVisible>
- <FadeInWhenVisible delay={0.2}>
- <div className="h-1.5 w-24 bg-primary mx-auto rounded-full flex gap-2 justify-center items-center">
- <div className="w-1.5 h-1.5 bg-white rounded-full"></div>
- <div className="w-1.5 h-1.5 bg-white rounded-full"></div>
- <div className="w-1.5 h-1.5 bg-white rounded-full"></div>
- </div>
- </FadeInWhenVisible>
- <FadeInWhenVisible delay={0.4}>
- <p className="mt-6 text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
- We create ROI-driven digital marketing strategies, scalable social media campaigns, and measurable growth for SaaS, startups, and tech brands.
- </p>
- </FadeInWhenVisible>
- </div>
+ <LetterRevealHeading
+  segments={[
+   { text: "Why Top Brands Choose" },
+   { text: "SwordNex Digital Media", className: "text-primary" }
+  ]}
+  headingTag="h2"
+  headingClass="text-3xl lg:text-4xl font-display font-bold text-gray-900 dark:text-white mb-4 leading-tight"
+  divider={
+   <div className="h-1.5 w-24 bg-primary mx-auto rounded-full flex gap-2 justify-center items-center">
+    <div className="w-1.5 h-1.5 bg-white rounded-full"></div>
+    <div className="w-1.5 h-1.5 bg-white rounded-full"></div>
+    <div className="w-1.5 h-1.5 bg-white rounded-full"></div>
+   </div>
+  }
+  subtitle="We create ROI-driven digital marketing strategies, scalable social media campaigns, and measurable growth for SaaS, startups, and tech brands."
+  subtitleClass="mt-6 text-gray-600 dark:text-gray-400 max-w-2xl mx-auto leading-relaxed"
+  className="text-center mb-16"
+ />
 
  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-24">
  <StatCard
@@ -626,25 +646,47 @@ export default function DigitalMedia() {
 
  {/* CTA - Blue Gradient Background */}
  <section id="digital-media" className="bg-gradient-to-b from-white to-blue-50 px-6 py-8">
- <FadeInWhenVisible>
- <div className="mx-auto max-w-5xl overflow-hidden rounded-3xl bg-gradient-to-br from-blue-700 to-cyan-700 p-10 md:p-12 text-center shadow-2xl">
- <h2 className="text-3xl md:text-4xl font-extrabold text-white">
- Amplify Your Brand with Results <br />Driven Digital Media
- </h2>
- <p className="mt-4 text-white/90 leading-relaxed max-w-3xl mx-auto">
- Boost engagement, grow your audience, and drive measurable ROI with our expert social media campaigns and digital marketing strategy tailored for SaaS, startups, and tech brands.
- </p>
+ <div
+ className="relative mx-auto max-w-5xl overflow-hidden rounded-3xl bg-gradient-to-br from-blue-700 to-cyan-700 p-10 md:p-12 text-center shadow-2xl cta-card-container group/cta"
+ onMouseMove={handleCtaMouseMove}
+ >
+ {/* Background Interactive Effects */}
+ <CtaInteractiveOverlay />
 
- <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
+ {/* Scroll-Triggered Content Reveal */}
+ <motion.div
+ initial="hidden"
+ whileInView="visible"
+ viewport={{ once: false, amount: 0.25 }}
+ variants={ctaSectionContainerVariants}
+ className="relative z-10 flex flex-col items-center text-center"
+ >
+ <motion.h2
+ variants={ctaSectionItemVariants}
+ className="text-3xl md:text-4xl font-extrabold text-white"
+ >
+ Amplify Your Brand with Results <br />Driven Digital Media
+ </motion.h2>
+ <motion.p
+ variants={ctaSectionItemVariants}
+ className="mt-4 text-white/90 leading-relaxed max-w-3xl mx-auto"
+ >
+ Boost engagement, grow your audience, and drive measurable ROI with our expert social media campaigns and digital marketing strategy tailored for SaaS, startups, and tech brands.
+ </motion.p>
+
+ <motion.div
+ variants={ctaSectionItemVariants}
+ className="mt-8 flex flex-col sm:flex-row gap-4 justify-center"
+ >
  <button
  onClick={() => setIsModalOpen(true)}
  className="px-10 py-3 rounded-xl bg-white text-blue-800 font-bold transition-all duration-300 hover:scale-[1.02] shadow-lg"
  >
  Schedule Your Free Strategy Call →
  </button>
+ </motion.div>
+ </motion.div>
  </div>
- </div>
- </FadeInWhenVisible>
  </section>
 
  {/* SERVICE CARDS */}
@@ -654,23 +696,20 @@ export default function DigitalMedia() {
  >
  <div className="mx-auto max-w-6xl space-y-14">
  {/* HEADER */}
- <div className="text-center max-w-3xl mx-auto">
- <FadeInWhenVisible>
- <span className="inline-block px-4 py-1.5 rounded-full bg-primary/10 text-primary text-xs font-bold uppercase tracking-wider">
- Other Services
- </span>
- </FadeInWhenVisible>
- <FadeInWhenVisible delay={0.2}>
- <h2 className="mt-4 text-3xl md:text-4xl font-extrabold text-gray-900">
- Beyond Software, We Support Your Growth
- </h2>
- </FadeInWhenVisible>
- <FadeInWhenVisible delay={0.4}>
- <p className="mt-4 text-gray-600 leading-relaxed">
- For startups, businesses, or internal systems, we offer complete end-to-end support for sustainable growth.
- </p>
- </FadeInWhenVisible>
- </div>
+ <LetterRevealHeading
+  eyebrow="Other Services"
+  eyebrowContainer={(label) => (
+   <span className="inline-block px-4 py-1.5 rounded-full bg-primary/10 text-primary text-xs font-bold uppercase tracking-wider">
+    {label}
+   </span>
+  )}
+  title="Beyond Software, We Support Your Growth"
+  headingTag="h2"
+  headingClass="mt-4 text-3xl md:text-4xl font-extrabold text-gray-900"
+  subtitle="For startups, businesses, or internal systems, we offer complete end-to-end support for sustainable growth."
+  subtitleClass="mt-4 text-gray-600 leading-relaxed"
+  className="text-center max-w-3xl mx-auto"
+ />
 
  {/* SERVICE CARDS */}
  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 items-stretch">
