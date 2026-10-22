@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { motion, useReducedMotion } from 'framer-motion';
 import ConsultationModal from '../components/ConsultationModal';
 import ServiceEnquiryModal from '../components/ServiceEnquiryModal';
 import InteractiveGradientText from '../components/UI/InteractiveGradientText';
@@ -8,6 +9,75 @@ const Products = () => {
  const [isConsultationOpen, setIsConsultationOpen] = useState(false);
  const [isEnquiryOpen, setIsEnquiryOpen] = useState(false);
  const [flippedIntegrationCard, setFlippedIntegrationCard] = useState(null);
+ const shouldReduceMotion = useReducedMotion();
+
+ const sectionHeaderVariants = shouldReduceMotion
+  ? {
+    hidden: { opacity: 1, y: 0 },
+    visible: { opacity: 1, y: 0 }
+   }
+  : {
+    hidden: { opacity: 0, y: 16, transition: { duration: 0.2 } },
+    visible: {
+     opacity: 1,
+     y: 0,
+     transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1], delay: 0.05 }
+    }
+   };
+
+ const sectionHeadingVariants = shouldReduceMotion
+  ? {
+    hidden: { opacity: 1, y: 0 },
+    visible: { opacity: 1, y: 0 }
+   }
+  : {
+    hidden: { opacity: 0, y: 14, transition: { duration: 0.15 } },
+    visible: {
+     opacity: 1,
+     y: 0,
+     transition: { duration: 0.38, delay: 0.28, ease: [0.22, 1, 0.36, 1] }
+    }
+   };
+
+ const sectionDescriptionVariants = shouldReduceMotion
+  ? {
+    hidden: { opacity: 1, y: 0 },
+    visible: { opacity: 1, y: 0 }
+   }
+  : {
+    hidden: { opacity: 0, y: 16, transition: { duration: 0.2 } },
+    visible: {
+     opacity: 1,
+     y: 0,
+     transition: { duration: 0.6, delay: 0.65, ease: [0.22, 1, 0.36, 1] }
+    }
+   };
+
+ const productCardsContainerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+   opacity: 1,
+   transition: {
+    staggerChildren: 0.12,
+    delayChildren: 0.05
+   }
+  }
+ };
+
+ const productCardVariants = shouldReduceMotion
+  ? {
+    hidden: { opacity: 0 },
+    visible: { opacity: 1, transition: { duration: 0.25 } }
+   }
+  : {
+    hidden: { opacity: 0, y: 36 },
+    visible: {
+     opacity: 1,
+     y: 0,
+     transition: { duration: 0.65, ease: [0.22, 1, 0.36, 1] }
+    }
+   };
+
  // Scroll Reveal Animation
  useEffect(() => {
  const observer = new IntersectionObserver(
@@ -25,27 +95,6 @@ const Products = () => {
 
  return () => {
  document.querySelectorAll('.scroll-animate').forEach((el) => observer.unobserve(el));
- };
- }, []);
-
- useEffect(() => {
- const cards = document.querySelectorAll('.products-about-style .products-scroll-card');
- const observer = new IntersectionObserver(
- (entries) => {
- entries.forEach((entry) => {
- if (entry.isIntersecting) {
- entry.target.classList.add('animate-in');
- observer.unobserve(entry.target);
- }
- });
- },
- { threshold: 0.1, rootMargin: '0px 0px -50px 0px' }
- );
-
- cards.forEach((card) => observer.observe(card));
-
- return () => {
- cards.forEach((card) => observer.unobserve(card));
  };
  }, []);
 
@@ -138,24 +187,38 @@ const Products = () => {
 
  {/* Why Choose Us */}
  <div className="products-about-style">
- <section className="py-12 sm:py-14 lg:py-16 px-4 flex justify-center text-center scroll-animate">
+ <motion.section
+ initial="hidden"
+ whileInView="visible"
+ viewport={{ once: false, amount: 0.25 }}
+ className="py-12 sm:py-14 lg:py-16 px-4 flex justify-center text-center"
+ >
  <div className="max-w-6xl flex flex-col gap-4 items-center">
 
  {/* Tag */}
- <span className="inline-block px-3 py-1 rounded-full bg-primary/10 text-primary text-xs sm:text-sm font-semibold uppercase tracking-wider mb-2">
+ <motion.span
+ variants={sectionHeaderVariants}
+ className="inline-block px-3 py-1 rounded-full bg-primary/10 text-primary text-xs sm:text-sm font-semibold uppercase tracking-wider mb-2"
+ >
  Why Choose Our Products
- </span>
+ </motion.span>
 
  {/* Heading */}
- <h2 className="text-gray-900 dark:text-white text-2xl sm:text-3xl md:text-4xl font-bold leading-tight tracking-tight">
+ <motion.h2
+ variants={sectionHeadingVariants}
+ className="text-gray-900 dark:text-white text-2xl sm:text-3xl md:text-4xl font-bold leading-tight tracking-tight"
+ >
  Smart Billing, Payroll &
  <span className="text-primary"> Business Software</span>
- </h2>
+ </motion.h2>
 
  {/* Description */}
- <p className="text-gray-600 dark:text-gray-400 text-sm sm:text-base md:text-lg max-w-5xl leading-relaxed">
+ <motion.p
+ variants={sectionDescriptionVariants}
+ className="text-gray-600 dark:text-gray-400 text-sm sm:text-base md:text-lg max-w-5xl leading-relaxed"
+ >
  Our SaaS products help businesses manage billing, payroll, HR, and operations with ease. Built for small and medium businesses to improve efficiency, reduce manual work, and scale faster.
- </p>
+ </motion.p>
 
  </div>
 
@@ -163,14 +226,20 @@ const Products = () => {
  <p className="hidden">
  Billing software, payroll software, HR management system, GST billing system, SaaS products for small business in Tamil Nadu.
  </p>
- </section>
+ </motion.section>
 
  {/* Feature Cards */}
- <section className="px-4 pb-12 scroll-animate">
- <div className="max-w-7xl mx-auto">
+ <section className="px-4 pb-12">
+ <motion.div
+ variants={productCardsContainerVariants}
+ initial="hidden"
+ whileInView="visible"
+ viewport={{ once: true, amount: 0.15 }}
+ className="max-w-7xl mx-auto"
+ >
  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
  {/* Billing Card */}
- <div className="feature-card-motion products-scroll-card products-scroll-card-delay-1 h-full flex flex-col">
+ <motion.div variants={productCardVariants} className="feature-card-motion h-full flex flex-col">
  <div className="feature-card flex flex-col h-full bg-white dark:bg-[#1e2536] rounded-3xl border border-gray-100 dark:border-gray-700/50 p-8 shadow-sm group">
  <div className="w-14 h-14 rounded-2xl flex items-center justify-center bg-green-50 dark:bg-blue-900/20 mb-6 group-hover:text-white transition-all duration-300">
  <img src="/assets/icoillig.png" alt="Billing icon" className="w-9 h-9 text-primary transition-colors duration-300" />
@@ -198,10 +267,10 @@ const Products = () => {
  <span className="material-symbols-outlined ml-1 text-lg group-hover/link:translate-x-1 transition-transform">arrow_forward</span>
  </a>
  </div>
- </div>
+ </motion.div>
 
  {/* Payroll Card */}
- <div className="feature-card-motion products-scroll-card products-scroll-card-delay-2 h-full flex flex-col">
+ <motion.div variants={productCardVariants} className="feature-card-motion h-full flex flex-col">
  <div className="feature-card flex flex-col h-full bg-white dark:bg-[#1e2536] rounded-3xl border border-gray-100 dark:border-gray-700/50 p-8 shadow-sm group">
  <div className="w-14 h-14 rounded-2xl flex items-center justify-center bg-blue-50 dark:bg-blue-900/20 text-primary mb-6 group-hover:text-white transition-colors duration-300">
  <img src="/assets/icon payroll.png" alt="Payroll icon" className="w-9 h-9 text-primary transition-colors duration-300" />
@@ -229,10 +298,10 @@ const Products = () => {
  <span className="material-symbols-outlined ml-1 text-lg group-hover/link:translate-x-1 transition-transform">arrow_forward</span>
  </a>
  </div>
- </div>
+ </motion.div>
 
  {/* HMS Card */}
- <div className="feature-card-motion products-scroll-card products-scroll-card-delay-3 h-full flex flex-col">
+ <motion.div variants={productCardVariants} className="feature-card-motion h-full flex flex-col">
  <div className="feature-card flex flex-col h-full bg-white dark:bg-[#1e2536] rounded-3xl border border-gray-100 dark:border-gray-700/50 p-8 shadow-sm group">
  <div className="w-14 h-14 rounded-2xl flex items-center justify-center bg-yellow-50 dark:bg-blue-900/20 text-primary mb-6 group-hover:text-white transition-colors duration-300">
  <img src="/assets/icon hms.png" alt="HMS icon" className="w-9 h-9 text-primary transition-colors duration-300" />
@@ -260,13 +329,13 @@ const Products = () => {
  <span className="material-symbols-outlined ml-1 text-lg group-hover/link:translate-x-1 transition-transform">arrow_forward</span>
  </a>
  </div>
- </div>
+ </motion.div>
  </div>
 
  {/* Bottom 2 Centered Cards */}
  <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto mt-8">
  {/* Jobsheet Card */}
- <div className="feature-card-motion products-scroll-card products-scroll-card-delay-1 h-full flex flex-col">
+ <motion.div variants={productCardVariants} className="feature-card-motion h-full flex flex-col">
  <div className="feature-card flex flex-col h-full bg-white dark:bg-[#1e2536] rounded-3xl border border-gray-100 dark:border-gray-700/50 p-8 shadow-sm group">
  <div className="w-14 h-14 rounded-2xl flex items-center justify-center bg-purple-50 dark:bg-purple-900/20 mb-6 group-hover:text-white transition-all duration-300">
  <span className="material-symbols-outlined text-purple-500 transition-colors duration-300 text-3xl">assignment</span>
@@ -298,10 +367,10 @@ const Products = () => {
  <span className="material-symbols-outlined ml-1 text-lg group-hover/link:translate-x-1 transition-transform">arrow_forward</span>
  </a>
  </div>
- </div>
+ </motion.div>
 
  {/* Invoice Card */}
- <div className="feature-card-motion products-scroll-card products-scroll-card-delay-2 h-full flex flex-col">
+ <motion.div variants={productCardVariants} className="feature-card-motion h-full flex flex-col">
  <div className="feature-card flex flex-col h-full bg-white dark:bg-[#1e2536] rounded-3xl border border-gray-100 dark:border-gray-700/50 p-8 shadow-sm group">
  <div className="w-14 h-14 rounded-2xl flex items-center justify-center bg-orange-50 dark:bg-orange-900/20 mb-6 group-hover:text-white transition-all duration-300">
  <span className="material-symbols-outlined text-orange-500 transition-colors duration-300 text-3xl">receipt_long</span>
@@ -333,24 +402,48 @@ const Products = () => {
  <span className="material-symbols-outlined ml-1 text-lg group-hover/link:translate-x-1 transition-transform">arrow_forward</span>
  </a>
  </div>
+ </motion.div>
  </div>
- </div>
- </div>
+ </motion.div>
  </section>
 
  {/* Product Guide */}
- <section className="pb-20 px-4 scroll-animate">
+ <section className="pb-20 px-4">
  <div className="max-w-4xl mx-auto">
- <div className="text-center mb-10">
- <span className="inline-block px-3 py-1 rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-300 text-xs font-bold uppercase tracking-wider mb-3">
+ <motion.div
+ initial="hidden"
+ whileInView="visible"
+ viewport={{ once: false, amount: 0.25 }}
+ className="text-center mb-10"
+ >
+ <motion.span
+ variants={sectionHeaderVariants}
+ className="inline-block px-3 py-1 rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-300 text-xs font-bold uppercase tracking-wider mb-3"
+ >
  Product Guide
- </span>
- <h2 className="text-3xl md:text-4xl font-bold font-display text-gray-900 dark:text-white mb-4">Which product is right for me?</h2>
- <p className="text-gray-500 dark:text-gray-400 text-lg max-w-2xl mx-auto">Identify your primary need, and we'll point you to the perfect SwordNex solution.</p>
- </div>
- <div className="bg-white dark:bg-[#1e2536] rounded-3xl shadow-xl shadow-gray-200/50 dark:shadow-none border border-gray-100 dark:border-gray-700/50 overflow-hidden relative">
+ </motion.span>
+ <motion.h2
+ variants={sectionHeadingVariants}
+ className="text-3xl md:text-4xl font-bold font-display text-gray-900 dark:text-white mb-4"
+ >
+ Which product is right for me?
+ </motion.h2>
+ <motion.p
+ variants={sectionDescriptionVariants}
+ className="text-gray-500 dark:text-gray-400 text-lg max-w-2xl mx-auto"
+ >
+ Identify your primary need, and we'll point you to the perfect SwordNex solution.
+ </motion.p>
+ </motion.div>
+ <motion.div
+ variants={productCardsContainerVariants}
+ initial="hidden"
+ whileInView="visible"
+ viewport={{ once: true, amount: 0.15 }}
+ className="bg-white dark:bg-[#1e2536] rounded-3xl shadow-xl shadow-gray-200/50 dark:shadow-none border border-gray-100 dark:border-gray-700/50 overflow-hidden relative"
+ >
  <div className="divide-y divide-gray-100 dark:divide-gray-700/50 relative z-10">
- <div className="group flex flex-col md:flex-row items-center p-6 md:p-8 hover:bg-yellow-100/10 dark:hover:bg-blue-900/10 transition-colors duration-300 gap-6 scroll-animate scroll-animate-delay-1">
+ <motion.div variants={productCardVariants} className="group flex flex-col md:flex-row items-center p-6 md:p-8 hover:bg-yellow-100/10 dark:hover:bg-blue-900/10 transition-colors duration-300 gap-6">
  <div className="flex-1 flex items-center gap-5 w-full md:w-auto">
  <div className="size-12 rounded-2xl bg-yellow-50 dark:bg-yellow-900/20 text-yellow-600 dark:text-indigo-400 flex items-center justify-center shrink-0">
  <span className="material-symbols-outlined">receipt_long</span>
@@ -363,8 +456,8 @@ const Products = () => {
  <span className="material-symbols-outlined text-sm">chevron_right</span>
  </a>
  </div>
- </div>
- <div className="group flex flex-col md:flex-row items-center p-6 md:p-8 /40 dark:hover:bg-blue-900/10 transition-colors duration-300 gap-6 scroll-animate scroll-animate-delay-2">
+ </motion.div>
+ <motion.div variants={productCardVariants} className="group flex flex-col md:flex-row items-center p-6 md:p-8 /40 dark:hover:bg-blue-900/10 transition-colors duration-300 gap-6">
  <div className="flex-1 flex items-center gap-5 w-full md:w-auto">
  <div className="size-12 rounded-2xl bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-pink-400 flex items-center justify-center shrink-0">
  <span className="material-symbols-outlined">payments</span>
@@ -377,8 +470,8 @@ const Products = () => {
  <span className="material-symbols-outlined text-sm">chevron_right</span>
  </a>
  </div>
- </div>
- <div className="group flex flex-col md:flex-row items-center p-6 md:p-8 hover:bg-green-100/40 dark:hover:bg-blue-900/10 transition-colors duration-300 gap-6 scroll-animate scroll-animate-delay-3">
+ </motion.div>
+ <motion.div variants={productCardVariants} className="group flex flex-col md:flex-row items-center p-6 md:p-8 hover:bg-green-100/40 dark:hover:bg-blue-900/10 transition-colors duration-300 gap-6">
  <div className="flex-1 flex items-center gap-5 w-full md:w-auto">
  <div className="size-12 rounded-2xl bg-green-50 dark:bg-green-900/20 text-green-600 dark:text-teal-400 flex items-center justify-center shrink-0">
  <span className="material-symbols-outlined">tune</span>
@@ -391,9 +484,9 @@ const Products = () => {
  <span className="material-symbols-outlined text-sm">chevron_right</span>
  </a>
  </div>
- </div>
+ </motion.div>
 
- <div className="group flex flex-col md:flex-row items-center p-6 md:p-8 hover:bg-purple-100/40 dark:hover:bg-purple-900/10 transition-colors duration-300 gap-6 scroll-animate scroll-animate-delay-4">
+ <motion.div variants={productCardVariants} className="group flex flex-col md:flex-row items-center p-6 md:p-8 hover:bg-purple-100/40 dark:hover:bg-purple-900/10 transition-colors duration-300 gap-6">
  <div className="flex-1 flex items-center gap-5 w-full md:w-auto">
  <div className="size-12 rounded-2xl bg-purple-50 dark:bg-purple-900/20 text-purple-600 dark:text-purple-400 flex items-center justify-center shrink-0">
  <span className="material-symbols-outlined">assignment</span>
@@ -406,9 +499,9 @@ const Products = () => {
  <span className="material-symbols-outlined text-sm">chevron_right</span>
  </button>
  </div>
- </div>
+ </motion.div>
 
- <div className="group flex flex-col md:flex-row items-center p-6 md:p-8 hover:bg-orange-100/40 dark:hover:bg-orange-900/10 transition-colors duration-300 gap-6 scroll-animate scroll-animate-delay-5">
+ <motion.div variants={productCardVariants} className="group flex flex-col md:flex-row items-center p-6 md:p-8 hover:bg-orange-100/40 dark:hover:bg-orange-900/10 transition-colors duration-300 gap-6">
  <div className="flex-1 flex items-center gap-5 w-full md:w-auto">
  <div className="size-12 rounded-2xl bg-orange-50 dark:bg-orange-900/20 text-orange-600 dark:text-orange-400 flex items-center justify-center shrink-0">
  <span className="material-symbols-outlined">receipt_long</span>
@@ -421,33 +514,56 @@ const Products = () => {
  <span className="material-symbols-outlined text-sm">chevron_right</span>
  </button>
  </div>
+ </motion.div>
  </div>
- </div>
- <div className="bg-gray-50 dark:bg-gray-800/30 p-5 text-center border-t border-gray-100 dark:border-gray-700/50">
+ <motion.div
+ variants={productCardVariants}
+ className="bg-gray-50 dark:bg-gray-800/30 p-5 text-center border-t border-gray-100 dark:border-gray-700/50"
+ >
  <button onClick={() => setIsConsultationOpen(true)} className="inline-flex items-center justify-center gap-2 text-primary dark:text-primary-light font-bold hover:text-primary-dark transition-colors bg-transparent border-none cursor-pointer">
  Help me choose a product
  <span className="material-symbols-outlined text-xl">contact_support</span>
  </button>
- </div>
- </div>
+ </motion.div>
+ </motion.div>
  </div>
  </section>
 
  {/* Integration Section */}
- <section className="py-20 bg-white dark:bg-[#151b2b] border-y border-gray-100 dark:border-gray-800 scroll-animate">
+ <section className="py-20 bg-white dark:bg-[#151b2b] border-y border-gray-100 dark:border-gray-800">
  <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
  <div className="flex flex-col lg:flex-row items-center gap-16">
- <div className="w-full lg:w-1/2 flex flex-col gap-6 scroll-animate scroll-animate-delay-1">
- <span className="inline-block w-fit px-3 py-1 rounded-full bg-blue-100 dark:bg-blue-900/30 text-primary text-xs font-bold uppercase tracking-wider">
+ <motion.div
+ initial="hidden"
+ whileInView="visible"
+ viewport={{ once: false, amount: 0.25 }}
+ className="w-full lg:w-1/2 flex flex-col gap-6"
+ >
+ <motion.span
+ variants={sectionHeaderVariants}
+ className="inline-block w-fit px-3 py-1 rounded-full bg-blue-100 dark:bg-blue-900/30 text-primary text-xs font-bold uppercase tracking-wider"
+ >
  Integration
- </span>
- <h2 className="text-3xl md:text-4xl font-bold font-display text-gray-900 dark:text-white leading-tight">
+ </motion.span>
+ <motion.h2
+ variants={sectionHeadingVariants}
+ className="text-3xl md:text-4xl font-bold font-display text-gray-900 dark:text-white leading-tight"
+ >
  Stronger together as <span className="text-primary">one platform</span>
- </h2>
- <p className="text-gray-500 dark:text-gray-400 text-lg leading-relaxed">
+ </motion.h2>
+ <motion.p
+ variants={sectionDescriptionVariants}
+ className="text-gray-500 dark:text-gray-400 text-lg leading-relaxed"
+ >
  Our products are designed to work seamlessly together, creating a unified ecosystem for your business operations.
- </p>
- <ul className="flex flex-col gap-4 mt-2">
+ </motion.p>
+ <motion.ul
+ variants={productCardsContainerVariants}
+ initial="hidden"
+ whileInView="visible"
+ viewport={{ once: true, amount: 0.15 }}
+ className="flex flex-col gap-4 mt-2"
+ >
  {[
  { icon: "verified_user", title: "One login", desc: "One login for Billing, Payroll, and HMS with a single secure identity." },
  { icon: "database", title: "Shared master data", desc: "Shared master data (customers, items, staff) reflects everywhere automatically." },
@@ -455,10 +571,10 @@ const Products = () => {
  ].map((item, i) => {
  const isFlipped = flippedIntegrationCard === i;
  return (
- <li
+ <motion.li
  key={i}
- className={`integration-flip-card ${isFlipped ? 'is-flipped' : ''} scroll-animate`}
- style={{ transitionDelay: `${(i + 1) * 0.1}s` }}
+ variants={productCardVariants}
+ className={`integration-flip-card ${isFlipped ? 'is-flipped' : ''}`}
  onClick={() => setFlippedIntegrationCard(isFlipped ? null : i)}
  onMouseLeave={() => {
  if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
@@ -499,12 +615,18 @@ const Products = () => {
  </div>
  </div>
  </div>
- </li>
+ </motion.li>
  );
  })}
- </ul>
- </div>
- <div className="w-full lg:w-1/2 flex justify-center lg:justify-end scroll-animate scroll-animate-delay-2">
+ </motion.ul>
+ </motion.div>
+ <motion.div
+ initial="hidden"
+ whileInView="visible"
+ viewport={{ once: true, amount: 0.15 }}
+ variants={productCardVariants}
+ className="w-full lg:w-1/2 flex justify-center lg:justify-end"
+ >
  {/* Your existing integration diagram */}
  <div className="relative w-full max-w-[400px] aspect-square">
  {/* SVG and icons remain unchanged */}
@@ -548,7 +670,7 @@ const Products = () => {
  <div className="bg-white dark:bg-gray-800 px-3 py-1 rounded-lg shadow-sm text-xs font-bold text-gray-900 dark:text-white border border-gray-100 dark:border-gray-700 whitespace-nowrap relative z-20 -mt-4 mx-auto w-fit">One Platform</div>
  </div>
  </div>
- </div>
+ </motion.div>
  </div>
  </div>
  </section>
@@ -571,15 +693,33 @@ const Products = () => {
  </div>
 
  <div className="max-w-4xl mx-auto">
- <h3 className="text-2xl font-bold font-display text-[#111318] dark:text-white text-center mb-12">Frequently Asked Questions</h3>
- <div className="grid md:grid-cols-2 gap-x-12 gap-y-10">
+ <motion.h3
+ initial="hidden"
+ whileInView="visible"
+ viewport={{ once: false, amount: 0.25 }}
+ variants={sectionHeadingVariants}
+ className="text-2xl font-bold font-display text-[#111318] dark:text-white text-center mb-12"
+ >
+ Frequently Asked Questions
+ </motion.h3>
+ <motion.div
+ variants={productCardsContainerVariants}
+ initial="hidden"
+ whileInView="visible"
+ viewport={{ once: true, amount: 0.15 }}
+ className="grid md:grid-cols-2 gap-x-12 gap-y-10"
+ >
  {[
  { icon: "payments", color: "red", title: "How does pricing work?", desc: "We offer flexible tiered plans starting with a free trial..." },
  { icon: "schedule", color: "blue", title: "What is the setup time?", desc: "Most teams are up and running in less than 24 hours..." },
  { icon: "cloud_sync", color: "green", title: "How is data migration handled?", desc: "We provide one-click import tools..." },
  { icon: "support_agent", color: "yellow", title: "What kind of support is included?", desc: "All plans come with 24/7 email and chat support..." }
  ].map((faq, i) => (
- <div key={i} className={`flex gap-4 items-start scroll-animate scroll-animate-delay-${i + 1}`}>
+ <motion.div
+ key={i}
+ variants={productCardVariants}
+ className="flex gap-4 items-start"
+ >
  <div className={`w-10 h-10 rounded-lg bg-${faq.color}-50 dark:bg-${faq.color}-900/20 text-${faq.color}-500 flex items-center justify-center shrink-0`}>
  <span className="material-symbols-outlined text-xl">{faq.icon}</span>
  </div>
@@ -587,9 +727,9 @@ const Products = () => {
  <h4 className="text-lg font-bold text-[#111318] dark:text-white mb-2 font-display">{faq.title}</h4>
  <p className="text-gray-500 dark:text-gray-400 text-sm leading-relaxed">{faq.desc}</p>
  </div>
- </div>
+ </motion.div>
  ))}
- </div>
+ </motion.div>
  </div>
  </div>
  </section>
