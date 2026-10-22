@@ -24,6 +24,16 @@
   border-color: rgba(55, 65, 81, 0.5);
 }
 
+.interactive-3d-card.is-hovered,
+.interactive-3d-card:hover {
+  box-shadow: 0 20px 40px -8px rgba(0, 0, 0, 0.16), 0 10px 18px -6px rgba(0, 0, 0, 0.1);
+}
+
+:is(.dark) .interactive-3d-card.is-hovered,
+:is(.dark) .interactive-3d-card:hover {
+  box-shadow: 0 20px 40px -8px rgba(0, 0, 0, 0.5), 0 10px 18px -6px rgba(0, 0, 0, 0.35);
+}
+
 /* Dynamic cursor-following radial glow */
 .interactive-3d-card-glow {
   position: absolute;
