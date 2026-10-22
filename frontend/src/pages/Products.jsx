@@ -2,10 +2,12 @@ import React, { useState, useEffect } from 'react';
 import ConsultationModal from '../components/ConsultationModal';
 import ServiceEnquiryModal from '../components/ServiceEnquiryModal';
 import InteractiveGradientText from '../components/UI/InteractiveGradientText';
+import './ProductsAboutStyle.css';
 
 const Products = () => {
  const [isConsultationOpen, setIsConsultationOpen] = useState(false);
  const [isEnquiryOpen, setIsEnquiryOpen] = useState(false);
+ const [flippedIntegrationCard, setFlippedIntegrationCard] = useState(null);
  // Scroll Reveal Animation
  useEffect(() => {
  const observer = new IntersectionObserver(
@@ -23,6 +25,27 @@ const Products = () => {
 
  return () => {
  document.querySelectorAll('.scroll-animate').forEach((el) => observer.unobserve(el));
+ };
+ }, []);
+
+ useEffect(() => {
+ const cards = document.querySelectorAll('.products-about-style .products-scroll-card');
+ const observer = new IntersectionObserver(
+ (entries) => {
+ entries.forEach((entry) => {
+ if (entry.isIntersecting) {
+ entry.target.classList.add('animate-in');
+ observer.unobserve(entry.target);
+ }
+ });
+ },
+ { threshold: 0.1, rootMargin: '0px 0px -50px 0px' }
+ );
+
+ cards.forEach((card) => observer.observe(card));
+
+ return () => {
+ cards.forEach((card) => observer.unobserve(card));
  };
  }, []);
 
@@ -94,10 +117,10 @@ const Products = () => {
  {/* CTA */}
  <div className="flex justify-center items-center">
  <button
- className="h-12 sm:h-14 px-6 sm:px-8 rounded-xl bg-primary hover:bg-blue-700 text-white font-semibold text-sm sm:text-base shadow-lg hover:shadow-xl transition-all"
+ className="products-demo-button h-12 sm:h-14 px-6 sm:px-8 rounded-full text-white font-semibold text-sm sm:text-base transition-all duration-300"
  onClick={() => setIsConsultationOpen(true)}
  >
- Get Free Demo
+ <span className="products-demo-button-label">Get Free Demo</span>
  </button>
  </div>
 
@@ -114,6 +137,7 @@ const Products = () => {
 
 
  {/* Why Choose Us */}
+ <div className="products-about-style">
  <section className="py-12 sm:py-14 lg:py-16 px-4 flex justify-center text-center scroll-animate">
  <div className="max-w-6xl flex flex-col gap-4 items-center">
 
@@ -146,7 +170,8 @@ const Products = () => {
  <div className="max-w-7xl mx-auto">
  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
  {/* Billing Card */}
- <div className="feature-card flex flex-col h-full bg-white dark:bg-[#1e2536] rounded-3xl border border-gray-100 dark:border-gray-700/50 p-8 shadow-sm group scroll-animate scroll-animate-delay-1">
+ <div className="feature-card-motion products-scroll-card products-scroll-card-delay-1 h-full flex flex-col">
+ <div className="feature-card flex flex-col h-full bg-white dark:bg-[#1e2536] rounded-3xl border border-gray-100 dark:border-gray-700/50 p-8 shadow-sm group">
  <div className="w-14 h-14 rounded-2xl flex items-center justify-center bg-green-50 dark:bg-blue-900/20 mb-6 group-hover:text-white transition-all duration-300">
  <img src="/assets/icoillig.png" alt="Billing icon" className="w-9 h-9 text-primary transition-colors duration-300" />
  </div>
@@ -173,9 +198,11 @@ const Products = () => {
  <span className="material-symbols-outlined ml-1 text-lg group-hover/link:translate-x-1 transition-transform">arrow_forward</span>
  </a>
  </div>
+ </div>
 
  {/* Payroll Card */}
- <div className="feature-card flex flex-col h-full bg-white dark:bg-[#1e2536] rounded-3xl border border-gray-100 dark:border-gray-700/50 p-8 shadow-sm group scroll-animate scroll-animate-delay-2">
+ <div className="feature-card-motion products-scroll-card products-scroll-card-delay-2 h-full flex flex-col">
+ <div className="feature-card flex flex-col h-full bg-white dark:bg-[#1e2536] rounded-3xl border border-gray-100 dark:border-gray-700/50 p-8 shadow-sm group">
  <div className="w-14 h-14 rounded-2xl flex items-center justify-center bg-blue-50 dark:bg-blue-900/20 text-primary mb-6 group-hover:text-white transition-colors duration-300">
  <img src="/assets/icon payroll.png" alt="Payroll icon" className="w-9 h-9 text-primary transition-colors duration-300" />
  </div>
@@ -202,9 +229,11 @@ const Products = () => {
  <span className="material-symbols-outlined ml-1 text-lg group-hover/link:translate-x-1 transition-transform">arrow_forward</span>
  </a>
  </div>
+ </div>
 
  {/* HMS Card */}
- <div className="feature-card flex flex-col h-full bg-white dark:bg-[#1e2536] rounded-3xl border border-gray-100 dark:border-gray-700/50 p-8 shadow-sm group scroll-animate scroll-animate-delay-3">
+ <div className="feature-card-motion products-scroll-card products-scroll-card-delay-3 h-full flex flex-col">
+ <div className="feature-card flex flex-col h-full bg-white dark:bg-[#1e2536] rounded-3xl border border-gray-100 dark:border-gray-700/50 p-8 shadow-sm group">
  <div className="w-14 h-14 rounded-2xl flex items-center justify-center bg-yellow-50 dark:bg-blue-900/20 text-primary mb-6 group-hover:text-white transition-colors duration-300">
  <img src="/assets/icon hms.png" alt="HMS icon" className="w-9 h-9 text-primary transition-colors duration-300" />
  </div>
@@ -232,11 +261,13 @@ const Products = () => {
  </a>
  </div>
  </div>
+ </div>
 
  {/* Bottom 2 Centered Cards */}
  <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto mt-8">
  {/* Jobsheet Card */}
- <div className="feature-card flex flex-col h-full bg-white dark:bg-[#1e2536] rounded-3xl border border-gray-100 dark:border-gray-700/50 p-8 shadow-sm group scroll-animate scroll-animate-delay-1">
+ <div className="feature-card-motion products-scroll-card products-scroll-card-delay-1 h-full flex flex-col">
+ <div className="feature-card flex flex-col h-full bg-white dark:bg-[#1e2536] rounded-3xl border border-gray-100 dark:border-gray-700/50 p-8 shadow-sm group">
  <div className="w-14 h-14 rounded-2xl flex items-center justify-center bg-purple-50 dark:bg-purple-900/20 mb-6 group-hover:text-white transition-all duration-300">
  <span className="material-symbols-outlined text-purple-500 transition-colors duration-300 text-3xl">assignment</span>
  </div>
@@ -267,9 +298,11 @@ const Products = () => {
  <span className="material-symbols-outlined ml-1 text-lg group-hover/link:translate-x-1 transition-transform">arrow_forward</span>
  </a>
  </div>
+ </div>
 
  {/* Invoice Card */}
- <div className="feature-card flex flex-col h-full bg-white dark:bg-[#1e2536] rounded-3xl border border-gray-100 dark:border-gray-700/50 p-8 shadow-sm group scroll-animate scroll-animate-delay-2">
+ <div className="feature-card-motion products-scroll-card products-scroll-card-delay-2 h-full flex flex-col">
+ <div className="feature-card flex flex-col h-full bg-white dark:bg-[#1e2536] rounded-3xl border border-gray-100 dark:border-gray-700/50 p-8 shadow-sm group">
  <div className="w-14 h-14 rounded-2xl flex items-center justify-center bg-orange-50 dark:bg-orange-900/20 mb-6 group-hover:text-white transition-all duration-300">
  <span className="material-symbols-outlined text-orange-500 transition-colors duration-300 text-3xl">receipt_long</span>
  </div>
@@ -299,6 +332,7 @@ const Products = () => {
  View Invoice details
  <span className="material-symbols-outlined ml-1 text-lg group-hover/link:translate-x-1 transition-transform">arrow_forward</span>
  </a>
+ </div>
  </div>
  </div>
  </div>
@@ -418,17 +452,56 @@ const Products = () => {
  { icon: "verified_user", title: "One login", desc: "One login for Billing, Payroll, and HMS with a single secure identity." },
  { icon: "database", title: "Shared master data", desc: "Shared master data (customers, items, staff) reflects everywhere automatically." },
  { icon: "analytics", title: "Combined reports", desc: "Combined reports for owners with holistic cross-module analytics." }
- ].map((item, i) => (
- <li key={i} className="flex items-start gap-4 p-4 rounded-2xl bg-gray-50 dark:bg-gray-800/50 hover:bg-yellow-50 dark:hover:bg-blue-900/20 transition-colors scroll-animate" style={{ transitionDelay: `${(i + 1) * 0.1}s` }}>
+ ].map((item, i) => {
+ const isFlipped = flippedIntegrationCard === i;
+ return (
+ <li
+ key={i}
+ className={`integration-flip-card ${isFlipped ? 'is-flipped' : ''} scroll-animate`}
+ style={{ transitionDelay: `${(i + 1) * 0.1}s` }}
+ onClick={() => setFlippedIntegrationCard(isFlipped ? null : i)}
+ onMouseLeave={() => {
+ if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+ setFlippedIntegrationCard(null);
+ }
+ }}
+ onKeyDown={(event) => {
+ if (event.key === 'Enter' || event.key === ' ') {
+ event.preventDefault();
+ setFlippedIntegrationCard(isFlipped ? null : i);
+ }
+ }}
+ role="button"
+ tabIndex={0}
+ aria-pressed={isFlipped}
+ aria-label={`${item.title}: ${item.desc}`}
+ >
+ <div className="integration-flip-card-inner">
+ <div className="integration-flip-card-front">
+ <div className="flex items-start gap-4 p-4 rounded-2xl bg-gray-50 dark:bg-gray-800/50 hover:bg-yellow-50 dark:hover:bg-blue-900/20 transition-colors">
  <div className="mt-1 min-w-[24px] text-yellow-500">
  <span className="material-symbols-outlined">verified_user</span>
  </div>
  <div>
  <h4 className="font-bold text-gray-900 dark:text-white text-base">{item.title}</h4>
- <p className="text-sm text-gray-500 dark:text-gray-400">{item.desc}</p>
+ </div>
+ </div>
+ </div>
+ <div className="integration-flip-card-back">
+ <div className="integration-flip-card-back-inner">
+ <div className="flex items-center gap-1.5 mb-1.5">
+ <span className="material-symbols-outlined text-primary text-[17px]">verified_user</span>
+ <span className="text-[11px] font-bold uppercase tracking-wider text-primary">{item.title}</span>
+ </div>
+ <p className="text-xs sm:text-[13px] text-slate-700 dark:text-slate-300 leading-relaxed font-normal">
+ {item.desc}
+ </p>
+ </div>
+ </div>
  </div>
  </li>
- ))}
+ );
+ })}
  </ul>
  </div>
  <div className="w-full lg:w-1/2 flex justify-center lg:justify-end scroll-animate scroll-animate-delay-2">
@@ -436,35 +509,43 @@ const Products = () => {
  <div className="relative w-full max-w-[400px] aspect-square">
  {/* SVG and icons remain unchanged */}
  <div className="absolute inset-0 bg-gradient-to-tr from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20 rounded-full blur-3xl opacity-60"></div>
+ <div className="integration-diagram-orbit">
  <svg className="absolute inset-0 w-full h-full text-gray-300 dark:text-gray-600 pointer-events-none z-0" fill="none" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
  <circle className="opacity-50" cx="200" cy="200" r="140" stroke="currentColor" strokeDasharray="8 8" strokeWidth="2"></circle>
  <path d="M200 200 L200 80" stroke="currentColor" strokeWidth="2"></path>
  <path d="M200 200 L80 280" stroke="currentColor" strokeWidth="2"></path>
  <path d="M200 200 L320 280" stroke="currentColor" strokeWidth="2"></path>
  </svg>
- <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10 text-center">
- <div className="bg-primary text-white w-24 h-24 rounded-2xl flex items-center justify-center shadow-xl shadow-blue-500/30 mb-2 relative z-10 ring-4 ring-white dark:ring-[#151b2b]">
- <span className="material-symbols-outlined text-4xl">hub</span>
- </div>
- <div className="bg-white dark:bg-gray-800 px-3 py-1 rounded-lg shadow-sm text-xs font-bold text-gray-900 dark:text-white border border-gray-100 dark:border-gray-700 whitespace-nowrap relative z-20 -mt-4 mx-auto w-fit">One Platform</div>
- </div>
- <div className="absolute top-[48px] left-1/2 transform -translate-x-1/2 z-10 flex flex-col items-center group">
+ <div className="absolute top-[28px] left-1/2 transform -translate-x-1/2 z-10 flex flex-col items-center group">
+ <div className="integration-diagram-counter">
  <div className="bg-white dark:bg-[#1e2536] w-16 h-16 rounded-xl shadow-lg border border-gray-100 dark:border-gray-700 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
  <span className="material-symbols-outlined text-blue-500 text-2xl">receipt_long</span>
  </div>
  <span className="mt-2 text-sm font-bold text-gray-700 dark:text-gray-200 bg-white/80 dark:bg-gray-800/80 px-2 rounded backdrop-blur-sm">Billing</span>
  </div>
+ </div>
  <div className="absolute bottom-[88px] left-[48px] z-10 flex flex-col items-center group">
+ <div className="integration-diagram-counter">
  <div className="bg-white dark:bg-[#1e2536] w-16 h-16 rounded-xl shadow-lg border border-gray-100 dark:border-gray-700 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
  <span className="material-symbols-outlined text-purple-500 text-2xl">payments</span>
  </div>
  <span className="mt-2 text-sm font-bold text-gray-700 dark:text-gray-200 bg-white/80 dark:bg-gray-800/80 px-2 rounded backdrop-blur-sm">Payroll</span>
  </div>
+ </div>
  <div className="absolute bottom-[88px] right-[48px] z-10 flex flex-col items-center group">
+ <div className="integration-diagram-counter">
  <div className="bg-white dark:bg-[#1e2536] w-16 h-16 rounded-xl shadow-lg border border-gray-100 dark:border-gray-700 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
  <span className="material-symbols-outlined text-green-500 text-2xl">badge</span>
  </div>
  <span className="mt-2 text-sm font-bold text-gray-700 dark:text-gray-200 bg-white/80 dark:bg-gray-800/80 px-2 rounded backdrop-blur-sm">HMS</span>
+ </div>
+ </div>
+ </div>
+ <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10 text-center">
+ <div className="bg-primary text-white w-24 h-24 rounded-2xl flex items-center justify-center shadow-xl shadow-blue-500/30 mb-2 relative z-10 ring-4 ring-white dark:ring-[#151b2b]">
+ <span className="material-symbols-outlined text-4xl">hub</span>
+ </div>
+ <div className="bg-white dark:bg-gray-800 px-3 py-1 rounded-lg shadow-sm text-xs font-bold text-gray-900 dark:text-white border border-gray-100 dark:border-gray-700 whitespace-nowrap relative z-20 -mt-4 mx-auto w-fit">One Platform</div>
  </div>
  </div>
  </div>
@@ -482,8 +563,8 @@ const Products = () => {
  <h2 className="text-3xl md:text-4xl font-bold font-display text-white mb-8 leading-tight max-w-3xl">
  Ready to see how SwordNex products fit your business?
  </h2>
- <button onClick={() => setIsConsultationOpen(true)} className="group bg-white text-primary text-base md:text-lg font-bold py-4 px-8 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 flex items-center gap-2">
- Book a 30‑minute demo
+ <button onClick={() => setIsConsultationOpen(true)} className="products-book-demo-button group bg-white text-primary text-base md:text-lg font-bold py-4 px-8 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 flex items-center gap-2">
+ <span className="products-book-demo-label">Book a 30‑minute demo</span>
  <span className="material-symbols-outlined text-xl group-hover:translate-x-1 transition-transform">arrow_forward</span>
  </button>
  </div>
@@ -512,6 +593,8 @@ const Products = () => {
  </div>
  </div>
  </section>
+
+ </div>
 
  <ConsultationModal isOpen={isConsultationOpen} onClose={() => setIsConsultationOpen(false)} />
  <ServiceEnquiryModal isOpen={isEnquiryOpen} onClose={() => setIsEnquiryOpen(false)} />
