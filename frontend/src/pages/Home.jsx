@@ -8,6 +8,7 @@ import { Helmet } from "react-helmet-async";
 import DotField from '../components/UI/DotField';
 import TrustStatCounter from '../components/UI/TrustStatCounter';
 import Interactive3DCard from '../components/UI/Interactive3DCard';
+import Interactive3DReviews from '../components/UI/Interactive3DReviews';
 import './HomeHero.css';
 
 const renderInteractiveHeadingText = (text) =>
@@ -300,213 +301,147 @@ const Home = () => {
  return (
  <>
  {/* Header/Hero Section */}
- <header className="home-hero relative isolate overflow-hidden py-8 md:py-12 scroll-animate">
- <div className="absolute inset-0 hero-grid opacity-50" />
- <div
-   className="absolute inset-0"
-   style={{
-     background:
-       'radial-gradient(ellipse at 8% 10%, rgba(59,130,246,0.16), transparent 42%), radial-gradient(ellipse at 92% 88%, rgba(14,165,233,0.13), transparent 38%)'
-   }}
- />
- <div className="home-hero-glow home-hero-glow-left" aria-hidden="true" />
- <div className="home-hero-glow home-hero-glow-right" aria-hidden="true" />
+  <header
+    ref={heroVisualRef}
+    onPointerMove={handleHeroPointerMove}
+    onPointerLeave={resetHeroPointer}
+    className="home-hero relative isolate overflow-hidden min-h-[calc(100vh-76px)] sm:min-h-[calc(100vh-80px)] flex flex-col justify-center py-12 lg:py-20 scroll-animate"
+  >
+    {/* Fullscreen changing visual background */}
+    <div className="home-hero-fullscreen-bg absolute inset-0 pointer-events-none overflow-hidden z-0">
+      <div className="home-hero-image-stack absolute inset-0">
+        {heroSlides.map((slide, index) => (
+          <img
+            key={slide.word}
+            src={slide.image}
+            alt={slide.alt}
+            className={`home-hero-image absolute inset-0 h-full w-full object-cover ${index === activeHeroSlide ? 'is-active' : ''}`}
+            aria-hidden={index !== activeHeroSlide}
+            loading={index === activeHeroSlide ? 'eager' : 'lazy'}
+          />
+        ))}
+      </div>
+      {/* Dark clean scrim for optimal text contrast and natural clear photography */}
+      <div className="home-hero-shade-fullscreen" />
+    </div>
 
- <div className="relative mx-auto max-w-[1440px] px-4 sm:px-6 lg:px-8">
-   <div className="grid items-center gap-10 lg:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)] lg:gap-14">
-     <div className="home-hero-copy relative z-10">
-      <div className="mb-6 text-left">
-         <div className="home-hero-brand inline-flex items-center gap-2 rounded-full border border-sky-200/80 bg-white/80 px-4 py-2 text-[10px] font-semibold uppercase tracking-[0.24em] text-sky-700 shadow-sm backdrop-blur-sm">
-           <span className="home-hero-brand-dot h-2.5 w-2.5 rounded-full bg-sky-600" />
-           SwordNex
-         </div>
-       </div>
+    <div className="relative mx-auto max-w-[1440px] px-4 sm:px-6 lg:px-8 z-10 w-full my-auto">
+      <div className="grid items-center gap-10 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)] lg:gap-14">
+        <div className="home-hero-copy relative z-10">
+          <div className="mb-6 text-left">
+            <div className="home-hero-brand inline-flex items-center gap-2 rounded-full border border-sky-400/30 bg-slate-900/70 px-4 py-2 text-[10px] font-semibold uppercase tracking-[0.24em] text-sky-300 shadow-lg backdrop-blur-md">
+              <span className="home-hero-brand-dot h-2.5 w-2.5 rounded-full bg-sky-400 shadow-[0_0_8px_rgba(56,189,248,0.8)]" />
+              SwordNex
+            </div>
+          </div>
 
-      <h1
-        aria-label="Looking for the Best IT Solutions & Software Company"
-        className="home-hero-heading text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight tracking-tight text-[#0d121b] dark:text-white"
-      >
-         <span className="block" aria-hidden="true">{renderInteractiveHeadingText('Looking for the')}</span>
-         <span className="home-hero-heading-accent block" aria-hidden="true">{renderInteractiveHeadingText('Best IT Solutions &')}</span>
-         <span className="block" aria-hidden="true">{renderInteractiveHeadingText('Software Company')}</span>
-       </h1>
+          <h1
+            aria-label="Looking for the Best IT Solutions & Software Company"
+            className="home-hero-heading text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight tracking-tight text-white drop-shadow-[0_2px_12px_rgba(0,0,0,0.85)]"
+          >
+            <span className="block" aria-hidden="true">{renderInteractiveHeadingText('Looking for the')}</span>
+            <span className="home-hero-heading-accent block text-transparent bg-clip-text bg-gradient-to-r from-sky-400 via-sky-300 to-cyan-300" aria-hidden="true">{renderInteractiveHeadingText('Best IT Solutions &')}</span>
+            <span className="block" aria-hidden="true">{renderInteractiveHeadingText('Software Company')}</span>
+          </h1>
 
-      <p className="home-hero-description mt-6 max-w-2xl text-base leading-relaxed text-slate-600 dark:text-slate-300 lg:text-lg">
-         Get expert IT Services, Custom Software Development, SaaS Solutions, and Business Automation tailored for your enterprise. Partner with SwordNex Technologies—a premier IT Solutions provider—to build scalable digital solutions and accelerate your business growth.
-       </p>
+          <p className="home-hero-description mt-6 max-w-2xl text-base leading-relaxed text-slate-100 lg:text-lg drop-shadow-[0_2px_10px_rgba(0,0,0,0.85)]">
+            Get expert IT Services, Custom Software Development, SaaS Solutions, and Business Automation tailored for your enterprise. Partner with SwordNex Technologies—a premier IT Solutions provider—to build scalable digital solutions and accelerate your business growth.
+          </p>
 
-      <div className="mt-7 flex flex-col items-start gap-3 sm:flex-row">
-         <button
-           onClick={() => setIsConsultationOpen(true)}
-           className="home-hero-primary inline-flex items-center justify-center rounded-full bg-sky-600 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-sky-500/30 transition-all duration-300 hover:-translate-y-0.5 hover:bg-sky-700"
-         >
-           <span className="home-hero-button-label">Our IT Solutions</span>
-         </button>
-         <Link to="/services" className="home-hero-secondary inline-flex items-center justify-center rounded-full border border-slate-300 bg-white/80 px-6 py-3 text-sm font-semibold text-slate-700 shadow-sm transition-all duration-300 hover:border-sky-500 hover:text-sky-700">
-           <span className="material-icons-round mr-2 text-xl">play_circle_outline</span>
-           <span className="home-hero-button-label">Explore Job-Oriented Training</span>
-         </Link>
-       </div>
+          <div className="mt-7 flex flex-col items-start gap-3 sm:flex-row">
+            <button
+              onClick={() => setIsConsultationOpen(true)}
+              className="home-hero-primary inline-flex items-center justify-center rounded-full bg-sky-600 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-sky-500/30 transition-all duration-300 hover:-translate-y-0.5 hover:bg-sky-500 hover:shadow-sky-500/50"
+            >
+              <span className="home-hero-button-label">Our IT Solutions</span>
+            </button>
+            <Link
+              to="/services"
+              className="home-hero-secondary inline-flex items-center justify-center rounded-full border border-white/25 bg-slate-900/60 px-6 py-3 text-sm font-semibold text-white shadow-lg backdrop-blur-md transition-all duration-300 hover:border-sky-400 hover:bg-slate-800/80 hover:text-sky-300"
+            >
+              <span className="material-icons-round mr-2 text-xl text-sky-400">play_circle_outline</span>
+              <span className="home-hero-button-label">Explore Job-Oriented Training</span>
+            </Link>
+          </div>
 
-      <div className="home-hero-stats mt-8 grid max-w-xl grid-cols-3 gap-3 text-left text-xs font-semibold text-slate-600 dark:text-slate-300 sm:gap-4">
-         <div className="home-hero-stat rounded-2xl border border-sky-100 bg-sky-50/80 p-3 shadow-sm">
-           <div className="home-hero-stat-icon mb-2 flex h-9 w-9 items-center justify-center rounded-xl bg-sky-100 text-sky-600">
-             <span className="material-icons-round text-lg">check</span>
-           </div>
-           <TrustStatCounter
-             target={80}
-             label="Clients"
-             suffix="+"
-             className="home-hero-stat-counter"
-           />
-         </div>
+          <div className="home-hero-stats mt-8 grid max-w-xl grid-cols-3 gap-3 text-left text-xs font-semibold sm:gap-4">
+            <div className="home-hero-stat rounded-2xl border border-white/15 bg-slate-900/60 p-3 shadow-lg backdrop-blur-md transition-all duration-300 hover:border-sky-400/50 hover:bg-slate-900/80">
+              <div className="home-hero-stat-icon mb-2 flex h-9 w-9 items-center justify-center rounded-xl bg-sky-500/20 border border-sky-400/30 text-sky-400">
+                <span className="material-icons-round text-lg">check</span>
+              </div>
+              <TrustStatCounter
+                target={80}
+                label="Clients"
+                suffix="+"
+                className="home-hero-stat-counter"
+              />
+            </div>
 
-         <div className="home-hero-stat rounded-2xl border border-sky-100 bg-sky-50/80 p-3 shadow-sm">
-           <div className="home-hero-stat-icon mb-2 flex h-9 w-9 items-center justify-center rounded-xl bg-sky-100 text-sky-600">
-             <span className="material-icons-round text-lg">layers</span>
-           </div>
-           <TrustStatCounter
-             target={100}
-             label="Projects"
-             suffix="+"
-             className="home-hero-stat-counter"
-           />
-         </div>
+            <div className="home-hero-stat rounded-2xl border border-white/15 bg-slate-900/60 p-3 shadow-lg backdrop-blur-md transition-all duration-300 hover:border-sky-400/50 hover:bg-slate-900/80">
+              <div className="home-hero-stat-icon mb-2 flex h-9 w-9 items-center justify-center rounded-xl bg-sky-500/20 border border-sky-400/30 text-sky-400">
+                <span className="material-icons-round text-lg">layers</span>
+              </div>
+              <TrustStatCounter
+                target={100}
+                label="Projects"
+                suffix="+"
+                className="home-hero-stat-counter"
+              />
+            </div>
 
-         <div className="home-hero-stat rounded-2xl border border-sky-100 bg-sky-50/80 p-3 shadow-sm">
-           <div className="home-hero-stat-icon mb-2 flex h-9 w-9 items-center justify-center rounded-xl bg-sky-100 text-sky-600">
-             <span className="material-icons-round text-lg">support_agent</span>
-           </div>
-           <TrustStatCounter
-             target={24}
-             label="Support"
-             suffix="/7"
-             animateOnView={false}
-             className="home-hero-stat-counter"
-           />
-         </div>
-       </div>
-     </div>
+            <div className="home-hero-stat rounded-2xl border border-white/15 bg-slate-900/60 p-3 shadow-lg backdrop-blur-md transition-all duration-300 hover:border-sky-400/50 hover:bg-slate-900/80">
+              <div className="home-hero-stat-icon mb-2 flex h-9 w-9 items-center justify-center rounded-xl bg-sky-500/20 border border-sky-400/30 text-sky-400">
+                <span className="material-icons-round text-lg">support_agent</span>
+              </div>
+              <TrustStatCounter
+                target={24}
+                label="Support"
+                suffix="/7"
+                animateOnView={false}
+                className="home-hero-stat-counter"
+              />
+            </div>
+          </div>
+        </div>
 
-     <div
-       ref={heroVisualRef}
-       className="home-hero-visual relative z-10 min-h-[360px] overflow-hidden rounded-[28px] bg-slate-900 shadow-[0_30px_80px_rgba(15,23,42,0.2)] sm:min-h-[460px] lg:min-h-[600px]"
-       onPointerMove={handleHeroPointerMove}
-       onPointerLeave={resetHeroPointer}
-       aria-label="SwordNex builds business, product, technology, talent, and digital solutions"
-     >
-       <div className="home-hero-image-stack absolute inset-0">
-         {heroSlides.map((slide, index) => (
-           <img
-             key={slide.word}
-             src={slide.image}
-             alt={slide.alt}
-             className={`home-hero-image absolute inset-0 h-full w-full object-cover ${index === activeHeroSlide ? 'is-active' : ''}`}
-             aria-hidden={index !== activeHeroSlide}
-             loading={index === activeHeroSlide ? 'eager' : 'lazy'}
-           />
-         ))}
-       </div>
-       <div className="home-hero-shade absolute inset-0" />
-       <div className="absolute inset-0 flex flex-col items-center justify-center px-5 text-center">
-         <p className="home-hero-build text-4xl font-bold tracking-tight text-white sm:text-5xl lg:text-6xl">
-           We build
-         </p>
-         <p
-           key={heroSlides[activeHeroSlide].word}
-           className="home-hero-word mt-2 text-4xl font-extrabold tracking-tight text-sky-300 sm:text-5xl lg:text-6xl"
-           aria-live="polite"
-           aria-atomic="true"
-         >
-           {heroSlides[activeHeroSlide].word}
-         </p>
-       </div>
-     </div>
-   </div>
- </div>
-   <section className="w-full bg-white dark:bg-gray-900 py-6 overflow-hidden">
- <style>
- {`
- .marquee {
- width: 100%;
- overflow: hidden;
- position: relative;
- }
+        {/* "We build [Word]" directly on top of the image */}
+        <div className="relative z-10 flex flex-col items-center justify-center text-center">
+          <p className="home-hero-build text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-white drop-shadow-[0_4px_16px_rgba(0,0,0,0.85)]">
+            We build
+          </p>
+          <p
+            key={heroSlides[activeHeroSlide].word}
+            className="home-hero-word mt-2 text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-sky-300 drop-shadow-[0_4px_20px_rgba(0,0,0,0.85)]"
+            aria-live="polite"
+            aria-atomic="true"
+          >
+            {heroSlides[activeHeroSlide].word}
+          </p>
+        </div>
+      </div>
+    </div>
 
- .marquee-track {
- display: flex;
- width: max-content;
- animation: marquee 25s linear infinite;
- }
+    {/* CSS Animations */}
+    <style>{`
+      @keyframes float-left {
+        0%, 100% { transform: translateY(0px) translateX(0px); }
+        33% { transform: translateY(-10px) translateX(10px); }
+        66% { transform: translateY(-5px) translateX(-2px); }
+      }
+      @keyframes float-right {
+        0%, 100% { transform: translateY(0px) translateX(0px); }
+        33% { transform: translateY(-12px) translateX(-3px); }
+        66% { transform: translateY(-6px) translateX(2px); }
+      }
+    `}</style>
 
- .marquee-item {
- flex: 0 0 auto;
- width: 220px;
- height: 90px;
- margin-right: 32px;
- display: flex;
- align-items: center;
- justify-content: center;
- background: #f9fafb;
- border-radius: 16px;
- }
-
- .marquee-item img {
- height: 48px;
- width: auto;
- object-fit: contain;
- opacity: 0.85;
- }
-
- @keyframes marquee {
- 0% {
- transform: translateX(0);
- }
- 100% {
- transform: translateX(-50%);
- }
- }
- `}
- </style>
-
- {/* <div className="max-w-8xl mx-auto py-2">
- <div className="marquee">
- <div className="marquee-track py-2">
- {[...cardImages, ...cardImages].map((item, index) => (
- <div key={index} className="marquee-item">
- <img
- src={item.src}
- alt={item.alt}
- loading="lazy"
- />
- </div>
- ))}
- </div>
- </div>
- </div> */}
- </section>
-
- {/* CSS Animations */}
- <style>{`
- @keyframes float-left {
- 0%, 100% { transform: translateY(0px) translateX(0px); }
- 33% { transform: translateY(-10px) translateX(10px); }
- 66% { transform: translateY(-5px) translateX(-2px); }
- }
- @keyframes float-right {
- 0%, 100% { transform: translateY(0px) translateX(0px); }
- 33% { transform: translateY(-12px) translateX(-3px); }
- 66% { transform: translateY(-6px) translateX(2px); }
- }
- `}</style>
-
- {/* Wave SVG - Bottom */}
- <div className="absolute bottom-0 left-0 right-0">
- <svg className="fill-white dark:fill-background-dark w-full h-16 lg:h-24 transform translate-y-1" viewBox="0 0 1440 320" xmlns="http://www.w3.org/2000/svg">
- <path d="M0,96L48,112C96,128,192,160,288,160C384,160,480,128,576,112C672,96,768,96,864,112C960,128,1056,160,1152,160C1248,160,1344,128,1392,112L1440,96L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z" fillOpacity="1"></path>
- </svg>
- </div>
- </header>
+    {/* Wave SVG - Bottom */}
+    <div className="absolute bottom-0 left-0 right-0 z-10 pointer-events-none">
+      <svg className="fill-white dark:fill-background-dark w-full h-12 sm:h-16 lg:h-20 transform translate-y-1" viewBox="0 0 1440 320" xmlns="http://www.w3.org/2000/svg">
+        <path d="M0,96L48,112C96,128,192,160,288,160C384,160,480,128,576,112C672,96,768,96,864,112C960,128,1056,160,1152,160C1248,160,1344,128,1392,112L1440,96L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z" fillOpacity="1"></path>
+      </svg>
+    </div>
+  </header>
 
  {/* Challenges Section */}
  <section className="replay-letter-reveal challenge-reveal-section py-14 px-4 md:px-8 lg:py-16 scroll-animate">
@@ -873,49 +808,9 @@ const Home = () => {
  ))}
  </div>
 
- {/* Testimonials Auto-Scroll */}
- <div className="relative group">
- {/* Left and Right Blur Fade Overlays */}
- <div className="absolute left-0 top-0 bottom-0 w-20 bg-gradient-to-r from-white dark:from-background-dark to-transparent z-10 pointer-events-none"></div>
- <div className="absolute right-0 top-0 bottom-0 w-20 bg-gradient-to-l from-white dark:from-background-dark to-transparent z-10 pointer-events-none"></div>
-
- <div className="flex overflow-hidden">
- {/* The animate-scroll class handles the movement */}
- <div className="flex gap-6 py-4 animate-scroll group-hover:[animation-play-state:paused]">
- {[...Array(2)].map((_, loopIndex) => (
- <div key={loopIndex} className="flex gap-6">
- {[
- { initials: "O", name: "Operations Head", org: "Supermarket Chain", text: "SwordNex Billing cut our checkout time and gave us accurate daily reports.", border: "border-blue-500" },
- { initials: "D", name: "Director", org: "Training Institute", text: "Our new site and campaigns from SwordNex doubled qualified leads in three months.", border: "border-secondary" },
- { initials: "S", name: "Support Manager", org: "E-commerce Store", text: "Support portal reduced ticket resolution by 45%. Real-time chat works perfectly.", border: "border-green-500" },
- { initials: "A", name: "Tech Lead", org: "Retail Platform", text: "API handled 10x traffic during Black Friday. Zero downtime!", border: "border-purple-500" },
- { initials: "P", name: "Finance Controller", org: "Manufacturing Co.", text: "Payroll automated TDS & PF. Audit-ready reports instantly!", border: "border-red-500" },
- ].map((item, idx) => (
- <div
- key={`${loopIndex}-${idx}`}
- className={`bg-white dark:bg-card-dark p-6 rounded-2xl shadow-md border-t-4 ${item.border} w-[300px] sm:w-[350px] shrink-0`}
- >
- <div className="flex gap-1 text-yellow-400 mb-4">
- {[...Array(5)].map((_, i) => <span key={i} className="material-icons-round text-sm">star</span>)}
- </div>
- <p className="text-gray-700 dark:text-gray-300 mb-6 italic text-sm leading-relaxed">"{item.text}"</p>
- <div className="flex items-center gap-4">
- <div className="w-10 h-10 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center font-bold text-gray-600 dark:text-gray-300">
- {item.initials}
- </div>
- <div className="text-left">
- <h4 className="font-bold text-gray-900 dark:text-white text-sm">{item.name}</h4>
- <p className="text-xs text-gray-500 dark:text-gray-400">{item.org}</p>
- </div>
- </div>
- </div>
- ))}
- </div>
- ))}
- </div>
- </div>
- </div>
- </section>
+ {/* Testimonials Horizontal 3D Rotation */}
+          <Interactive3DReviews />
+        </section>
 
  {/* About Section */}
  <section className="replay-letter-reveal relative py-12 lg:py-14 overflow-hidden scroll-animate">

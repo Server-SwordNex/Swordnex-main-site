@@ -15,10 +15,10 @@ import './Interactive3DCard.css';
  */
 export const Interactive3DCard = ({
   theme = 'blue', // 'blue' | 'purple' | 'red' | 'green' | 'yellow'
-  tilt = true,
+  tilt = false, // When false, removes 3D cursor tilt/rotation and enables smooth zoom, lift/appear, and glowing border
   className = '',
-  hoverScale = 1.015, // Refined subtle scale (reduced from 1.038)
-  hoverZ = 8, // Refined forward Z-lift (reduced from 19px)
+  hoverScale = 1.03, // Refined tactile zoom
+  hoverZ = 10, // Refined forward lift
   maxTilt = 12,
   onHoverChange,
   children,
@@ -54,18 +54,26 @@ export const Interactive3DCard = ({
       // High responsiveness on hover (0.14), smooth gentle return on leave (0.08)
       const ease = m.isHovered ? 0.14 : 0.08;
 
-      m.currRotX += (m.targetRotX - m.currRotX) * ease;
-      m.currRotY += (m.targetRotY - m.currRotY) * ease;
+      if (tilt) {
+        m.currRotX += (m.targetRotX - m.currRotX) * ease;
+        m.currRotY += (m.targetRotY - m.currRotY) * ease;
+      } else {
+        m.currRotX = 0;
+        m.currRotY = 0;
+      }
+
       m.currScale += (m.targetScale - m.currScale) * ease;
       m.currZ += (m.targetZ - m.currZ) * ease;
 
-      m.currMouseX += (m.targetMouseX - m.currMouseX) * 0.2;
-      m.currMouseY += (m.targetMouseY - m.currMouseY) * 0.2;
-
-      inner.style.setProperty('--card-mouse-x', `${m.currMouseX.toFixed(1)}px`);
-      inner.style.setProperty('--card-mouse-y', `${m.currMouseY.toFixed(1)}px`);
-
-      inner.style.transform = `perspective(850px) rotateX(${m.currRotX.toFixed(2)}deg) rotateY(${m.currRotY.toFixed(2)}deg) translateZ(${m.currZ.toFixed(1)}px) scale3d(${m.currScale.toFixed(3)}, ${m.currScale.toFixed(3)}, 1)`;
+      if (tilt) {
+        m.currMouseX += (m.targetMouseX - m.currMouseX) * 0.2;
+        m.currMouseY += (m.targetMouseY - m.currMouseY) * 0.2;
+        inner.style.setProperty('--card-mouse-x', `${m.currMouseX.toFixed(1)}px`);
+        inner.style.setProperty('--card-mouse-y', `${m.currMouseY.toFixed(1)}px`);
+        inner.style.transform = `perspective(850px) rotateX(${m.currRotX.toFixed(2)}deg) rotateY(${m.currRotY.toFixed(2)}deg) translateZ(${m.currZ.toFixed(1)}px) scale3d(${m.currScale.toFixed(3)}, ${m.currScale.toFixed(3)}, 1)`;
+      } else {
+        inner.style.transform = `scale3d(${m.currScale.toFixed(3)}, ${m.currScale.toFixed(3)}, 1) translateY(-${(m.currZ * 0.4).toFixed(1)}px)`;
+      }
 
       rafRef.current = requestAnimationFrame(animate);
     };
@@ -74,39 +82,47 @@ export const Interactive3DCard = ({
     return () => {
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
     };
-  }, []);
+  }, [tilt]);
 
   const handlePointerMove = useCallback((e) => {
     const outer = outerRef.current;
     if (!outer) return;
 
-    const rect = outer.getBoundingClientRect();
-    const clientX = e.clientX ?? (e.touches && e.touches[0]?.clientX);
-    const clientY = e.clientY ?? (e.touches && e.touches[0]?.clientY);
-    if (clientX === undefined || clientY === undefined) return;
-
-    const relX = clientX - rect.left;
-    const relY = clientY - rect.top;
-
-    const centerX = rect.width / 2;
-    const centerY = rect.height / 2;
-
-    const normX = Math.max(-1, Math.min(1, (relX - centerX) / centerX));
-    const normY = Math.max(-1, Math.min(1, (relY - centerY) / centerY));
-
     const m = motionRef.current;
-    m.targetRotX = -normY * maxTilt;
-    m.targetRotY = normX * maxTilt;
+
+    if (tilt) {
+      const rect = outer.getBoundingClientRect();
+      const clientX = e.clientX ?? (e.touches && e.touches[0]?.clientX);
+      const clientY = e.clientY ?? (e.touches && e.touches[0]?.clientY);
+      if (clientX !== undefined && clientY !== undefined) {
+        const relX = clientX - rect.left;
+        const relY = clientY - rect.top;
+
+        const centerX = rect.width / 2;
+        const centerY = rect.height / 2;
+
+        const normX = Math.max(-1, Math.min(1, (relX - centerX) / centerX));
+        const normY = Math.max(-1, Math.min(1, (relY - centerY) / centerY));
+
+        m.targetRotX = -normY * maxTilt;
+        m.targetRotY = normX * maxTilt;
+        m.targetMouseX = relX;
+        m.targetMouseY = relY;
+      }
+    } else {
+      m.targetRotX = 0;
+      m.targetRotY = 0;
+    }
+
     m.targetScale = hoverScale;
     m.targetZ = hoverZ;
-    m.targetMouseX = relX;
-    m.targetMouseY = relY;
+
     if (!m.isHovered) {
       m.isHovered = true;
       setIsHovered(true);
       onHoverChange?.(true);
     }
-  }, [hoverScale, hoverZ, maxTilt, onHoverChange]);
+  }, [tilt, hoverScale, hoverZ, maxTilt, onHoverChange]);
 
   const handlePointerLeave = useCallback(() => {
     const m = motionRef.current;
@@ -123,6 +139,7 @@ export const Interactive3DCard = ({
     <div
       ref={outerRef}
       className={`interactive-3d-card-wrapper h-full w-full relative ${isHovered ? 'z-30' : 'z-[1]'}`}
+      onMouseEnter={handlePointerMove}
       onMouseMove={handlePointerMove}
       onMouseLeave={handlePointerLeave}
       onTouchStart={handlePointerMove}
@@ -135,8 +152,7 @@ export const Interactive3DCard = ({
         style={{ willChange: 'transform' }}
         {...rest}
       >
-        {/* Dynamic cursor-following radial light */}
-        <div className="interactive-3d-card-glow" aria-hidden="true" />
+        {tilt && <div className="interactive-3d-card-glow" aria-hidden="true" />}
         {children}
       </div>
     </div>
