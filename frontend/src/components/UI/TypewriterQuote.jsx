@@ -16,6 +16,7 @@ const TypewriterQuote = ({
   quote = "At SwordNex, we build technology that fades into the background, letting your teams focus on meaningful work and business growth.",
   speed = 20, // ms per character
   className = "",
+  textClassName = "text-sm sm:text-base",
 }) => {
   const containerRef = useRef(null);
   const isInView = useInView(containerRef, { amount: 0.35, once: false });
@@ -74,18 +75,18 @@ const TypewriterQuote = ({
     >
       {/* Invisible layout reservation layer preventing any jump/CLS */}
       <p
-        className="invisible pointer-events-none select-none text-gray-700 dark:text-gray-300 text-sm sm:text-base italic leading-relaxed"
+        className={`invisible pointer-events-none select-none text-gray-700 dark:text-gray-300 italic leading-relaxed ${textClassName}`}
         aria-hidden="true"
       >
         {fullQuote}
       </p>
 
       {/* Visible animated typed text */}
-      <p className="absolute inset-0 text-gray-700 dark:text-gray-300 text-sm sm:text-base italic leading-relaxed">
+      <p className={`absolute inset-0 text-gray-700 dark:text-gray-300 italic leading-relaxed ${textClassName}`}>
         {displayedText}
         {isTyping && (
           <span
-            className="inline-block w-0.5 h-3.5 bg-primary rounded-full animate-pulse ml-0.5 align-middle"
+            className="inline-block w-0.5 h-[1.15em] bg-primary rounded-full animate-pulse ml-0.5 align-middle"
             aria-hidden="true"
           />
         )}

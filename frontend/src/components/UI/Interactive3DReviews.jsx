@@ -134,8 +134,8 @@ const Interactive3DReviews = ({ reviews = DEFAULT_REVIEWS }) => {
       // Opacity: 1.0 in front, 0.70 in behind (always visible)
       const opacity = 0.70 + t * 0.30;
 
-      // Z-Index: front cards always overlap back cards
-      const zIndex = Math.round(10 + t * 50);
+      // Z-Index: scoped strictly inside section stacking context
+      const zIndex = Math.round(2 + t * 10);
 
       // ONLY CARD IN THE CENTER IS HOVERABLE
       // It must be the front-most card (idx === frontIdx) and near center (t >= 0.85)
@@ -276,8 +276,8 @@ const Interactive3DReviews = ({ reviews = DEFAULT_REVIEWS }) => {
   return (
     <div className="reviews-3d-section group relative">
       {/* Left and Right Blur Edge Overlays */}
-      <div className="absolute left-0 top-0 bottom-0 w-10 sm:w-24 bg-gradient-to-r from-white dark:from-background-dark to-transparent z-40 pointer-events-none" />
-      <div className="absolute right-0 top-0 bottom-0 w-10 sm:w-24 bg-gradient-to-l from-white dark:from-background-dark to-transparent z-40 pointer-events-none" />
+      <div className="absolute left-0 top-0 bottom-0 w-10 sm:w-24 bg-gradient-to-r from-white dark:from-background-dark to-transparent z-15 pointer-events-none" />
+      <div className="absolute right-0 top-0 bottom-0 w-10 sm:w-24 bg-gradient-to-l from-white dark:from-background-dark to-transparent z-15 pointer-events-none" />
 
       {/* 3D Ambient Floor Glow */}
       <div className="reviews-3d-floor-ambient" />
@@ -368,7 +368,7 @@ const Interactive3DReviews = ({ reviews = DEFAULT_REVIEWS }) => {
             handlePrev();
           }}
           aria-label="Previous review"
-          className="absolute left-2 sm:left-6 top-1/2 -translate-y-1/2 z-50 w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-white/90 dark:bg-slate-800/90 backdrop-blur-md shadow-lg border border-slate-200 dark:border-slate-700 flex items-center justify-center text-slate-700 dark:text-slate-200 hover:text-primary dark:hover:text-blue-400 hover:scale-110 active:scale-95 transition-all opacity-0 group-hover:opacity-100 focus:opacity-100"
+          className="absolute left-2 sm:left-6 top-1/2 -translate-y-1/2 z-20 w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-white/90 dark:bg-slate-800/90 backdrop-blur-md shadow-lg border border-slate-200 dark:border-slate-700 flex items-center justify-center text-slate-700 dark:text-slate-200 hover:text-primary dark:hover:text-blue-400 hover:scale-110 active:scale-95 transition-all opacity-0 group-hover:opacity-100 focus:opacity-100"
         >
           <span className="material-icons-round text-2xl select-none">chevron_left</span>
         </button>
@@ -381,14 +381,14 @@ const Interactive3DReviews = ({ reviews = DEFAULT_REVIEWS }) => {
             handleNext();
           }}
           aria-label="Next review"
-          className="absolute right-2 sm:right-6 top-1/2 -translate-y-1/2 z-50 w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-white/90 dark:bg-slate-800/90 backdrop-blur-md shadow-lg border border-slate-200 dark:border-slate-700 flex items-center justify-center text-slate-700 dark:text-slate-200 hover:text-primary dark:hover:text-blue-400 hover:scale-110 active:scale-95 transition-all opacity-0 group-hover:opacity-100 focus:opacity-100"
+          className="absolute right-2 sm:right-6 top-1/2 -translate-y-1/2 z-20 w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-white/90 dark:bg-slate-800/90 backdrop-blur-md shadow-lg border border-slate-200 dark:border-slate-700 flex items-center justify-center text-slate-700 dark:text-slate-200 hover:text-primary dark:hover:text-blue-400 hover:scale-110 active:scale-95 transition-all opacity-0 group-hover:opacity-100 focus:opacity-100"
         >
           <span className="material-icons-round text-2xl select-none">chevron_right</span>
         </button>
       </div>
 
       {/* Navigation Dots Indicator */}
-      <div className="flex items-center justify-center gap-2 mt-2 z-40 relative">
+      <div className="flex items-center justify-center gap-2 mt-2 z-20 relative">
         {reviews.map((_, dotIdx) => (
           <button
             key={dotIdx}

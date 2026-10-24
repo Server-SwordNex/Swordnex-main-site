@@ -9,6 +9,7 @@ import DotField from '../components/UI/DotField';
 import TrustStatCounter from '../components/UI/TrustStatCounter';
 import Interactive3DCard from '../components/UI/Interactive3DCard';
 import Interactive3DReviews from '../components/UI/Interactive3DReviews';
+import TypewriterQuote from '../components/UI/TypewriterQuote';
 import './HomeHero.css';
 
 const renderInteractiveHeadingText = (text) =>
@@ -323,6 +324,8 @@ const Home = () => {
       </div>
       {/* Dark clean scrim for optimal text contrast and natural clear photography */}
       <div className="home-hero-shade-fullscreen" />
+      {/* Left-side slight black transparent vignette behind hero text */}
+      <div className="home-hero-vignette-left" />
     </div>
 
     <div className="relative mx-auto max-w-[1440px] px-4 sm:px-6 lg:px-8 z-10 w-full my-auto">
@@ -880,43 +883,70 @@ const Home = () => {
  Core Values of Our IT Solutions
  </h3>
 
- <ul className="space-y-5">
- <li className="flex items-start gap-4">
- <div className="mt-1 w-6 h-6 rounded-full bg-green-100 flex items-center justify-center text-green-600">
- <span className="material-icons-round text-sm">check</span>
- </div>
- <div>
- <strong className="block text-gray-900 dark:text-white text-lg mb-1">Ownership</strong>
- <p className="text-gray-600 dark:text-gray-400 text-sm">
- We take full responsibility to deliver reliable IT solutions that solve real business problems.
- </p>
- </div>
- </li>
+              <ul className="space-y-4">
+                <li className="core-value-item group">
+                  <div className="core-value-tick-badge" aria-hidden="true">
+                    <svg className="core-value-tick-icon" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path
+                        d="M3.5 8.5L6.5 11.5L12.5 4.5"
+                        stroke="currentColor"
+                        strokeWidth="2.2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        className="core-value-tick-path"
+                      />
+                    </svg>
+                  </div>
+                  <div className="core-value-text-block">
+                    <strong className="block text-gray-900 dark:text-white text-lg mb-1">Ownership</strong>
+                    <p className="text-gray-600 dark:text-gray-400 text-sm leading-relaxed">
+                      We take full responsibility to deliver reliable IT solutions that solve real business problems.
+                    </p>
+                  </div>
+                </li>
 
- <li className="flex items-start gap-4">
- <div className="mt-1 w-6 h-6 rounded-full bg-green-100 flex items-center justify-center text-green-600">
- <span className="material-icons-round text-sm">check</span>
- </div>
- <div>
- <strong className="block text-gray-900 dark:text-white text-lg mb-1">Clarity</strong>
- <p className="text-gray-600 dark:text-gray-400 text-sm">
- Transparent communication, clear pricing, and structured development processes.
- </p>
- </div>
- </li>
+                <li className="core-value-item group">
+                  <div className="core-value-tick-badge" aria-hidden="true">
+                    <svg className="core-value-tick-icon" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path
+                        d="M3.5 8.5L6.5 11.5L12.5 4.5"
+                        stroke="currentColor"
+                        strokeWidth="2.2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        className="core-value-tick-path"
+                      />
+                    </svg>
+                  </div>
+                  <div className="core-value-text-block">
+                    <strong className="block text-gray-900 dark:text-white text-lg mb-1">Clarity</strong>
+                    <p className="text-gray-600 dark:text-gray-400 text-sm leading-relaxed">
+                      Transparent communication, clear pricing, and structured development processes.
+                    </p>
+                  </div>
+                </li>
 
- <li className="flex items-start gap-4">
- <div className="mt-1 w-6 h-6 rounded-full bg-green-100 flex items-center justify-center text-green-600">
- <span className="material-icons-round text-sm">check</span>
- </div>
- <div>
- <strong className="block text-gray-900 dark:text-white text-lg mb-1">Long-Term Thinking</strong>
- <p className="text-gray-600 dark:text-gray-400 text-sm">
- We build scalable software systems designed for long-term business growth.
- </p>
- </div>
- </li>
- </ul>
+                <li className="core-value-item group">
+                  <div className="core-value-tick-badge" aria-hidden="true">
+                    <svg className="core-value-tick-icon" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path
+                        d="M3.5 8.5L6.5 11.5L12.5 4.5"
+                        stroke="currentColor"
+                        strokeWidth="2.2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        className="core-value-tick-path"
+                      />
+                    </svg>
+                  </div>
+                  <div className="core-value-text-block">
+                    <strong className="block text-gray-900 dark:text-white text-lg mb-1">Long-Term Thinking</strong>
+                    <p className="text-gray-600 dark:text-gray-400 text-sm leading-relaxed">
+                      We build scalable software systems designed for long-term business growth.
+                    </p>
+                  </div>
+                </li>
+              </ul>
  </div>
  </div>
 
@@ -929,9 +959,12 @@ const Home = () => {
  <span className="material-icons-round text-primary text-5xl opacity-50">format_quote</span>
  </div>
 
- <p className="text-gray-700 dark:text-gray-300 text-lg italic mb-8 leading-relaxed">
- At SwordNex, we build powerful IT solutions and custom software that help businesses streamline operations, improve efficiency, and scale faster with modern technology.
- </p>
+                  <TypewriterQuote
+                    quote="At SwordNex, we build powerful IT solutions and custom software that help businesses streamline operations, improve efficiency, and scale faster with modern technology."
+                    speed={20}
+                    className="mb-8"
+                    textClassName="text-base sm:text-lg"
+                  />
  <div className="-mt-8 mb-4 flex w-full justify-end" aria-hidden="true">
  <span className="material-icons-round rotate-180 text-5xl text-primary opacity-50">
  format_quote

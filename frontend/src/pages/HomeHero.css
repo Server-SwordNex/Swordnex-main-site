@@ -424,14 +424,32 @@
   z-index: 1;
   pointer-events: none;
   background:
-    linear-gradient(90deg, rgba(0, 0, 0, 0.58) 0%, rgba(0, 0, 0, 0.3) 48%, rgba(0, 0, 0, 0.12) 100%),
-    linear-gradient(180deg, rgba(0, 0, 0, 0.25) 0%, transparent 40%, rgba(0, 0, 0, 0.4) 100%);
+    linear-gradient(180deg, rgba(0, 0, 0, 0.25) 0%, transparent 35%, transparent 75%, rgba(0, 0, 0, 0.45) 100%);
+}
+
+.home-hero-vignette-left {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background:
+    /* Deep soft photographic vignette from left edge behind the hero copy */
+    radial-gradient(ellipse 90% 125% at 0% 50%, rgba(0, 0, 0, 0.65) 0%, rgba(0, 0, 0, 0.45) 35%, rgba(0, 0, 0, 0.18) 62%, transparent 82%),
+    /* Smooth horizontal gradient from left to right */
+    linear-gradient(90deg, rgba(0, 0, 0, 0.68) 0%, rgba(0, 0, 0, 0.52) 26%, rgba(0, 0, 0, 0.22) 52%, rgba(0, 0, 0, 0.05) 70%, transparent 84%);
 }
 
 @media (max-width: 1023px) {
   .home-hero-shade-fullscreen {
     background:
-      linear-gradient(180deg, rgba(0, 0, 0, 0.62) 0%, rgba(0, 0, 0, 0.3) 50%, rgba(0, 0, 0, 0.65) 100%);
+      linear-gradient(180deg, rgba(0, 0, 0, 0.35) 0%, transparent 45%, rgba(0, 0, 0, 0.55) 100%);
+  }
+
+  .home-hero-vignette-left {
+    background:
+      radial-gradient(ellipse 110% 85% at 20% 25%, rgba(0, 0, 0, 0.65) 0%, rgba(0, 0, 0, 0.4) 45%, transparent 82%),
+      linear-gradient(180deg, rgba(0, 0, 0, 0.68) 0%, rgba(0, 0, 0, 0.45) 45%, rgba(0, 0, 0, 0.15) 75%, rgba(0, 0, 0, 0.5) 100%),
+      linear-gradient(90deg, rgba(0, 0, 0, 0.55) 0%, rgba(0, 0, 0, 0.25) 60%, transparent 100%);
   }
 }
 
@@ -584,5 +602,145 @@
   .home-hero-stat {
     min-height: 5.5rem;
     padding: 0.7rem;
+  }
+}
+
+/* Core Values Interactive Points */
+.core-value-item {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 0.625rem 0.75rem;
+  margin-left: -0.75rem;
+  margin-right: -0.75rem;
+  border-radius: 0.875rem;
+  cursor: pointer;
+  transition:
+    background-color 280ms cubic-bezier(0.2, 0.8, 0.2, 1),
+    transform 280ms cubic-bezier(0.2, 0.8, 0.2, 1),
+    box-shadow 280ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.core-value-item:hover {
+  background-color: rgba(241, 245, 249, 0.75);
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.05);
+}
+
+.dark .core-value-item:hover {
+  background-color: rgba(30, 41, 59, 0.45);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+}
+
+.core-value-tick-badge {
+  flex-shrink: 0;
+  margin-top: 0.25rem;
+  width: 1.625rem;
+  height: 1.625rem;
+  border-radius: 9999px;
+  background-color: rgb(220, 252, 231);
+  color: rgb(22, 163, 74);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(134, 239, 172, 0.5);
+  transition:
+    background-color 250ms ease,
+    color 250ms ease,
+    border-color 250ms ease,
+    box-shadow 250ms ease,
+    transform 320ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.dark .core-value-tick-badge {
+  background-color: rgba(20, 83, 45, 0.4);
+  color: rgb(74, 222, 128);
+  border-color: rgba(34, 197, 94, 0.3);
+}
+
+.core-value-tick-icon {
+  width: 0.95rem;
+  height: 0.95rem;
+  display: block;
+}
+
+.core-value-tick-path {
+  stroke-dasharray: 22;
+  stroke-dashoffset: 0;
+  transition: stroke 200ms ease;
+}
+
+.core-value-text-block {
+  transform-origin: left center;
+  transition: transform 280ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.core-value-item:hover .core-value-text-block {
+  transform: scale(1.035) translateX(3px);
+}
+
+.core-value-item:hover .core-value-text-block strong {
+  color: hsl(var(--primary));
+  transition: color 200ms ease;
+}
+
+.core-value-item:hover .core-value-tick-badge {
+  background-color: #22c55e;
+  color: #ffffff;
+  border-color: #16a34a;
+  box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.2), 0 4px 10px rgba(34, 197, 94, 0.35);
+  animation: coreValueTickPop 450ms cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+.core-value-item:hover .core-value-tick-path {
+  animation: coreValueTickDraw 420ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+@keyframes coreValueTickPop {
+  0% {
+    transform: scale(1);
+  }
+  30% {
+    transform: scale(1.3) rotate(-8deg);
+  }
+  60% {
+    transform: scale(0.92) rotate(4deg);
+  }
+  85% {
+    transform: scale(1.15) rotate(-2deg);
+  }
+  100% {
+    transform: scale(1.1) rotate(0deg);
+  }
+}
+
+@keyframes coreValueTickDraw {
+  0% {
+    stroke-dashoffset: 22;
+    opacity: 0;
+  }
+  25% {
+    opacity: 1;
+  }
+  100% {
+    stroke-dashoffset: 0;
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .core-value-item,
+  .core-value-text-block,
+  .core-value-tick-badge {
+    transition: none !important;
+  }
+  .core-value-item:hover .core-value-text-block {
+    transform: none !important;
+  }
+  .core-value-item:hover .core-value-tick-badge {
+    animation: none !important;
+  }
+  .core-value-item:hover .core-value-tick-path {
+    animation: none !important;
   }
 }
