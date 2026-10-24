@@ -22,6 +22,22 @@
   animation: integration-diagram-counter-rotation 36s linear infinite;
 }
 
+.integration-diagram-card {
+  transition: border-color 300ms ease, transform 300ms ease;
+}
+
+.integration-diagram-card--billing:hover {
+  border-color: #3b82f6;
+}
+
+.integration-diagram-card--payroll:hover {
+  border-color: #a855f7;
+}
+
+.integration-diagram-card--hms:hover {
+  border-color: #22c55e;
+}
+
 @keyframes integration-diagram-orbit-rotation {
   to {
     transform: rotate(1turn);

@@ -640,7 +640,7 @@ const Products = () => {
  </svg>
  <div className="absolute top-[28px] left-1/2 transform -translate-x-1/2 z-10 flex flex-col items-center group">
  <div className="integration-diagram-counter">
- <div className="bg-white dark:bg-[#1e2536] w-16 h-16 rounded-xl shadow-lg border border-gray-100 dark:border-gray-700 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+ <div className="bg-white dark:bg-[#1e2536] w-16 h-16 rounded-xl shadow-lg border border-gray-100 dark:border-gray-700 flex items-center justify-center group-hover:scale-110 integration-diagram-card integration-diagram-card--billing">
  <span className="material-symbols-outlined text-blue-500 text-2xl">receipt_long</span>
  </div>
  <span className="mt-2 text-sm font-bold text-gray-700 dark:text-gray-200 bg-white/80 dark:bg-gray-800/80 px-2 rounded backdrop-blur-sm">Billing</span>
@@ -648,7 +648,7 @@ const Products = () => {
  </div>
  <div className="absolute bottom-[88px] left-[48px] z-10 flex flex-col items-center group">
  <div className="integration-diagram-counter">
- <div className="bg-white dark:bg-[#1e2536] w-16 h-16 rounded-xl shadow-lg border border-gray-100 dark:border-gray-700 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+ <div className="bg-white dark:bg-[#1e2536] w-16 h-16 rounded-xl shadow-lg border border-gray-100 dark:border-gray-700 flex items-center justify-center group-hover:scale-110 integration-diagram-card integration-diagram-card--payroll">
  <span className="material-symbols-outlined text-purple-500 text-2xl">payments</span>
  </div>
  <span className="mt-2 text-sm font-bold text-gray-700 dark:text-gray-200 bg-white/80 dark:bg-gray-800/80 px-2 rounded backdrop-blur-sm">Payroll</span>
@@ -656,7 +656,7 @@ const Products = () => {
  </div>
  <div className="absolute bottom-[88px] right-[48px] z-10 flex flex-col items-center group">
  <div className="integration-diagram-counter">
- <div className="bg-white dark:bg-[#1e2536] w-16 h-16 rounded-xl shadow-lg border border-gray-100 dark:border-gray-700 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+ <div className="bg-white dark:bg-[#1e2536] w-16 h-16 rounded-xl shadow-lg border border-gray-100 dark:border-gray-700 flex items-center justify-center group-hover:scale-110 integration-diagram-card integration-diagram-card--hms">
  <span className="material-symbols-outlined text-green-500 text-2xl">badge</span>
  </div>
  <span className="mt-2 text-sm font-bold text-gray-700 dark:text-gray-200 bg-white/80 dark:bg-gray-800/80 px-2 rounded backdrop-blur-sm">HMS</span>
